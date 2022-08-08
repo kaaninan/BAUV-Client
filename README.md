@@ -1,24 +1,29 @@
-# client
+# BAUV Client
 
-## Project setup
-```
-yarn install
-```
+This is the client for the BAUV project. It is a web application that allows users to view and interact with the data collected by the BAUV-Server.
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+## Development
 
-### Compiles and minifies for production
-```
-yarn build
+### Installation
+
+To install the dependencies, run:
+
+```bash
+npm install
 ```
 
-### Lints and fixes files
-```
-yarn lint
+### Running
+
+To run the application, run:
+
+```bash
+npm run serve
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Building
+
+To build the application, run:
+
+```bash
+npm run build
+```
