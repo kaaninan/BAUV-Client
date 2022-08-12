@@ -1,26 +1,29 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+	<div>Socket Connected: {{ connected }}</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+	name: "App",
+	computed: {
+		connected () {
+			return this.$store.state.connected
+		},
+		socket () {
+			return this.$store.state.socket
+		}
+	},
+	created() {
+		this.socket.on('connect', (data) => {
+			this.$store.commit('setConnected', true)
+		})
+		this.socket.on('disconnect', (data) => {
+			this.$store.commit('setConnected', false)
+		})
+	}
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style scoped>
+
 </style>
