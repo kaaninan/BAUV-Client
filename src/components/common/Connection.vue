@@ -98,10 +98,9 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin: 10px 0;
-	height: 30px;
 	flex-wrap: wrap;
-
+	min-height: 30px;
+	/* border: 1px solid red; */
 }
 ._containerConnection ._content ._float{
 	height: auto;
@@ -110,6 +109,7 @@ export default {
 	opacity: 0.7;
 	font-size: 15px;
 	white-space: nowrap;
+	margin: 10px 0;
 	margin-right: 10px;
 }
 ._containerConnection ._content ._category .data{
@@ -120,6 +120,7 @@ export default {
 	background-color: var(--block-background-color);
 	color: white;
 	font-family: var(--font-family);
+	font-size: 13px;
 	border: 1px solid var(--border-color);
 	border-radius: 5px;
 	padding: 4px;

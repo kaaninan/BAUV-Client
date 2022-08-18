@@ -15,19 +15,9 @@ export default {
 	components: {
 		Header
 	},
-	computed: {
-		connected () {
-			return this.$store.state.connected
-		},
-		socket () {
-			return this.$store.state.socket
-		}
-	},
 	created() {
 		this.$store.commit('createLog', {msg: 'App created', type: 'info', date: new Date()})
-
-		// Initialize socket connection
-		// commit socketIP
+		// Change socket ip to default
 		this.$store.commit('socketIP', 'http://localhost:1992')
 	},
 };
