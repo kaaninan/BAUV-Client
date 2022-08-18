@@ -1,5 +1,4 @@
 <template>
-	<!-- <div>Socket Connected: {{ connected }}</div> -->
 	<Header />
 	<router-view />
 </template>
@@ -27,22 +26,9 @@ export default {
 	created() {
 		this.$store.commit('createLog', {msg: 'App created', type: 'info', date: new Date()})
 
-		this.socket.on('connect', (data) => {
-			this.$store.commit('createLog', {msg: 'Socket connected', type: 'info', date: new Date()})
-			this.$store.commit('setConnected', true)
-		})
-		this.socket.on('disconnect', (data) => {
-			this.$store.commit('createLog', {msg: 'Socket disconnected', type: 'info', date: new Date()})
-			this.$store.commit('setConnected', false)
-		})
-		this.socket.on('error', (data) => {
-			this.$store.commit('createLog', {msg: 'Socket error', type: 'error', date: new Date()})
-			this.$store.commit('setConnected', false)
-		})
-		this.socket.on('connect_error', (data) => {
-			this.$store.commit('createLog', {msg: 'Socket connect error', type: 'error', date: new Date()})
-			this.$store.commit('setConnected', false)
-		})
+		// Initialize socket connection
+		// commit socketIP
+		this.$store.commit('socketIP', 'http://localhost:1992')
 	},
 };
 </script>
