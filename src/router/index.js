@@ -5,11 +5,10 @@ function lazyLoad(view){
 }
 
 const routes = [
-	{ path: '/', component: lazyLoad('Home') },
-	{ path: '/control', component: lazyLoad('Control') },
-	{ path: '/misson', component: lazyLoad('Mission') },
-	{ path: '/navigation', component: lazyLoad('Navigation') },
+	{ path: '/', component: lazyLoad('Navigation') },
+	{ path: '/mission-control', component: lazyLoad('MissionControl') },
 	{ path: '/settings', component: lazyLoad('Settings') },
+	{ path: '/manipulation', component: lazyLoad('Manipulation') },
 ]
 
 

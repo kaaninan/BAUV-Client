@@ -1,5 +1,5 @@
 <template>
-  Control
+  Mission Control
 </template>
 
 <script>
