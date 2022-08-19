@@ -19,6 +19,13 @@ export default {
 		this.$store.commit('createLog', {msg: 'App created', type: 'info', date: new Date()})
 		// Change socket ip to default
 		this.$store.commit('socketIP', 'http://localhost:1992')
+
+		// Example
+		setInterval(() => {
+			if(this.$store.state.connected){
+				this.$store.dispatch('sendMessage', {event: 'ping', data: 'ping'})
+			}
+		}, 2000);
 	},
 };
 </script>

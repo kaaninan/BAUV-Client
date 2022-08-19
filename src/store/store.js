@@ -14,7 +14,7 @@ const store = createStore({
 			logs: [],
 
 			// ROS
-			rosbridgeStatus: 'disconnected',
+			rosbridgeStatus: 'unknown',
 			absolute_linear_velocity: {vx: 0, vy: 0, vz: 0},
 			relative_linear_velocity: {vx: 0, vy: 0, vz: 0},
 			orientation_rate: {roll: 0, pitch: 0, yaw: 0},
@@ -37,6 +37,7 @@ const store = createStore({
 	actions: {
 		// initialize socket
 		initSocket({commit, state}, payload) {
+			
 			state.socket = io(state.socketIP, {
 				path: '/bridge',
 				autoConnect: false,
@@ -45,6 +46,10 @@ const store = createStore({
 			// Socket.io events
 			state.socket.on('connect', () => {
 				commit('setConnected', true);
+
+				// Get ROSbridge status
+				state.socket.emit('ROSBRIDGE_STATUS');
+
 				commit('createLog', {
 					type: 'success',
 					message: 'Connected to ' + state.socketIP,
@@ -52,6 +57,7 @@ const store = createStore({
 				});
 			}).on('disconnect', () => {
 				commit('setConnected', false);
+				state.rosbridgeStatus = 'unknown'
 				commit('createLog', {
 					type: 'error',
 					message: 'Disconnected from ' + state.socketIP,
@@ -60,19 +66,20 @@ const store = createStore({
 			})
 			// error
 			.on('error', (error) => {
+				state.rosbridgeStatus = 'unknown'
 				commit('createLog', {
 					type: 'error',
 					message: error,
 					date: new Date(),
 				})
 			}).on('connect_error', (error) => {
+				state.rosbridgeStatus = 'unknown'
 				commit('createLog', {
 					type: 'error',
 					message: error,
 					date: new Date(),
 				})
 			})
-
 			
 			// Rosbridge events
 			.on('rosbridge_status', (status) => {
@@ -99,6 +106,7 @@ const store = createStore({
 
 		// send message to socket
 		sendMessage({commit, state}, payload) {
+			console.log('sendMessage', payload);
 			state.socket.emit(payload.event, payload.data);
 		}
 	},

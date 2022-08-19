@@ -14,8 +14,15 @@
 			<div class="_category">
 				<div class="title">ROS Bridge:</div>
 				<div class="data"
-					:class="{_disabled: !$store.getters.socketConnected, _success: $store.getters.rosbridgeStatus == 'connected', _error: $store.getters.rosbridgeStatus == 'disconnected'}">
-					{{ $store.getters.rosbridgeStatus == 'disconnected' ? 'Disconnected' : 'Connected' }}
+					:class="{
+						_disabled: !$store.getters.socketConnected,
+						_success: $store.getters.rosbridgeStatus == 'connected',
+						_error: $store.getters.rosbridgeStatus == 'disconnected',
+						_unknown: $store.getters.rosbridgeStatus == 'unknown'
+					}">
+					{{ $store.getters.rosbridgeStatus == 'disconnected' ? 'Disconnected' : null }}
+					{{ $store.getters.rosbridgeStatus == 'connected' ? 'Connected' : null }}
+					{{ $store.getters.rosbridgeStatus == 'unknown' ? 'Unknown' : null }}
 				</div>
 			</div>
 			<div class="_category">
@@ -136,6 +143,12 @@ export default {
 ._containerConnection ._content ._category ._error{
 	display: flex;
 	background-color: rgba(255, 0, 0, 0.8);
+	border-radius: 5px;
+	padding: 3px 10px;
+}
+._containerConnection ._content ._category ._unknown{
+	display: flex;
+	background-color: gray;
 	border-radius: 5px;
 	padding: 3px 10px;
 }
