@@ -13,6 +13,12 @@ const store = createStore({
 			connected: false,
 			logs: [],
 
+			// Map Server
+			mapServerIP: "164.92.142.217",
+			mapServerPort: "8000",
+			mapServerPortSVG: "8001",
+			mapServerConnected: false,
+
 			// ROS
 			rosbridgeStatus: 'unknown',
 			absolute_linear_velocity: {vx: 0, vy: 0, vz: 0},
@@ -23,6 +29,9 @@ const store = createStore({
 	mutations: {
 		setConnected(state, connected) {
 			state.connected = connected;
+		},
+		setMapServerConnected(state, status) {
+			state.mapServerConnected = status;
 		},
 		createLog(state, log) {
 			state.logs.push(log);
@@ -116,6 +125,9 @@ const store = createStore({
 		},
 		socketConnected: (state) => {
 			return state.connected
+		},
+		mapServerConnected: (state) => {
+			return state.mapServerConnected
 		},
 		rosbridgeStatus: (state) => {
 			return state.rosbridgeStatus

@@ -13,7 +13,24 @@ import maplibregl from 'maplibre-gl';
 
 export default {
 	name: 'App',
-  	mounted(){
+
+	mounted(){
+
+		fetch('http://' + this.$store.state.mapServerIP + ':' + this.$store.state.mapServerPort)
+			.then(response => {
+				console.log('response')
+				return this.$store.commit('setMapServerConnected', true)
+			})
+			.catch(error => {
+				console.log("error")
+				this.$store.commit('createLog', {
+					type: 'error',
+					message: 'Map server - Connection fail: ' + this.$store.state.mapServerIP + ':' + this.$store.state.mapServerPort,
+					date: new Date(),
+				});
+				return this.$store.commit('setMapServerConnected', false)
+			})
+
 		const map = new maplibregl.Map({
 			container: 'map',
 			style: 'minimal.json',
@@ -24,10 +41,10 @@ export default {
 		});
 
 		// map.loadImage('http://localhost:8001/static/svg/NChart-Symbol_INT_Light.svg', function(error, image) {
-		map.loadImage('http://164.92.142.217:8001/static/svg/NChart-Symbol_INT_Light.svg', function(error, image) {
-			if (error) throw error;
-			if (!map.hasImage('NChart-Symbol_INT_Light')) map.addImage('NChart-Symbol_INT_Light', image);
-		});
+		// map.loadImage('http://164.92.142.217:8001/static/svg/NChart-Symbol_INT_Light.svg', function(error, image) {
+		// 	if (error) throw error;
+		// 	if (!map.hasImage('NChart-Symbol_INT_Light')) map.addImage('NChart-Symbol_INT_Light', image);
+		// });
 
 		map.on('load', function () {
 
