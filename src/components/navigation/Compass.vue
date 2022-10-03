@@ -41,6 +41,9 @@
 				
 				<div class="borderBack"></div>
 
+			</div>
+
+			<div class="outline2">
 				<div class="headingContainer">
 					<div class="headingText">Heading<br>{{heading}}</div>
 				</div>
@@ -74,6 +77,17 @@ export default {
 		toRadians (angle) {
 			return angle * (Math.PI / 180);
 		}
+	},
+	mounted() {
+		this.interval = setInterval(() => {
+			this.heading = parseInt(Math.random() * 360);
+			// set outline div transform
+			document.querySelector('._content .outline').style.transform = 'rotate(' + this.heading + 'deg)';
+
+		}, 2000);
+	},
+	unmounted() {
+		clearInterval(this.interval);
 	}
 }
 </script>
@@ -113,6 +127,18 @@ export default {
 	/* border: 1px solid white; */
 	/* border: 30px solid white; */
 	position: relative;
+	transition: all 1s ease-in-out;
+}
+._containerCompass .outline2{
+	width: 90%;
+	aspect-ratio: 1;
+	border-radius: 1000px;
+	transform: rotate(45deg);
+	/* background-color: transparent; */
+	/* background-color: blue; */
+	/* border: 1px solid white; */
+	/* border: 30px solid white; */
+	position: absolute;
 }
 ._containerCompass .angles{
 	position: absolute;
