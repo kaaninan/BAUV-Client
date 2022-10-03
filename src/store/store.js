@@ -14,8 +14,8 @@ const store = createStore({
 			logs: [],
 
 			// Map Server
-			// mapServerIP: "164.92.142.217",
-			mapServerIP: "192.168.1.34",
+			mapServerIP: "164.92.142.217",
+			// mapServerIP: "192.168.1.23",
 			// mapServerIP: "localhost",
 			mapServerPort: "8000",
 			mapServerPortSVG: "8001",
