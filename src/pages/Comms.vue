@@ -2,13 +2,12 @@
 	<div class="_containerNavigation">
 		<div class="row">
 			<div class="col-xs-3" data-aos="fade">
-				<Veloctiy />
+				<Connection />
 			</div>
 			<div class="col-xs-6" data-aos="fade" data-aos-delay='50'>
-				<Map />
+				<Log />
 			</div>
 			<div class="col-xs-3" data-aos="fade" data-aos-delay='100'>
-				<Compass />
 			</div>
 		</div>
 	</div>
@@ -16,16 +15,11 @@
 
 <script>
 import AOS from 'aos';
-import Map from '@/components/navigation/Map.vue';
-import Veloctiy from '../components/navigation/Veloctiy.vue';
-import Compass from '@/components/navigation/Compass.vue';
+import Connection from '@/components/common/Connection.vue';
+import Log from '@/components/common/Log.vue';
 
 export default {
-	components: {
-    Map,
-    Veloctiy,
-    Compass
-},
+	components: { Connection, Log },
 	mounted() {
 		AOS.init({once: false})
 	}
@@ -33,9 +27,9 @@ export default {
 </script>
 
 <style scoped>
-@import '@/assets/styles/variables.css';
-._containerNavigation{
-	padding: calc(var(--screen-padding) / 2) var(--screen-padding);
-}
-
+	@import '@/assets/styles/variables.css';
+	._containerNavigation{
+		padding: calc(var(--screen-padding) / 2) var(--screen-padding);
+	}
+	
 </style>

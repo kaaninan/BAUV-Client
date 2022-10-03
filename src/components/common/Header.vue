@@ -15,6 +15,9 @@
 			<router-link to="/manipulation" custom v-slot="{ navigate, href }">
 				<a class="_link" :class="{_active: isActiveRoute(href)}" :href="href" @click="navigate">MANIPULATION</a>
 			</router-link>
+			<router-link to="/comms" custom v-slot="{ navigate, href }">
+				<a class="_link" :class="{_active: isActiveRoute(href)}" :href="href" @click="navigate">COMMS</a>
+			</router-link>
 		</div>
 
 		<div class="_version">

@@ -9,6 +9,7 @@ const routes = [
 	{ path: '/mission-control', component: lazyLoad('MissionControl') },
 	{ path: '/settings', component: lazyLoad('Settings') },
 	{ path: '/manipulation', component: lazyLoad('Manipulation') },
+	{ path: '/comms', component: lazyLoad('Comms') },
 ]
 
 
