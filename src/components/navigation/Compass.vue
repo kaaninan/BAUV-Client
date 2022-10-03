@@ -61,7 +61,7 @@ export default {
 		return {
 			directionsBig: [{degree: 0, name: 'N'}, {degree: 90, name: 'E'}, {degree: 180, name: 'S'}, {degree: 270, name: 'W'}],
 			directionsSmall: [{degree: 45, name: 'NE'}, {degree: 135, name: 'SE'}, {degree: 225, name: 'SW'}, {degree: 315, name: 'NW'}],
-			heading: 315,
+			heading: 0,
 		}
 	},
 	methods: {
@@ -81,9 +81,7 @@ export default {
 	mounted() {
 		this.interval = setInterval(() => {
 			this.heading = parseInt(Math.random() * 360);
-			// set outline div transform
-			document.querySelector('._content .outline').style.transform = 'rotate(' + this.heading + 'deg)';
-
+			document.querySelector('._content .outline').style.transform = 'rotate(' + -this.heading + 'deg)';
 		}, 2000);
 	},
 	unmounted() {
@@ -121,7 +119,7 @@ export default {
 	width: 90%;
 	aspect-ratio: 1;
 	border-radius: 1000px;
-	transform: rotate(45deg);
+	/* transform: rotate(-10deg); */
 	/* background-color: transparent; */
 	/* background-color: blue; */
 	/* border: 1px solid white; */
