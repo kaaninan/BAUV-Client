@@ -39,7 +39,7 @@
 					</div>
 				</div>
 				
-				<div class="borderBack"></div>
+				<!-- <div class="borderBack"></div> -->
 
 			</div>
 
@@ -81,7 +81,7 @@ export default {
 	mounted() {
 		this.interval = setInterval(() => {
 			this.heading = parseInt(Math.random() * 360);
-			document.querySelector('._content .outline').style.transform = 'rotate(' + -this.heading + 'deg)';
+			document.querySelector('._containerCompass ._content .outline').style.transform = 'rotate(' + -this.heading + 'deg)';
 		}, 2000);
 	},
 	unmounted() {

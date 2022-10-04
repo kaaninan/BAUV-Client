@@ -8,6 +8,7 @@
 				<Map />
 			</div>
 			<div class="col-xs-3" data-aos="fade" data-aos-delay='100'>
+				<Attitude />
 				<Compass />
 			</div>
 		</div>
@@ -19,12 +20,14 @@ import AOS from 'aos';
 import Map from '@/components/navigation/Map.vue';
 import Veloctiy from '../components/navigation/Veloctiy.vue';
 import Compass from '@/components/navigation/Compass.vue';
+import Attitude from '@/components/navigation/Attitude.vue';
 
 export default {
 	components: {
     Map,
     Veloctiy,
-    Compass
+    Compass,
+    Attitude
 },
 	mounted() {
 		AOS.init({once: false})
