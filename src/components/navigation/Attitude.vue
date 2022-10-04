@@ -6,9 +6,13 @@
 
 		<div class="_content">
 			<div class="outline">
+
+				<!-- Background Colors -->
+				<div class="backTop"></div>
+				<div class="backBottom"></div>
 				
 				<!-- Bank Scales -->
-				<div style="position: relative; width: 100%; height: 100%; transform: rotate(0deg);">
+				<div style="position: relative; width: 100%; height: 100%; transform: rotate(0deg); z-index: 10;">
 					<div class="bankScaleLong">
 						<div v-for="(n, i) in bankScalesLong" :key="i">
 							<div class="line" :style="{transform: 'rotate(' + n + 'deg)', top: calcTop(n, 15), left: calcLeft(n, 4)}"></div>
@@ -57,8 +61,6 @@
 						<div class="line" :style="{top: calcPitchLine(0)}"></div>
 					</div>
 				</div>
-
-
 
 			</div>
 		</div>
@@ -116,22 +118,14 @@ export default {
 	flex-direction: column;
 }
 
-._containerAttitude .triangle{
-	border-left: 12px solid transparent;
-	border-right: 12px solid transparent;
-	border-top: 20px solid #31FD00;
-	/* position: absolute; */
-	/* top: 0; */
-	/* left: 50%; */
-	/* transform: translateX(-50%); */
-}
 ._containerAttitude .outline{
 	width: 90%;
 	aspect-ratio: 1;
 	border-radius: 1000px;
-	border: 1px solid white;
+	/* border: 1px solid white; */
 	position: relative;
 	transition: all 1s ease-in-out;
+	overflow: hidden;
 }
 
 /* BANK SCALE */
@@ -142,10 +136,7 @@ export default {
 	right: 15px;
 	bottom: 15px;
 	border-radius: 1000px;
-	/* background-color: transparent; */
-	/* background-color: rosybrown; */
-	/* border: 30px solid red; */
-	/* border: 2px solid red; */
+	z-index: 10;
 }
 ._containerAttitude .bankScaleLong .line{
 	position: absolute;
@@ -155,7 +146,8 @@ export default {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	border-radius: 5
+	border-radius: 5;
+	z-index: 10;
 }
 
 ._containerAttitude .bankScaleShort{
@@ -165,6 +157,7 @@ export default {
 	right: 22.5px;
 	bottom: 22.5px;
 	border-radius: 1000px;
+	z-index: 10;
 	/* border: 1px solid blue; */
 }
 ._containerAttitude .bankScaleShort .line{
@@ -175,7 +168,8 @@ export default {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	border-radius: 5
+	border-radius: 5;
+	z-index: 10;
 }
 
 ._containerAttitude .bankScaleTriangle{
@@ -219,6 +213,7 @@ export default {
 	right: 50px;
 	bottom: 50px;
 	border-radius: 1000px;
+	z-index: 10;
 	/* background-color: rosybrown; */
 }
 
@@ -233,7 +228,6 @@ export default {
 
 
 ._containerAttitude .pitchScale{
-	
 }
 ._containerAttitude .pitchScale .pitchScaleLong{
 	position: absolute;
@@ -243,7 +237,7 @@ export default {
 	bottom: 15px;
 	display: flex;
 	justify-content: center;
-	/* align-items: center; */
+	z-index: 10;
 }
 
 ._containerAttitude .pitchScale .pitchScaleLong .line{
@@ -282,7 +276,7 @@ export default {
 	bottom: 15px;
 	display: flex;
 	justify-content: center;
-	/* align-items: center; */
+	z-index: 10;
 }
 
 ._containerAttitude .pitchScale .pitchScaleShort .line{
@@ -300,15 +294,36 @@ export default {
 	bottom: 15px;
 	display: flex;
 	justify-content: center;
+	z-index: 10;
 	/* align-items: center; */
 }
 
 ._containerAttitude .pitchScale .pitchScaleSoLong .line{
 	position: absolute;
 	width: 100%;
-	/* left: calc(50% - 100px); */
 	height: 2px;
 	background-color: white;
+}
+
+
+/* Background Colors */
+._containerAttitude .backTop{
+	width: 100%;
+	height: 50%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: #2777C3;
+	z-index: 1;
+}
+._containerAttitude .backBottom{
+	width: 100%;
+	height: 50%;
+	position: absolute;
+	top: 50%;
+	left: 0;
+	background-color: #5F4C2D;
+	z-index: 1;
 }
 
 
