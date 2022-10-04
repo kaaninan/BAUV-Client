@@ -484,8 +484,6 @@ export default {
 	border-radius: 2px;
 }
 
-
-
 .anim{
 	transition: all .5s;
 }
