@@ -6,7 +6,6 @@
 
 		<div class="_content">
 			<div class="outline">
-
 				<!-- Background Colors Outside -->
 				<div class="backContainerOut anim" :style="{transform: 'rotate('+-roll+'deg)'}">
 					<div class="backTop"></div>
@@ -54,21 +53,23 @@
 				</div>
 
 				<!-- Pitch Degree Markings -->
-				<div class="pitchScale anim" :style="{transform: 'rotate('+-roll+'deg)', top: pitch * 4 + 'px'}">
-					<div class="pitchScaleLong">
-						<div v-for="(n, i) in pitchScalesLong" :key="i">
-							<div class="leftText" :style="{top: 'calc(' + calcPitchLine(n * -1) + ' - 12.5px)'}">{{Math.abs(n)}}</div>
-							<div class="line" :style="{top: calcPitchLine(n)}"></div>
-							<div class="rightText" :style="{top: 'calc(' + calcPitchLine(n * -1) + ' - 12.5px)'}">{{Math.abs(n)}}</div>
+				<div class="pitchScaleWindow">
+					<div class="pitchScale anim" :style="{transform: 'rotate('+-roll+'deg)', top: pitch * 4 + 'px'}">
+						<div class="pitchScaleLong">
+							<div v-for="(n, i) in pitchScalesLong" :key="i">
+								<div class="leftText" :style="{top: 'calc(' + calcPitchLine(n * -1) + ' - 12.5px)'}">{{Math.abs(n)}}</div>
+								<div class="line" :style="{top: calcPitchLine(n)}"></div>
+								<div class="rightText" :style="{top: 'calc(' + calcPitchLine(n * -1) + ' - 12.5px)'}">{{Math.abs(n)}}</div>
+							</div>
 						</div>
-					</div>
-					<div class="pitchScaleShort">
-						<div v-for="(n, i) in pitchScalesShort" :key="i">
-							<div class="line" :style="{top: calcPitchLine(n)}"></div>
+						<div class="pitchScaleShort">
+							<div v-for="(n, i) in pitchScalesShort" :key="i">
+								<div class="line" :style="{top: calcPitchLine(n)}"></div>
+							</div>
 						</div>
-					</div>
-					<div class="pitchScaleSoLong">
-						<div class="line" :style="{top: calcPitchLine(0)}"></div>
+						<div class="pitchScaleSoLong">
+							<div class="line" :style="{top: calcPitchLine(0)}"></div>
+						</div>
 					</div>
 				</div>
 
@@ -82,9 +83,9 @@
 					<div class="pointLine"></div>
 					<div class="pointCircle"></div>
 				</div>
-
 			</div>
 		</div>
+
 	</div>
 </template>
 
@@ -154,10 +155,9 @@ export default {
 	width: 90%;
 	aspect-ratio: 1;
 	border-radius: 1000px;
-	/* border: 1px solid white; */
 	position: relative;
-	transition: all 1s ease-in-out;
 	overflow: hidden;
+	/* border: 1px solid white; */
 }
 
 /* ---------------- Bank Scale ---------------- */
@@ -165,7 +165,6 @@ export default {
 	position: relative;
 	width: 100%;
 	height: 100%;
-	z-index: 10;
 }
 ._containerAttitude .bankScaleLong{
 	position: absolute;
@@ -173,19 +172,13 @@ export default {
 	left: 15px;
 	right: 15px;
 	bottom: 15px;
-	border-radius: 1000px;
-	z-index: 10;
 }
 ._containerAttitude .bankScaleLong .line{
 	position: absolute;
 	width: 8px;
 	height: 30px;
 	background-color: white;
-	display: flex;
-	justify-content: center;
-	align-items: center;
 	border-radius: 5;
-	z-index: 10;
 }
 ._containerAttitude .bankScaleShort{
 	position: absolute;
@@ -193,20 +186,13 @@ export default {
 	left: 22.5px;
 	right: 22.5px;
 	bottom: 22.5px;
-	border-radius: 1000px;
-	z-index: 10;
-	/* border: 1px solid blue; */
 }
 ._containerAttitude .bankScaleShort .line{
 	position: absolute;
 	width: 4px;
 	height: 15px;
 	background-color: white;
-	display: flex;
-	justify-content: center;
-	align-items: center;
 	border-radius: 5;
-	z-index: 10;
 }
 ._containerAttitude .bankScaleTriangle{
 	position: absolute;
@@ -214,8 +200,6 @@ export default {
 	left: 20px;
 	right: 20px;
 	bottom: 20px;
-	border-radius: 1000px;
-	/* background-color: rosybrown; */
 }
 ._containerAttitude .bankScaleTriangle .line{
 	position: absolute;
@@ -229,7 +213,6 @@ export default {
 	left: 15px;
 	right: 15px;
 	bottom: 15px;
-	border-radius: 1000px;
 }
 ._containerAttitude .bankScaleBigTriangle .line{
 	position: absolute;
@@ -254,21 +237,21 @@ export default {
 }
 
 
-
 /* ---------------- Pitch Scale ---------------- */
+._containerAttitude .pitchScaleWindow{
+	position: absolute;
+	width: calc(100% - 60px);
+	height: calc(100% - 60px);
+	top: 30px;
+	left: 30px;
+	z-index: 3;
+	overflow: hidden;
+	border-radius: 1000px;
+}
 ._containerAttitude .pitchScale{
 	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
 	width: 100%;
 	height: 100%;
-	z-index: 10;
-	/* transform-origin: 50% 50%; */
-	/* transform: rotate(10deg); */
-	/* background-color: blue; */
-	/* border: 2px solid magenta; */
 }
 ._containerAttitude .pitchScale .pitchScaleLong{
 	position: absolute;
@@ -276,25 +259,18 @@ export default {
 	left: 15px;
 	right: 15px;
 	bottom: 15px;
-	display: flex;
-	justify-content: center;
-	z-index: 10;
-	/* background-color: red; */
 }
 ._containerAttitude .pitchScale .pitchScaleLong .line{
 	position: absolute;
 	width: 70px;
-	left: calc(50% - 35px);
 	height: 3px;
+	left: calc(50% - 35px);
 	background-color: white;
 }
 ._containerAttitude .pitchScale .pitchScaleLong .rightText{
 	position: absolute;
 	width: 25px;
 	height: 25px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
 	left: calc(50% + (35px + 5px));
 	font-size: 16px;
 }
@@ -302,9 +278,6 @@ export default {
 	position: absolute;
 	width: 25px;
 	height: 25px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
 	left: calc(50% - (35px + 30px));
 	font-size: 16px;
 }
@@ -314,32 +287,24 @@ export default {
 	left: 15px;
 	right: 15px;
 	bottom: 15px;
-	display: flex;
-	justify-content: center;
-	z-index: 10;
 }
 ._containerAttitude .pitchScale .pitchScaleShort .line{
 	position: absolute;
 	width: 40px;
-	left: calc(50% - 20px);
 	height: 3px;
+	left: calc(50% - 20px);
 	background-color: white;
 }
 ._containerAttitude .pitchScale .pitchScaleSoLong{
 	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
-	display: flex;
-	justify-content: center;
-	z-index: 10;
-	/* align-items: center; */
+	width: 100%;
+	height: 100%;
 }
 ._containerAttitude .pitchScale .pitchScaleSoLong .line{
 	position: absolute;
-	width: 150%;
+	width: 200%;
 	height: 2px;
+	left: -50%;
 	background-color: white;
 }
 
@@ -357,8 +322,8 @@ export default {
 	top: 0;
 	left: 0;
 	right: 0;
+	z-index: 4;
 	background-color: #2777C3;
-	z-index: 1;
 }
 ._containerAttitude .backContainerOut .backBottom{
 	width: 100%;
@@ -367,8 +332,8 @@ export default {
 	bottom: 0;
 	left: 0;
 	right: 0;
+	z-index: 4;
 	background-color: #5F4C2D;
-	z-index: 1;
 }
 
 /* ---------------- Background Colors Inside ---------------- */
@@ -380,7 +345,7 @@ export default {
 	border-radius: 1000px;
 	position: absolute;
 	background-color: red;
-	z-index: 2;
+	z-index: 3;
 	overflow: hidden;
 }
 ._containerAttitude .backContainer{
