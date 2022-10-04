@@ -8,11 +8,13 @@
 			<div class="outline">
 
 				<!-- Background Colors -->
-				<div class="backTop"></div>
-				<div class="backBottom"></div>
+				<div class="backContainer anim" :style="{transform: 'rotate('+roll+'deg)'}">
+					<div class="backTop"></div>
+					<div class="backBottom"></div>
+				</div>
 				
 				<!-- Bank Scales -->
-				<div style="position: relative; width: 100%; height: 100%; transform: rotate(0deg); z-index: 10;">
+				<div class="bankScale anim" :style="{transform: 'rotate('+roll+'deg)'}">
 					<div class="bankScaleLong">
 						<div v-for="(n, i) in bankScalesLong" :key="i">
 							<div class="line" :style="{transform: 'rotate(' + n + 'deg)', top: calcTop(n, 15), left: calcLeft(n, 4)}"></div>
@@ -38,13 +40,13 @@
 					</div>
 				</div>
 
-				<!-- Bank Scale Pointer -->
+				<!-- Bank Scale Pointer - Sabit -->
 				<div class="bankScalePointer">
-					<img class="pointer" src="@/assets/images/pointer.png" :style="{top: calcTop(0, 15), left: calcLeft(0, 13)}">
+					<img class="pointer" src="@/assets/images/pointer.png" :style="{top: 'calc('+calcTop(0, 15)+' + 15px)', left: calcLeft(0, 13)}">
 				</div>
 
 				<!-- Pitch Degree Markings -->
-				<div class="pitchScale">
+				<div class="pitchScale anim" :style="{transform: 'rotate('+roll+'deg)'}">
 					<div class="pitchScaleLong">
 						<div v-for="(n, i) in pitchScalesLong" :key="i">
 							<div class="leftText" :style="{top: 'calc(' + calcPitchLine(n * -1) + ' - 12.5px)'}">{{Math.abs(n)}}</div>
@@ -62,6 +64,16 @@
 					</div>
 				</div>
 
+				<!-- Aircraft Symbol -->
+				<div class="aircraftContainer">
+					<div class="leftLine"></div>
+					<div class="rightLine"></div>
+					<div class="centerLine"></div>
+					<div class="leftUpLine"></div>
+					<div class="rightUpLine"></div>
+					<div class="centerBottomLine"></div>
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -72,6 +84,10 @@ export default {
 	name: 'Compass',
 	data() {
 		return {
+
+			roll: 20, // degree
+			pitch: 9, // degree
+
 			bankScalesLong: [270, 300, 330, 30, 60, 90],
 			bankScalesShort: [340, 350, 10, 20],
 			bankScalesTriangle: [315, 45],
@@ -80,6 +96,15 @@ export default {
 			pitchScalesLong: [10, 20, -10, -20],
 			pitchScalesShort: [5, 15, -5, -15],
 		}
+	},
+	mounted(){
+		this.interval = setInterval(() => {
+			// Convert number between -30 to 30
+			this.roll = Math.floor(Math.random() * 60) - 30;
+		}, 2000);
+	},
+	unmounted(){
+		clearInterval(this.interval);
 	},
 	methods: {
 		calcTop(i, diff) {
@@ -117,7 +142,6 @@ export default {
 	align-items: center;
 	flex-direction: column;
 }
-
 ._containerAttitude .outline{
 	width: 90%;
 	aspect-ratio: 1;
@@ -128,7 +152,13 @@ export default {
 	overflow: hidden;
 }
 
-/* BANK SCALE */
+/* ---------------- Bank Scale ---------------- */
+._containerAttitude .bankScale{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+}
 ._containerAttitude .bankScaleLong{
 	position: absolute;
 	top: 15px;
@@ -149,7 +179,6 @@ export default {
 	border-radius: 5;
 	z-index: 10;
 }
-
 ._containerAttitude .bankScaleShort{
 	position: absolute;
 	top: 22.5px;
@@ -171,24 +200,21 @@ export default {
 	border-radius: 5;
 	z-index: 10;
 }
-
 ._containerAttitude .bankScaleTriangle{
 	position: absolute;
-	top: 27px;
-	left: 27px;
-	right: 27px;
-	bottom: 27px;
+	top: 20px;
+	left: 20px;
+	right: 20px;
+	bottom: 20px;
 	border-radius: 1000px;
 	/* background-color: rosybrown; */
 }
-
 ._containerAttitude .bankScaleTriangle .line{
 	position: absolute;
 	border-left: 8px solid transparent;
 	border-right: 8px solid transparent;
 	border-top: 16px solid white;
 }
-
 ._containerAttitude .bankScaleBigTriangle{
 	position: absolute;
 	top: 15px;
@@ -196,38 +222,45 @@ export default {
 	right: 15px;
 	bottom: 15px;
 	border-radius: 1000px;
-	/* background-color: rosybrown; */
 }
-
 ._containerAttitude .bankScaleBigTriangle .line{
 	position: absolute;
 	border-left: 15px solid transparent;
 	border-right: 15px solid transparent;
 	border-top: 30px solid white;
 }
-
 ._containerAttitude .bankScalePointer{
 	position: absolute;
-	top: 50px;
-	left: 50px;
-	right: 50px;
-	bottom: 50px;
+	top: 30px;
+	left: 30px;
+	right: 30px;
+	bottom: 30px;
 	border-radius: 1000px;
 	z-index: 10;
-	/* background-color: rosybrown; */
+	border: 1px solid rgba(255, 255, 255, .5);
 }
-
 ._containerAttitude .bankScalePointer .pointer{
 	position: absolute;
 	width: 26px;
 	height: 30px;
-	/* border: 1px solid red; */
 }
 
 
 
-
+/* ---------------- Pitch Scale ---------------- */
 ._containerAttitude .pitchScale{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+	/* transform-origin: 50% 50%; */
+	/* transform: rotate(10deg); */
+	/* background-color: blue; */
+	/* border: 2px solid magenta; */
 }
 ._containerAttitude .pitchScale .pitchScaleLong{
 	position: absolute;
@@ -238,8 +271,8 @@ export default {
 	display: flex;
 	justify-content: center;
 	z-index: 10;
+	/* background-color: red; */
 }
-
 ._containerAttitude .pitchScale .pitchScaleLong .line{
 	position: absolute;
 	width: 70px;
@@ -267,7 +300,6 @@ export default {
 	left: calc(50% - (35px + 30px));
 	font-size: 16px;
 }
-
 ._containerAttitude .pitchScale .pitchScaleShort{
 	position: absolute;
 	top: 15px;
@@ -278,7 +310,6 @@ export default {
 	justify-content: center;
 	z-index: 10;
 }
-
 ._containerAttitude .pitchScale .pitchScaleShort .line{
 	position: absolute;
 	width: 40px;
@@ -288,16 +319,15 @@ export default {
 }
 ._containerAttitude .pitchScale .pitchScaleSoLong{
 	position: absolute;
-	top: 15px;
-	left: 15px;
-	right: 15px;
-	bottom: 15px;
+	top: 30px;
+	left: 30px;
+	right: 30px;
+	bottom: 30px;
 	display: flex;
 	justify-content: center;
 	z-index: 10;
 	/* align-items: center; */
 }
-
 ._containerAttitude .pitchScale .pitchScaleSoLong .line{
 	position: absolute;
 	width: 100%;
@@ -306,7 +336,14 @@ export default {
 }
 
 
-/* Background Colors */
+/* ---------------- Background Colors ---------------- */
+._containerAttitude .backContainer{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
 ._containerAttitude .backTop{
 	width: 100%;
 	height: 50%;
@@ -326,7 +363,65 @@ export default {
 	z-index: 1;
 }
 
+/* ---------------- Aircraft Symbol ---------------- */
+._containerAttitude  .aircraftContainer{
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	right: 15px;
+	bottom: 15px;
+	z-index: 10;
+}
+._containerAttitude  .aircraftContainer .leftLine{
+	position: absolute;
+	width: 62px;
+	height: 7px;
+	top: calc(50% - 2px); /* height / 2 */
+	left: calc(50% - 62px - 40px + 10px - 4px); /* self width, centerline_width / 2 + rightLine_width */
+	background-color: #EB7121;
+	border-radius: 10px;
+}
+._containerAttitude  .aircraftContainer .rightLine{
+	position: absolute;
+	width: 62px;
+	height: 7px;
+	top: calc(50% - 2px); /* height / 2 */
+	left: calc(50% + 40px - 10px + 4px); /* self width, centerline_width / 2 + rightLine_width */
+	background-color: #EB7121;
+	border-radius: 10px;
+}
+._containerAttitude  .aircraftContainer .centerLine{
+	position: absolute;
+	width: 80px;
+	height: 7px;
+	top: calc(50% + 18px);
+	left: calc(50% - 40px); /* self width / 2 */
+	background-color: #EB7121;
+	border-radius: 10px;
+}
+._containerAttitude  .aircraftContainer .leftUpLine{
+	position: absolute;
+	top: calc(50% - 2px);
+	left: calc(50% - 40px); /* centerline_width / 2 */
+	width: 7px;
+	height: calc(18px + 8px); /* centerline top + centerline height */
+	background-color: #EB7121;
+	border-radius: 10px;
+}
+._containerAttitude  .aircraftContainer .rightUpLine{
+	position: absolute;
+	top: calc(50% - 2px);
+	left: calc(50% + 40px - 7px); /* centerline_width / 2 ,self width */
+	width: 7px;
+	height: calc(18px + 8px); /* centerline top + centerline height */
+	background-color: #EB7121;
+	border-radius: 10px;
+}
+._containerAttitude  .aircraftContainer .centerBottomLine{}
 
 
+.anim{
+	transition: all .5s;
+}
 
 </style>
