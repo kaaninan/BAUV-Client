@@ -7,14 +7,22 @@
 		<div class="_content">
 			<div class="outline">
 
-				<!-- Background Colors -->
-				<div class="backContainer anim" :style="{transform: 'rotate('+roll+'deg)'}">
+				<!-- Background Colors Outside -->
+				<div class="backContainerOut anim" :style="{transform: 'rotate('+-roll+'deg)'}">
 					<div class="backTop"></div>
 					<div class="backBottom"></div>
 				</div>
+
+				<!-- Background Colors Inside -->
+				<div class="backContainerWindow">
+					<div class="backContainer anim" :style="{transform: 'rotate('+-roll+'deg)', top: pitch * 8 + 'px'}">
+						<div class="backTop"></div>
+						<div class="backBottom"></div>
+					</div>
+				</div>
 				
 				<!-- Bank Scales -->
-				<div class="bankScale anim" :style="{transform: 'rotate('+roll+'deg)'}">
+				<div class="bankScale anim" :style="{transform: 'rotate('+-roll+'deg)'}">
 					<div class="bankScaleLong">
 						<div v-for="(n, i) in bankScalesLong" :key="i">
 							<div class="line" :style="{transform: 'rotate(' + n + 'deg)', top: calcTop(n, 15), left: calcLeft(n, 4)}"></div>
@@ -46,7 +54,7 @@
 				</div>
 
 				<!-- Pitch Degree Markings -->
-				<div class="pitchScale anim" :style="{transform: 'rotate('+roll+'deg)'}">
+				<div class="pitchScale anim" :style="{transform: 'rotate('+-roll+'deg)', top: pitch * 4 + 'px'}">
 					<div class="pitchScaleLong">
 						<div v-for="(n, i) in pitchScalesLong" :key="i">
 							<div class="leftText" :style="{top: 'calc(' + calcPitchLine(n * -1) + ' - 12.5px)'}">{{Math.abs(n)}}</div>
@@ -64,14 +72,15 @@
 					</div>
 				</div>
 
-				<!-- Aircraft Symbol -->
+				<!-- Aircraft Symbol - Sabit -->
 				<div class="aircraftContainer">
 					<div class="leftLine"></div>
 					<div class="rightLine"></div>
 					<div class="centerLine"></div>
 					<div class="leftUpLine"></div>
 					<div class="rightUpLine"></div>
-					<div class="centerBottomLine"></div>
+					<div class="pointLine"></div>
+					<div class="pointCircle"></div>
 				</div>
 
 			</div>
@@ -84,9 +93,8 @@ export default {
 	name: 'Compass',
 	data() {
 		return {
-
-			roll: 20, // degree
-			pitch: 9, // degree
+			roll: 0, // degree
+			pitch: 0, // degree
 
 			bankScalesLong: [270, 300, 330, 30, 60, 90],
 			bankScalesShort: [340, 350, 10, 20],
@@ -99,8 +107,8 @@ export default {
 	},
 	mounted(){
 		this.interval = setInterval(() => {
-			// Convert number between -30 to 30
 			this.roll = Math.floor(Math.random() * 60) - 30;
+			this.pitch = Math.floor(Math.random() * 20) - 10;
 		}, 2000);
 	},
 	unmounted(){
@@ -319,10 +327,10 @@ export default {
 }
 ._containerAttitude .pitchScale .pitchScaleSoLong{
 	position: absolute;
-	top: 30px;
-	left: 30px;
-	right: 30px;
-	bottom: 30px;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
 	display: flex;
 	justify-content: center;
 	z-index: 10;
@@ -330,37 +338,77 @@ export default {
 }
 ._containerAttitude .pitchScale .pitchScaleSoLong .line{
 	position: absolute;
-	width: 100%;
+	width: 150%;
 	height: 2px;
 	background-color: white;
 }
 
 
-/* ---------------- Background Colors ---------------- */
-._containerAttitude .backContainer{
+/* ---------------- Background Colors Outside ---------------- */
+._containerAttitude .backContainerOut{
 	width: 100%;
 	height: 100%;
 	position: absolute;
-	top: 0;
-	left: 0;
 }
-._containerAttitude .backTop{
+._containerAttitude .backContainerOut .backTop{
 	width: 100%;
 	height: 50%;
 	position: absolute;
 	top: 0;
 	left: 0;
+	right: 0;
 	background-color: #2777C3;
 	z-index: 1;
 }
-._containerAttitude .backBottom{
+._containerAttitude .backContainerOut .backBottom{
 	width: 100%;
 	height: 50%;
 	position: absolute;
-	top: 50%;
+	bottom: 0;
 	left: 0;
+	right: 0;
 	background-color: #5F4C2D;
 	z-index: 1;
+}
+
+/* ---------------- Background Colors Inside ---------------- */
+._containerAttitude .backContainerWindow{
+	top: 30px;
+	left: 30px;
+	right: 30px;
+	bottom: 30px;
+	border-radius: 1000px;
+	position: absolute;
+	background-color: red;
+	z-index: 2;
+	overflow: hidden;
+}
+._containerAttitude .backContainer{
+	width: 100%;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	position: absolute;
+}
+._containerAttitude .backContainer .backTop{
+	width: 3000px;
+	height: 4000px;
+	position: absolute;
+	top: -2000px;
+	left: -1000px;
+	right: -1000px;
+	background-color: #2777C3;
+	z-index: 20;
+}
+._containerAttitude .backContainer .backBottom{
+	width: 3000px;
+	height: 4000px;
+	position: absolute;
+	top: 50%;
+	left: -1000px;
+	right: -1000px;
+	background-color: #5F4C2D;
+	z-index: 20;
 }
 
 /* ---------------- Aircraft Symbol ---------------- */
@@ -379,7 +427,7 @@ export default {
 	top: calc(50% - 2px); /* height / 2 */
 	left: calc(50% - 62px - 40px + 10px - 4px); /* self width, centerline_width / 2 + rightLine_width */
 	background-color: #EB7121;
-	border-radius: 10px;
+	border-radius: 2px;
 }
 ._containerAttitude  .aircraftContainer .rightLine{
 	position: absolute;
@@ -388,7 +436,7 @@ export default {
 	top: calc(50% - 2px); /* height / 2 */
 	left: calc(50% + 40px - 10px + 4px); /* self width, centerline_width / 2 + rightLine_width */
 	background-color: #EB7121;
-	border-radius: 10px;
+	border-radius: 2px;
 }
 ._containerAttitude  .aircraftContainer .centerLine{
 	position: absolute;
@@ -397,7 +445,7 @@ export default {
 	top: calc(50% + 18px);
 	left: calc(50% - 40px); /* self width / 2 */
 	background-color: #EB7121;
-	border-radius: 10px;
+	border-radius: 2px;
 }
 ._containerAttitude  .aircraftContainer .leftUpLine{
 	position: absolute;
@@ -406,7 +454,7 @@ export default {
 	width: 7px;
 	height: calc(18px + 8px); /* centerline top + centerline height */
 	background-color: #EB7121;
-	border-radius: 10px;
+	border-radius: 2px;
 }
 ._containerAttitude  .aircraftContainer .rightUpLine{
 	position: absolute;
@@ -415,9 +463,27 @@ export default {
 	width: 7px;
 	height: calc(18px + 8px); /* centerline top + centerline height */
 	background-color: #EB7121;
-	border-radius: 10px;
+	border-radius: 2px;
 }
-._containerAttitude  .aircraftContainer .centerBottomLine{}
+._containerAttitude  .aircraftContainer .pointLine{
+	position: absolute;
+	top: calc(50% - 2px);
+	left: calc(50% - 3px); /* self width / 2 */
+	width: 7px;
+	height: 24px;
+	background-color: #EB7121;
+	border-radius: 3px;
+}
+._containerAttitude  .aircraftContainer .pointCircle{
+	position: absolute;
+	top: calc(50% - 2px);
+	left: calc(50% - 3px); /* self width / 2 */
+	width: 7px;
+	height: 8px;
+	background-color: yellow;
+	border-radius: 2px;
+}
+
 
 
 .anim{
