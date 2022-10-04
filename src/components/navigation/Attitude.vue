@@ -1,7 +1,7 @@
 <template>
 	<div class="_containerAttitude">
 		<div class="_block_title">
-			<span>ATTUTIDE</span>
+			<span>ATTITUDE</span>
 		</div>
 
 		<div class="_content">
