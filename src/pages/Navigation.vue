@@ -2,6 +2,7 @@
 	<div class="_containerNavigation">
 		<div class="row">
 			<div class="col-xs-3" data-aos="fade">
+				<Connection :minimal="true" />
 				<Veloctiy />
 			</div>
 			<div class="col-xs-6" data-aos="fade" data-aos-delay='50'>
@@ -21,13 +22,15 @@ import Map from '@/components/navigation/Map.vue';
 import Veloctiy from '../components/navigation/Veloctiy.vue';
 import Compass from '@/components/navigation/Compass.vue';
 import Attitude from '@/components/navigation/Attitude.vue';
+import Connection from '@/components/common/Connection.vue';
 
 export default {
 	components: {
     Map,
     Veloctiy,
     Compass,
-    Attitude
+    Attitude,
+	Connection
 },
 	mounted() {
 		AOS.init({once: false})

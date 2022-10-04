@@ -1,58 +1,74 @@
 <template>
 	<div class="_containerConnection">
-		<div class="_block_title">
+		
+		<div class="_block_title" v-if="!minimal"> 
 			<span>CONNECTION</span>
 		</div>
+
 		<div class="_content">
-			
-			<div class="_category">
-				<div class="title">Socket:</div>
-				<div class="data"
-					:class="{_success: $store.getters.socketConnected, _error: !$store.getters.socketConnected}">
-					{{ $store.getters.socketConnected ? 'Connected' : 'Disconnected' }}
+
+			<div v-if="minimal">
+
+				<div class="_category" style="justify-content: flex-start;">
+					<div style="margin-right: 12px; margin-top: 6px; margin-bottom: 6px" class="data" :class="{_success: $store.getters.socketConnected, _error: !$store.getters.socketConnected}">Socket</div>
+					<div style="margin-right: 12px; margin-top: 6px; margin-bottom: 6px" class="data" :class="{_success: $store.getters.mapServerConnected, _error: !$store.getters.mapServerConnected}">Map</div>
+					<div style="margin-right: 12px; margin-top: 6px; margin-bottom: 6px" class="data" :class="{ _disabled: !$store.getters.socketConnected, _success: $store.getters.rosbridgeStatus == 'connected', _error: $store.getters.rosbridgeStatus == 'disconnected', _unknown: $store.getters.rosbridgeStatus == 'unknown'}">ROS Bridge</div>
 				</div>
-			</div>
-			
-			<div class="_category">
-				<div class="title">Map Server:</div>
-				<div class="data"
-					:class="{_success: $store.getters.mapServerConnected, _error: !$store.getters.mapServerConnected}">
-					{{ $store.getters.mapServerConnected ? 'Connected' : 'Disconnected' }}
-				</div>
-			</div>
-			
-			<div class="_category">
-				<div class="title">ROS Bridge:</div>
-				<div class="data"
-					:class="{
-						_disabled: !$store.getters.socketConnected,
-						_success: $store.getters.rosbridgeStatus == 'connected',
-						_error: $store.getters.rosbridgeStatus == 'disconnected',
-						_unknown: $store.getters.rosbridgeStatus == 'unknown'
-					}">
-					{{ $store.getters.rosbridgeStatus == 'disconnected' ? 'Disconnected' : null }}
-					{{ $store.getters.rosbridgeStatus == 'connected' ? 'Connected' : null }}
-					{{ $store.getters.rosbridgeStatus == 'unknown' ? 'Unknown' : null }}
-				</div>
-			</div>
-			
-			<div class="_category">
-				<div class="title">Socket IP:</div>
-				<div v-if="!ipChangeEnable" class="data clickable" @click="changeIP"
-					:class="{_disabled: !$store.getters.socketConnected}">
-					{{ socketIP }}
-				</div>
-				<div v-if="ipChangeEnable" class="data">
-					<!-- Input -->
-					<input @keyup.enter="changeIP" ref="input" v-model="localSocketIP" type="text" placeholder="Socket IP" class="ipInput">
-				</div>
+				
 			</div>
 
-			<div class="_category _float _buttons">
-				<div v-if="$store.getters.socketConnected" class="link error" @click="disconnect">Disconnect</div>
-				<div v-if="!$store.getters.socketConnected" class="link success" @click="connect">Connect</div>
-				<div class="link" @click="changeIP">{{ ipChangeEnable ? "Done" : "Change IP" }}</div>
-			</div>
+			<div v-if="!minimal">
+			
+				<div class="_category">
+					<div class="title">Socket:</div>
+					<div class="data"
+						:class="{_success: $store.getters.socketConnected, _error: !$store.getters.socketConnected}">
+						{{ $store.getters.socketConnected ? 'Connected' : 'Disconnected' }}
+					</div>
+				</div>
+				
+				<div class="_category">
+					<div class="title">Map Server:</div>
+					<div class="data"
+						:class="{_success: $store.getters.mapServerConnected, _error: !$store.getters.mapServerConnected}">
+						{{ $store.getters.mapServerConnected ? 'Connected' : 'Disconnected' }}
+					</div>
+				</div>
+				
+				<div class="_category">
+					<div class="title">ROS Bridge:</div>
+					<div class="data"
+						:class="{
+							_disabled: !$store.getters.socketConnected,
+							_success: $store.getters.rosbridgeStatus == 'connected',
+							_error: $store.getters.rosbridgeStatus == 'disconnected',
+							_unknown: $store.getters.rosbridgeStatus == 'unknown'
+						}">
+						{{ $store.getters.rosbridgeStatus == 'disconnected' ? 'Disconnected' : null }}
+						{{ $store.getters.rosbridgeStatus == 'connected' ? 'Connected' : null }}
+						{{ $store.getters.rosbridgeStatus == 'unknown' ? 'Unknown' : null }}
+					</div>
+				</div>
+				
+				<div class="_category">
+					<div class="title">Socket IP:</div>
+					<div v-if="!ipChangeEnable" class="data clickable" @click="changeIP"
+						:class="{_disabled: !$store.getters.socketConnected}">
+						{{ socketIP }}
+					</div>
+					<div v-if="ipChangeEnable" class="data">
+						<!-- Input -->
+						<input @keyup.enter="changeIP" ref="input" v-model="localSocketIP" type="text" placeholder="Socket IP" class="ipInput">
+					</div>
+				</div>
+
+				<div class="_category _float _buttons">
+					<div v-if="$store.getters.socketConnected" class="link error" @click="disconnect">Disconnect</div>
+					<div v-if="!$store.getters.socketConnected" class="link success" @click="connect">Connect</div>
+					<div class="link" @click="changeIP">{{ ipChangeEnable ? "Done" : "Change IP" }}</div>
+				</div>
+
+				</div>
 			
 		</div>
 	</div>
@@ -61,6 +77,12 @@
 <script>
 export default {
 	name: 'Connection',
+	props: {
+		minimal: {
+			type: Boolean,
+			default: false
+		}
+	},
 	data() {
 		return {
 			ipChangeEnable: false,
