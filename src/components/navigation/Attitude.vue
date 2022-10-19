@@ -152,13 +152,17 @@ export default {
 	flex-direction: column;
 }
 ._containerAttitude .outline{
-	width: 90%;
+	width: 100%;
 	aspect-ratio: 1;
 	border-radius: 1000px;
 	position: relative;
 	overflow: hidden;
-	/* border: 1px solid white; */
 }
+/* ._containerAttitude .outline:after {
+	content: "";
+	display: block;
+	padding-bottom: 100%;
+} */
 
 /* ---------------- Bank Scale ---------------- */
 ._containerAttitude .bankScale{

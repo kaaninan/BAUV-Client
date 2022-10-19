@@ -110,33 +110,29 @@ export default {
 	border-left: 12px solid transparent;
 	border-right: 12px solid transparent;
 	border-top: 20px solid #31FD00;
-	/* position: absolute; */
-	/* top: 0; */
-	/* left: 50%; */
-	/* transform: translateX(-50%); */
 }
 ._containerCompass .outline{
-	width: 90%;
-	aspect-ratio: 1;
+	width: 100%;
 	border-radius: 1000px;
-	/* transform: rotate(-10deg); */
-	/* background-color: transparent; */
-	/* background-color: blue; */
-	/* border: 1px solid white; */
-	/* border: 30px solid white; */
 	position: relative;
 	transition: all 1s ease-in-out;
 }
+._containerCompass .outline:after {
+	content: "";
+	display: block;
+	padding-bottom: 100%;
+}
 ._containerCompass .outline2{
-	width: 90%;
-	aspect-ratio: 1;
+	width: 100%;
+	/* aspect-ratio: 1; */
 	border-radius: 1000px;
 	transform: rotate(45deg);
-	/* background-color: transparent; */
-	/* background-color: blue; */
-	/* border: 1px solid white; */
-	/* border: 30px solid white; */
 	position: absolute;
+}
+._containerCompass .outline2:after {
+	content: "";
+	display: block;
+	padding-bottom: 100%;
 }
 ._containerCompass .angles{
 	position: absolute;
@@ -145,11 +141,8 @@ export default {
 	right: 15px;
 	bottom: 15px;
 	border-radius: 1000px;
-	/* background-color: red; */
 	background-color: transparent;
 	z-index: 2;
-	/* border: 30px solid red; */
-	/* border: 2px solid red; */
 }
 ._containerCompass .angleItem{
 	position: absolute;
@@ -170,7 +163,6 @@ export default {
 	border-radius: 1000px;
 	background-color: transparent;
 	z-index: 2;
-	/* border: 1px solid red; */
 }
 ._containerCompass .linesLong{
 	position: absolute;
@@ -181,7 +173,6 @@ export default {
 	border-radius: 1000px;
 	background-color: transparent;
 	z-index: 2;
-	/* border: 1px solid blue; */
 }
 ._containerCompass .lineItem{
 	position: absolute;
@@ -205,7 +196,6 @@ export default {
 	bottom: 75px;
 	border-radius: 1000px;
 	background-color: transparent;
-	/* border: 1px solid blue; */
 }
 
 ._containerCompass .directionItem{
@@ -217,7 +207,6 @@ export default {
 	align-items: center;
 	font-size: 1.5rem;
 	border-radius: 5px;
-	/* border: 1px solid green; */
 }
 ._containerCompass .directionItemSmall{
 	position: absolute;
@@ -228,7 +217,6 @@ export default {
 	align-items: center;
 	font-size: 1rem;
 	border-radius: 5px;
-	/* border: 1px solid green; */
 }
 
 ._containerCompass .borderBack{
@@ -244,7 +232,6 @@ export default {
 }
 
 ._containerCompass .headingContainer{
-	/* background-color: red; */
 	position: absolute;
 	top: 50%;
 	left: 50%;
