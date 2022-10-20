@@ -48,6 +48,9 @@ const store = createStore({
 	actions: {
 		// initialize socket
 		initSocket({commit, state}, payload) {
+
+			// temp
+			let lastsend = 0;
 			
 			if(state.socket != null) { return; }
 			
@@ -105,11 +108,15 @@ const store = createStore({
 			}).on('orientation_rate', (rate) => {
 				state.orientation_rate = rate;
 			}).on('/imu_data', (data) => {
-				commit('createLog', {
-					type: 'info',
-					message: data,
-					date: new Date(),
-				})
+				// Send one commit per second from Date
+				if(Date.now() - lastsend > 1000) {
+					commit('createLog', {
+						type: 'info',
+						message: data,
+						date: new Date(),
+					})
+					lastsend = Date.now();
+				}
 				// console.log(data)
 			}).on('/subscribed_topics', (data) => {
 				console.log(data)
