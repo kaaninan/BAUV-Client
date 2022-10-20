@@ -105,6 +105,11 @@ const store = createStore({
 			}).on('orientation_rate', (rate) => {
 				state.orientation_rate = rate;
 			}).on('/imu_data', (data) => {
+				commit('createLog', {
+					type: 'info',
+					message: data,
+					date: new Date(),
+				})
 				// console.log(data)
 			}).on('/subscribed_topics', (data) => {
 				console.log(data)
