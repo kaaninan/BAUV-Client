@@ -16,20 +16,6 @@ export default {
 
 	mounted(){
 
-		// Check connection
-		fetch('http://' + this.$store.state.mapServerIP + ':' + this.$store.state.mapServerPort)
-			.then(response => {
-				return this.$store.commit('setMapServerConnected', true)
-			})
-			.catch(error => {
-				this.$store.commit('createLog', {
-					type: 'error',
-					message: 'Map server - Connection fail: ' + this.$store.state.mapServerIP + ':' + this.$store.state.mapServerPort,
-					date: new Date(),
-				});
-				return this.$store.commit('setMapServerConnected', false)
-			})
-
 		// Create map
 		const map = new maplibregl.Map({
 			container: 'map',

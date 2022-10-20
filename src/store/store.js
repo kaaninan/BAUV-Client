@@ -24,6 +24,8 @@ const store = createStore({
 			absolute_linear_velocity: {vx: 0, vy: 0, vz: 0},
 			relative_linear_velocity: {vx: 0, vy: 0, vz: 0},
 			orientation_rate: {roll: 0, pitch: 0, yaw: 0},
+
+			subscribedTopics: [],
 		}
 	},
 	mutations: {
@@ -46,6 +48,8 @@ const store = createStore({
 	actions: {
 		// initialize socket
 		initSocket({commit, state}, payload) {
+			
+			if(state.socket != null) { return; }
 			
 			state.socket = io(state.socketIP, {
 				path: '/bridge',
@@ -100,6 +104,11 @@ const store = createStore({
 				state.relative_linear_velocity = velocity;
 			}).on('orientation_rate', (rate) => {
 				state.orientation_rate = rate;
+			}).on('/imu_data', (data) => {
+				// console.log(data)
+			}).on('/subscribed_topics', (data) => {
+				console.log(data)
+				state.subscribedTopics = data;
 			})
 		},
 
@@ -110,13 +119,19 @@ const store = createStore({
 
 		// disconnect from socket
 		disconnectSocket({commit, state}) {
+			console.log(state.socket)
 			state.socket.disconnect();
+			state.socket = null
 		},
 
 		// send message to socket
 		sendMessage({commit, state}, payload) {
-			console.log('sendMessage', payload);
-			state.socket.emit(payload.event, payload.data);
+			if(state.connected){
+				console.log('sendMessage', payload);
+				state.socket.emit(payload.event, payload.data);
+			}else{
+				console.log("Socket not connected");
+			}
 		}
 	},
 	getters: {
@@ -146,6 +161,9 @@ const store = createStore({
 		},
 		orientation_rate: (state) => {
 			return state.orientation_rate
+		},
+		subscribedTopics: (state) => {
+			return state.subscribedTopics
 		}
 	}
 })

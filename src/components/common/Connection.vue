@@ -66,9 +66,21 @@
 					<div v-if="$store.getters.socketConnected" class="link error" @click="disconnect">Disconnect</div>
 					<div v-if="!$store.getters.socketConnected" class="link success" @click="connect">Connect</div>
 					<div class="link" @click="changeIP">{{ ipChangeEnable ? "Done" : "Change IP" }}</div>
+					<div class="link" @click="subscribe">Sub</div>
+					<div class="link" @click="connectRosbridge">Connect RosBridge</div>
+					<div class="link" @click="disconnectRosbridge">Disconnect Rosbridge</div>
 				</div>
 
+				<br>
+				SUBSCRIBED TOPICS:
+				<div class="_category">
+					<div class="title">Topics:</div>
+					<div class="data" v-if="$store.getters.socketConnected">
+						{{ $store.getters.subscribedTopics }}
+					</div>
 				</div>
+
+			</div>
 			
 		</div>
 	</div>
@@ -120,7 +132,16 @@ export default {
 		connect() {
 			this.$store.dispatch('initSocket')
 			this.$store.dispatch('connectSocket')
-		}
+		},
+		subscribe() {
+			this.$store.dispatch('sendMessage', {event: 'SUBSCRIBE'})
+		},
+		connectRosbridge() {
+			this.$store.dispatch('sendMessage', {event: 'ROSBRIDGE_CONNECT'})
+		},
+		disconnectRosbridge() {
+			this.$store.dispatch('sendMessage', {event: 'ROSBRIDGE_DISCONNECT'})
+		},
 	}
 }
 </script>
