@@ -79,10 +79,12 @@ export default {
 		}
 	},
 	mounted() {
-		this.interval = setInterval(() => {
-			this.heading = parseInt(Math.random() * 360);
-			document.querySelector('._containerCompass ._content .outline').style.transform = 'rotate(' + -this.heading + 'deg)';
-		}, 2000);
+		this.heading = 63
+		document.querySelector('._containerCompass ._content .outline').style.transform = 'rotate(' + -this.heading + 'deg)';
+		// this.interval = setInterval(() => {
+			// this.heading = parseInt(Math.random() * 360);
+		// 	document.querySelector('._containerCompass ._content .outline').style.transform = 'rotate(' + -this.heading + 'deg)';
+		// }, 2000);
 	},
 	unmounted() {
 		clearInterval(this.interval);
@@ -97,6 +99,7 @@ export default {
 	background-color: var(--block-background-color);
 	border: 1px solid var(--border-color);
 	position: relative;
+	margin-bottom: var(--block-margin);
 }
 ._containerCompass ._content{
 	padding: 20px 20px;
@@ -151,7 +154,7 @@ export default {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 0.99rem;
+	font-size: 0.8rem;
 }
 
 ._containerCompass .linesShort{
@@ -205,7 +208,7 @@ export default {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 1.5rem;
+	font-size: 1rem;
 	border-radius: 5px;
 }
 ._containerCompass .directionItemSmall{
@@ -244,7 +247,7 @@ export default {
 	text-align: center;
 	font-weight: 600;
 	color: greenyellow;
-	font-size: 1.5rem;
+	font-size: .9rem;
 }
 
 </style>

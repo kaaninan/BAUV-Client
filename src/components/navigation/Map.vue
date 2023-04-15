@@ -3,7 +3,35 @@
 		<div class="_block_title">
 			<span>MAP</span>
 		</div>
-		<div id="map" style="height: 500px"></div>
+		<div id="map" style="height: 1170px"></div>
+		
+		<div class="floatTopLeft">
+			<div class="floatItem">
+				<div class="floatItemText">HEADING 63°</div>
+				<div class="floatItemText">DEPTH 10 m</div>
+				<div class="floatItemText">ALTITUDE 10 m</div>
+				<div class="floatItemText">ROLL 14° - PITCH -2°</div>
+				<div class="floatItemText">SEAFLOOR VEL. 5 m/s</div>
+				<div class="floatItemText">BODY VEL. 8 m/s</div>
+			</div>
+		</div>
+
+		<div class="floatBottomLeft">
+			<div class="floatItem">
+				<div class="floatItemText">LAT 41° - LON 28°</div>
+				<div class="floatItemText">NORTH 10 m - EAST 20 m</div>
+				<div class="floatItemText">ROLL RATE 1.2 °/s</div>
+				<div class="floatItemText">PITCH RATE 0.5 °/s</div>
+			</div>
+		</div>
+
+		<div class="floatBottomRight">
+			<div class="floatItem">
+				<div class="floatItemText">DATE 15-04-23</div>
+				<div class="floatItemText">LOCAL TIME 12:00:00</div>
+				<div class="floatItemText">MISSION TIME 00:10:12</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -768,10 +796,44 @@ export default {
 
 ._containerMap{
 	width: 100%;
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	border: 1px solid var(--border-color);
 	background-color: var(--block-background-color);
+}
+
+.floatTopLeft{
+	background-color: var(--block-background-color);
+	padding: 12px;
+	position: absolute;
+	top: 80px;
+	right: 80px;
+	z-index: 1000;
+	color: black;
+}
+
+.floatBottomLeft{
+	background-color: var(--block-background-color);
+	padding: 12px;
+	position: absolute;
+	bottom: 80px;
+	right: 80px;
+	z-index: 1000;
+	color: black;
+}
+.floatBottomRight{
+	background-color: var(--block-background-color);
+	padding: 12px;
+	position: absolute;
+	bottom: 80px;
+	left: 80px;
+	z-index: 1000;
+	color: black;
+}
+
+.floatItemText{
+	padding: 5px 0;
 }
 
 </style>

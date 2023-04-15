@@ -86,3 +86,7 @@ To run the docker image, run:
 ```bash
 docker run -d -p 8080:8080 bauv-client
 ```
+
+# Notes
+
+- ROS Camera Stream: https://www.theconstructsim.com/developing-web-interfaces-for-ros-robots-4-streaming-robots-camera-on-the-web-page/
