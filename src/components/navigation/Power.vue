@@ -5,7 +5,6 @@
 		</div>
 
 		<div class="_content">
-
 			<div class="_category">
 				<div class="title">Current Power:</div>
 				<div class="data">2.1 W</div>
@@ -18,27 +17,26 @@
 				<div class="title">Endurance:</div>
 				<div class="data">-</div>
 			</div>
-
 		</div>
 	</div>
 </template>
 
 <script>
 export default {
-	name: 'Power',
+	name: 'Power'
 }
 </script>
 
 <style scoped>
 @import url('@/assets/styles/variables.css');
 
-._containerPower{
+._containerPower {
 	background-color: var(--block-background-color);
 	border: 1px solid var(--border-color);
 	position: relative;
 	margin-bottom: var(--block-margin);
 }
-._containerPower ._content{
+._containerPower ._content {
 	padding: 20px 20px;
 	display: flex;
 	/* justify-content: center;
@@ -46,7 +44,7 @@ export default {
 	flex-direction: column;
 }
 
-._containerPower ._content ._category{
+._containerPower ._content ._category {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -54,21 +52,21 @@ export default {
 	min-height: 30px;
 	/* border: 1px solid red; */
 }
-._containerPower ._content ._float{
+._containerPower ._content ._float {
 	height: auto;
 }
-._containerPower ._content ._category .title{
+._containerPower ._content ._category .title {
 	opacity: 0.7;
 	font-size: 15px;
 	white-space: nowrap;
 	margin: 10px 0;
 	margin-right: 10px;
 }
-._containerPower ._content ._category .data{
+._containerPower ._content ._category .data {
 	transition: all 0.3s ease-in-out;
 	font-size: 15px;
 }
-._containerPower ._content ._category .data .ipInput{
+._containerPower ._content ._category .data .ipInput {
 	background-color: var(--block-background-color);
 	color: white;
 	font-family: var(--font-family);
@@ -77,6 +75,4 @@ export default {
 	border-radius: 5px;
 	padding: 4px;
 }
-
-
 </style>

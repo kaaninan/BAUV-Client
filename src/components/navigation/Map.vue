@@ -3,8 +3,8 @@
 		<div class="_block_title">
 			<span>MAP</span>
 		</div>
-		<div id="map" style="height: 1170px"></div>
-		
+		<div id="map" style="height: 1170px" />
+
 		<div class="floatTopLeft">
 			<div class="floatItem">
 				<div class="floatItemText">HEADING 63°</div>
@@ -36,29 +36,34 @@
 </template>
 
 <script>
-
-import maplibregl from 'maplibre-gl';
+import maplibregl from 'maplibre-gl'
 
 export default {
 	name: 'App',
 
-	mounted(){
-
+	mounted() {
 		// Create map
 		const map = new maplibregl.Map({
 			container: 'map',
 			style: 'map.json',
 			center: [29.00875, 41.04182],
 			zoom: 12
-		});
+		})
 
-		map.loadImage('http://' + this.$store.state.mapServerIP + ':' + this.$store.state.mapServerPortSVG + '/static/png/NChart-Symbol_INT_Lighted_BarrelBuoy_Green.png', function(error, image) {
-			if (error) throw error;
-			if (!map.hasImage('NChart-Symbol_INT_Light')) map.addImage('NChart-Symbol_INT_Light', image);
-		});
+		map.loadImage(
+			'http://' +
+				this.$store.state.mapServerIP +
+				':' +
+				this.$store.state.mapServerPortSVG +
+				'/static/png/NChart-Symbol_INT_Lighted_BarrelBuoy_Green.png',
+			function (error, image) {
+				if (error) throw error
+				if (!map.hasImage('NChart-Symbol_INT_Light'))
+					map.addImage('NChart-Symbol_INT_Light', image)
+			}
+		)
 
 		map.on('load', () => {
-
 			// map.addSource('rastertile', {
 			// 	'type': 'raster',
 			// 	'tiles': [
@@ -577,13 +582,24 @@ export default {
 			// 	"paint": {}
 			// })
 
-			if(true){
-				console.log('http://'+this.$store.state.mapServerIP + ':' + this.$store.state.mapServerPort+'/data/TR402921.json')
+			// eslint-disable-next-line no-constant-condition
+			if (true) {
+				console.log(
+					'http://' +
+						this.$store.state.mapServerIP +
+						':' +
+						this.$store.state.mapServerPort +
+						'/data/TR402921.json'
+				)
 				map.addSource('TR402921', {
 					type: 'vector',
-					url: 'http://'+this.$store.state.mapServerIP + ':' + this.$store.state.mapServerPort+'/data/TR402921.json',
-				});
-
+					url:
+						'http://' +
+						this.$store.state.mapServerIP +
+						':' +
+						this.$store.state.mapServerPort +
+						'/data/TR402921.json'
+				})
 
 				// map.addLayer({
 				// 	"id": "ROADWY",
@@ -593,86 +609,89 @@ export default {
 				// 	"layout": {},
 				// 	"paint": {"line-color": "#bb9a45"}
 				// });
-				
+
 				map.addLayer({
-					"id": "LNDARE",
-					"type": "fill",
-					"source": "TR402921",
-					"source-layer": "LNDARE",
-					"paint": {"fill-color": "hsl(35, 100%, 66%)", "fill-opacity": 0.3}
-				});
-				
+					id: 'LNDARE',
+					type: 'fill',
+					source: 'TR402921',
+					'source-layer': 'LNDARE',
+					paint: {
+						'fill-color': 'hsl(35, 100%, 66%)',
+						'fill-opacity': 0.3
+					}
+				})
+
 				map.addLayer({
-					"id": "DEPARE",
-					"type": "fill",
-					"source": "TR402921",
-					"source-layer": "DEPARE",
-					"layout": {},
-					"paint": {
-						"fill-color": [
-							"interpolate",
-							["linear"],
-							["get", "DRVAL1"],
+					id: 'DEPARE',
+					type: 'fill',
+					source: 'TR402921',
+					'source-layer': 'DEPARE',
+					layout: {},
+					paint: {
+						'fill-color': [
+							'interpolate',
+							['linear'],
+							['get', 'DRVAL1'],
 							0,
-							"#d3beb3",
+							'#d3beb3',
 							3,
-							"#dbe9f6",
+							'#dbe9f6',
 							5,
-							"#bed7ec",
+							'#bed7ec',
 							10,
-							"#8ec1dd",
+							'#8ec1dd',
 							20,
-							"#5aa2cf",
+							'#5aa2cf',
 							30,
-							"#3181bd",
+							'#3181bd',
 							50,
-							"#105ca4",
+							'#105ca4',
 							100,
-							"#08306b"
+							'#08306b'
 						]
 					}
-				});
-				
-				map.addLayer({
-					"id": "LIGHTS",
-					"type": "symbol",
-					"source": "TR402921",
-					"source-layer": "LIGHTS",
-					"layout": {
-						"icon-image": "NChart-Symbol_INT_Light",
-						"icon-size": 0.12,
-						"icon-allow-overlap": true
-					},
-				});
-				
-				map.addLayer({
-					"id": "SOUNDG",
-					"type": "symbol",
-					"source": "TR402921",
-					"source-layer": "SOUNDG",
-					"layout": {
-						"text-field": ["to-string", ["get", "DEPTH"]],
-						"text-size": 11,
-					},
-					"paint": {}
 				})
-				
+
 				map.addLayer({
-					"id": "BRIDGE",
-					"type": "line",
-					"source": "TR402921",
-					"source-layer": "BRIDGE",
-					"layout": {},
-					"paint": {"line-color": "#677679", "line-width": 2}
+					id: 'LIGHTS',
+					type: 'symbol',
+					source: 'TR402921',
+					'source-layer': 'LIGHTS',
+					layout: {
+						'icon-image': 'NChart-Symbol_INT_Light',
+						'icon-size': 0.12,
+						'icon-allow-overlap': true
+					}
 				})
-				
+
 				map.addLayer({
-					"id": "buaare-1a5c44",
-					"type": "fill",
-					"source": "TR402921",
-					"source-layer": "BUAARE",
-					"layout": {},
-					"paint": {"fill-color": "#B19139", "fill-opacity": 0.2}
+					id: 'SOUNDG',
+					type: 'symbol',
+					source: 'TR402921',
+					'source-layer': 'SOUNDG',
+					layout: {
+						'text-field': ['to-string', ['get', 'DEPTH']],
+						'text-size': 11
+					},
+					paint: {}
+				})
+
+				map.addLayer({
+					id: 'BRIDGE',
+					type: 'line',
+					source: 'TR402921',
+					'source-layer': 'BRIDGE',
+					layout: {},
+					paint: { 'line-color': '#677679', 'line-width': 2 }
+				})
+
+				map.addLayer({
+					id: 'buaare-1a5c44',
+					type: 'fill',
+					source: 'TR402921',
+					'source-layer': 'BUAARE',
+					layout: {},
+					paint: { 'fill-color': '#B19139', 'fill-opacity': 0.2 }
 				})
 
 				// {
@@ -759,7 +778,7 @@ export default {
 				// 		"line-dasharray": [2, 3]
 				// 	}
 				// },
-				
+
 				// {
 				// 	"id": "boycar-3iwq2s",
 				// 	"type": "symbol",
@@ -783,18 +802,14 @@ export default {
 				// 	},
 				// 	"paint": {}
 				// },
-				
-				
 			}
-
-		});
+		})
 	}
 }
 </script>
 
 <style scoped>
-
-._containerMap{
+._containerMap {
 	width: 100%;
 	position: relative;
 	display: flex;
@@ -803,37 +818,36 @@ export default {
 	background-color: var(--block-background-color);
 }
 
-.floatTopLeft{
-	background-color: var(--block-background-color);
+.floatTopLeft {
+	background-color: rgba(0, 0, 0, 0.6);
 	padding: 12px;
 	position: absolute;
 	top: 80px;
 	right: 80px;
 	z-index: 1000;
-	color: black;
+	color: white;
 }
 
-.floatBottomLeft{
-	background-color: var(--block-background-color);
+.floatBottomLeft {
+	background-color: rgba(0, 0, 0, 0.6);
 	padding: 12px;
 	position: absolute;
 	bottom: 80px;
 	right: 80px;
 	z-index: 1000;
-	color: black;
+	color: white;
 }
-.floatBottomRight{
-	background-color: var(--block-background-color);
+.floatBottomRight {
+	background-color: rgba(0, 0, 0, 0.6);
 	padding: 12px;
 	position: absolute;
 	bottom: 80px;
 	left: 80px;
 	z-index: 1000;
-	color: black;
+	color: white;
 }
 
-.floatItemText{
+.floatItemText {
 	padding: 5px 0;
 }
-
 </style>

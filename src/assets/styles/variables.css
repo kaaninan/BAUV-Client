@@ -1,8 +1,8 @@
 :root {
 	--font-family: 'Barlow', sans-serif;
 	--min-width: 1150px;
-	--border-color: #7D8E9B;
-	--active-color: #F7D55D;
+	--border-color: #7d8e9b;
+	--active-color: #f7d55d;
 	--header-height: 80px;
 	--screen-padding: 3%;
 	--block-background-color: rgba(0, 0, 0, 0.2);
@@ -10,30 +10,30 @@
 	/* --primary-color: #333a4b; */
 }
 
-._block_title{
+._block_title {
 	display: flex;
 	justify-content: space-between;
 	color: white;
 	/* color: #F0D661; */
-	border-bottom: 1px solid #7D8E9B;
+	border-bottom: 1px solid #7d8e9b;
 	font-size: 22px;
 	letter-spacing: 0.1em;
 }
 
-._block_title span{
+._block_title span {
 	display: flex;
 	padding: 10px 20px;
 }
 
-._block_title_right{
+._block_title_right {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
-	transition: all .1s ease-in-out;
+	transition: all 0.1s ease-in-out;
 	padding: 10px 20px;
 }
 
-._block_title_right:hover{
+._block_title_right:hover {
 	opacity: 0.6;
 }

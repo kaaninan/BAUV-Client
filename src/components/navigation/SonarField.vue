@@ -5,15 +5,13 @@
 </template>
 
 <script>
-
 export default {
 	name: 'SonarField'
 }
 </script>
 
 <style scoped>
-
-._containerMonoVideoField{
+._containerMonoVideoField {
 	width: 100%;
 	position: relative;
 	display: flex;
@@ -21,6 +19,4 @@ export default {
 	border: 1px solid var(--border-color);
 	background-color: var(--block-background-color);
 }
-
-
 </style>

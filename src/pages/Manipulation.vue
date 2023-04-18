@@ -1,13 +1,7 @@
-<template>
-  Mission
-</template>
+<template>Manuplation</template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>
 
-<style>
-
-</style>
+<style></style>

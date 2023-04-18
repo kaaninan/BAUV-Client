@@ -1,49 +1,17 @@
 # BAUV Client
 
+![docker-image](https://github.com/kaaninan/bauv-client/actions/workflows/docker-image.yml/badge.svg)
+
 This is the client for the BAUV project. It is a web application that allows users to view and interact with the data collected by the BAUV-Server.
 
 ## Pre-requisites
 
-- BAUV-Maps (Docker Image)
-- Node.js 16 or Docker
+-   [BAUV-Maps (Docker Image)](https://github.com/kaaninan/BAUV-Maps/blob/master/USAGE.md)
+-   Node.js 16 or Docker
 
-## 1. BAUV-Maps Installation
+## BAUV-Client Installation
 
-Go to the [BAUV-Maps Releases](https://github.com/kaaninan/BAUV-Maps/releases) repository and download the latest release (.tar.gz file).
-
-Run following command to load the image:
-
-```bash
-docker load < mapserver.tar.gz
-```
-
-Run following command to start the container:
-
-```bash
-docker run -d -p 8000:8000 -p 8001:8001 --restart always mapserver
-```
-
-All running containers can be seen with following command:
-
-```bash
-docker ps -a
-```
-
-To see the logs of the container, run following command:
-
-```bash
-docker logs -f CONTAINER_ID
-```
-
-Kill the container with following command:
-
-```bash
-docker rm -f CONTAINER_ID
-```
-
-## 2. BAUV-Client Installation
-
-### Option 1: Standalone (without Docker)
+### Option 1: Standalone
 
 #### Installation
 
@@ -53,25 +21,26 @@ To install the dependencies, run:
 npm install
 ```
 
-#### Running
+#### Debugging
 
-To run the application, run:
+To run the debug application, run:
 
 ```bash
 npm run serve
 ```
 
-#### Building
+#### Production
 
-To build the application, run:
+To run the production application, run:
 
 ```bash
 npm run build
+npm run prod
 ```
 
 ### Option 2: Run with Docker
 
-#### Building
+#### Option 2.1: Build Docker Image
 
 To build the docker image, run:
 
@@ -79,14 +48,30 @@ To build the docker image, run:
 docker build -t bauv-client .
 ```
 
+#### Option 2.2: Use Prebuilt Docker Image
+
+See: [Releases](https://github.com/kaaninan/BAUV-Client/releases)
+
+This release includes prebuild docker image. It could be used without building the docker image.
+
+**Step 1:** Download the release and extract it.
+
+**Step 2:** Import the docker image with the following command:
+
+```bash
+docker load < /path/to/exampleimage.tgz
+```
+
 #### Running
 
 To run the docker image, run:
 
 ```bash
-docker run -d -p 8080:8080 bauv-client
+docker run -d -p 5050:5050 bauv-client
 ```
+
+Open the application on `http://localhost:8080`
 
 # Notes
 
-- ROS Camera Stream: https://www.theconstructsim.com/developing-web-interfaces-for-ros-robots-4-streaming-robots-camera-on-the-web-page/
+-   ROS Camera Stream: https://www.theconstructsim.com/developing-web-interfaces-for-ros-robots-4-streaming-robots-camera-on-the-web-page/

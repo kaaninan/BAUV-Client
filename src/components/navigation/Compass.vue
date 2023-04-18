@@ -5,51 +5,90 @@
 		</div>
 
 		<div class="_content">
-
-			<div class="triangle"></div>
+			<div class="triangle" />
 
 			<div class="outline">
-				
 				<div class="angles">
 					<div v-for="(n, i) in 359" :key="i">
-						<div class="angleItem" v-if="i % 15 == 0" :style="{transform: 'rotate(' + i + 'deg)', top: calcTop(i, 15), left: calcLeft(i, 15)}">{{i}}</div>
+						<div
+							v-if="i % 15 == 0"
+							class="angleItem"
+							:style="{
+								transform: 'rotate(' + i + 'deg)',
+								top: calcTop(i, 15),
+								left: calcLeft(i, 15)
+							}"
+						>
+							{{ i }}
+						</div>
 					</div>
 				</div>
 
 				<div class="linesShort">
 					<div v-for="(n, i) in 359" :key="i">
-						<div class="lineItem short" v-if="i % 5 == 0 && i % 15 != 0" :style="{transform: 'rotate(' + i + 'deg)', top: calcTop(i, 5), left: calcLeft(i, .5)}"></div>
+						<div
+							v-if="i % 5 == 0 && i % 15 != 0"
+							class="lineItem short"
+							:style="{
+								transform: 'rotate(' + i + 'deg)',
+								top: calcTop(i, 5),
+								left: calcLeft(i, 0.5)
+							}"
+						/>
 					</div>
 				</div>
 
 				<div class="linesLong">
 					<div v-for="(n, i) in 359" :key="i">
-						<div class="lineItem long" v-if="i % 15 == 0" :style="{transform: 'rotate(' + i + 'deg)', top: calcTop(i, 10), left: calcLeft(i, .5)}"></div>
+						<div
+							v-if="i % 15 == 0"
+							class="lineItem long"
+							:style="{
+								transform: 'rotate(' + i + 'deg)',
+								top: calcTop(i, 10),
+								left: calcLeft(i, 0.5)
+							}"
+						/>
 					</div>
 				</div>
-				
+
 				<div class="directions">
 					<div v-for="(n, i) in directionsBig" :key="i">
-						<div class="directionItem" :style="{transform: 'rotate(' + n.degree + 'deg)', top: calcTop(n.degree, 10), left: calcLeft(n.degree, 20)}">{{n.name}}</div>
+						<div
+							class="directionItem"
+							:style="{
+								transform: 'rotate(' + n.degree + 'deg)',
+								top: calcTop(n.degree, 10),
+								left: calcLeft(n.degree, 20)
+							}"
+						>
+							{{ n.name }}
+						</div>
 					</div>
 				</div>
 				<div class="directions">
 					<div v-for="(n, i) in directionsSmall" :key="i">
-						<div class="directionItemSmall" :style="{transform: 'rotate(' + n.degree + 'deg)', top: calcTop(n.degree, 10), left: calcLeft(n.degree, 20)}">{{n.name}}</div>
+						<div
+							class="directionItemSmall"
+							:style="{
+								transform: 'rotate(' + n.degree + 'deg)',
+								top: calcTop(n.degree, 10),
+								left: calcLeft(n.degree, 20)
+							}"
+						>
+							{{ n.name }}
+						</div>
 					</div>
 				</div>
-				
-				<!-- <div class="borderBack"></div> -->
 
+				<!-- <div class="borderBack"></div> -->
 			</div>
 
 			<div class="outline2">
 				<div class="headingContainer">
-					<div class="headingText">Heading<br>{{heading}}</div>
+					<div class="headingText">Heading<br />{{ heading }}</div>
 				</div>
 			</div>
-
-
 		</div>
 	</div>
 </template>
@@ -59,35 +98,74 @@ export default {
 	name: 'Compass',
 	data() {
 		return {
-			directionsBig: [{degree: 0, name: 'N'}, {degree: 90, name: 'E'}, {degree: 180, name: 'S'}, {degree: 270, name: 'W'}],
-			directionsSmall: [{degree: 45, name: 'NE'}, {degree: 135, name: 'SE'}, {degree: 225, name: 'SW'}, {degree: 315, name: 'NW'}],
-			heading: 0,
-		}
-	},
-	methods: {
-		calcTop(i, diff) {
-			return 'calc(' + this.map(Math.sin(this.toRadians(this.map(i, 0, 90, 90, 0))), 0, 1, 50, 0) + '% - ' + diff + 'px)';
-		},
-		calcLeft(i, diff) {
-			return 'calc(' + this.map(Math.cos(this.toRadians(this.map(i, 0, 90, 90, 0))), 0, 1, 50, 100) + '% - ' + diff + 'px)';
-		},
-		map(x, in_min, in_max, out_min, out_max) {
-			return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-		},
-		toRadians (angle) {
-			return angle * (Math.PI / 180);
+			directionsBig: [
+				{ degree: 0, name: 'N' },
+				{ degree: 90, name: 'E' },
+				{ degree: 180, name: 'S' },
+				{ degree: 270, name: 'W' }
+			],
+			directionsSmall: [
+				{ degree: 45, name: 'NE' },
+				{ degree: 135, name: 'SE' },
+				{ degree: 225, name: 'SW' },
+				{ degree: 315, name: 'NW' }
+			],
+			heading: 0
 		}
 	},
 	mounted() {
 		this.heading = 63
-		document.querySelector('._containerCompass ._content .outline').style.transform = 'rotate(' + -this.heading + 'deg)';
+		document.querySelector(
+			'._containerCompass ._content .outline'
+		).style.transform = 'rotate(' + -this.heading + 'deg)'
 		// this.interval = setInterval(() => {
-			// this.heading = parseInt(Math.random() * 360);
+		// this.heading = parseInt(Math.random() * 360);
 		// 	document.querySelector('._containerCompass ._content .outline').style.transform = 'rotate(' + -this.heading + 'deg)';
 		// }, 2000);
 	},
 	unmounted() {
-		clearInterval(this.interval);
+		clearInterval(this.interval)
+	},
+	methods: {
+		calcTop(i, diff) {
+			return (
+				'calc(' +
+				this.map(
+					Math.sin(this.toRadians(this.map(i, 0, 90, 90, 0))),
+					0,
+					1,
+					50,
+					0
+				) +
+				'% - ' +
+				diff +
+				'px)'
+			)
+		},
+		calcLeft(i, diff) {
+			return (
+				'calc(' +
+				this.map(
+					Math.cos(this.toRadians(this.map(i, 0, 90, 90, 0))),
+					0,
+					1,
+					50,
+					100
+				) +
+				'% - ' +
+				diff +
+				'px)'
+			)
+		},
+		map(x, in_min, in_max, out_min, out_max) {
+			return (
+				((x - in_min) * (out_max - out_min)) / (in_max - in_min) +
+				out_min
+			)
+		},
+		toRadians(angle) {
+			return angle * (Math.PI / 180)
+		}
 	}
 }
 </script>
@@ -95,13 +173,13 @@ export default {
 <style scoped>
 @import url('@/assets/styles/variables.css');
 
-._containerCompass{
+._containerCompass {
 	background-color: var(--block-background-color);
 	border: 1px solid var(--border-color);
 	position: relative;
 	margin-bottom: var(--block-margin);
 }
-._containerCompass ._content{
+._containerCompass ._content {
 	padding: 20px 20px;
 	display: flex;
 	justify-content: center;
@@ -109,23 +187,23 @@ export default {
 	flex-direction: column;
 }
 
-._containerCompass .triangle{
+._containerCompass .triangle {
 	border-left: 12px solid transparent;
 	border-right: 12px solid transparent;
-	border-top: 20px solid #31FD00;
+	border-top: 20px solid #31fd00;
 }
-._containerCompass .outline{
+._containerCompass .outline {
 	width: 100%;
 	border-radius: 1000px;
 	position: relative;
 	transition: all 1s ease-in-out;
 }
 ._containerCompass .outline:after {
-	content: "";
+	content: '';
 	display: block;
 	padding-bottom: 100%;
 }
-._containerCompass .outline2{
+._containerCompass .outline2 {
 	width: 100%;
 	/* aspect-ratio: 1; */
 	border-radius: 1000px;
@@ -133,11 +211,11 @@ export default {
 	position: absolute;
 }
 ._containerCompass .outline2:after {
-	content: "";
+	content: '';
 	display: block;
 	padding-bottom: 100%;
 }
-._containerCompass .angles{
+._containerCompass .angles {
 	position: absolute;
 	top: 15px;
 	left: 15px;
@@ -147,7 +225,7 @@ export default {
 	background-color: transparent;
 	z-index: 2;
 }
-._containerCompass .angleItem{
+._containerCompass .angleItem {
 	position: absolute;
 	width: 30px;
 	height: 30px;
@@ -157,7 +235,7 @@ export default {
 	font-size: 0.8rem;
 }
 
-._containerCompass .linesShort{
+._containerCompass .linesShort {
 	position: absolute;
 	top: 50px;
 	left: 50px;
@@ -167,7 +245,7 @@ export default {
 	background-color: transparent;
 	z-index: 2;
 }
-._containerCompass .linesLong{
+._containerCompass .linesLong {
 	position: absolute;
 	top: 45px;
 	left: 45px;
@@ -177,7 +255,7 @@ export default {
 	background-color: transparent;
 	z-index: 2;
 }
-._containerCompass .lineItem{
+._containerCompass .lineItem {
 	position: absolute;
 	width: 1px;
 	background-color: white;
@@ -188,10 +266,14 @@ export default {
 	border-radius: 5px;
 }
 
-._containerCompass .long{ height: 20px }
-._containerCompass .short{ height: 10px }
+._containerCompass .long {
+	height: 20px;
+}
+._containerCompass .short {
+	height: 10px;
+}
 
-._containerCompass .directions{
+._containerCompass .directions {
 	position: absolute;
 	top: 75px;
 	left: 75px;
@@ -201,7 +283,7 @@ export default {
 	background-color: transparent;
 }
 
-._containerCompass .directionItem{
+._containerCompass .directionItem {
 	position: absolute;
 	width: 40px;
 	height: 20px;
@@ -211,7 +293,7 @@ export default {
 	font-size: 1rem;
 	border-radius: 5px;
 }
-._containerCompass .directionItemSmall{
+._containerCompass .directionItemSmall {
 	position: absolute;
 	width: 40px;
 	height: 20px;
@@ -222,7 +304,7 @@ export default {
 	border-radius: 5px;
 }
 
-._containerCompass .borderBack{
+._containerCompass .borderBack {
 	position: absolute;
 	top: 0px;
 	left: 0px;
@@ -234,7 +316,7 @@ export default {
 	z-index: 1;
 }
 
-._containerCompass .headingContainer{
+._containerCompass .headingContainer {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -247,7 +329,6 @@ export default {
 	text-align: center;
 	font-weight: 600;
 	color: greenyellow;
-	font-size: .9rem;
+	font-size: 0.9rem;
 }
-
 </style>

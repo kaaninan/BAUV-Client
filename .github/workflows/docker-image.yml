@@ -1,22 +1,18 @@
 name: Docker Image CI
 
 on:
-  push:
-    branches: [ "master" ]
+    workflow_dispatch:
 
 jobs:
+    build:
+        runs-on: ubuntu-latest
 
-  build:
+        steps:
+            - uses: actions/checkout@v3
+            - name: Build the Docker image
+              run: docker build -t bauv-client .
 
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build -t bauv-client .
-      
-    - name: Upload image
-      uses: ishworkh/docker-image-artifact-upload@v1
-      with:
-        image: "bauv-client:latest"
-
+            - name: Upload image
+              uses: ishworkh/docker-image-artifact-upload@v1
+              with:
+                  image: 'bauv-client:latest'
