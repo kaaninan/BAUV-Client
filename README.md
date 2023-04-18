@@ -1,10 +1,9 @@
 # BAUV Client
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/kaaninan/bauv-client/docker-image.yml)
+![tests](https://github.com/kaaninan/bauv-client/actions/workflows/test.yml/badge.svg)
+![docker](https://github.com/kaaninan/bauv-client/actions/workflows/docker-image.yml/badge.svg)
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/kaaninan/bauv-client/test.yml)
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/kaaninan/bauv-client)
 
 This is the client for the BAUV project. It is a web application that allows users to view and interact with the data collected by the BAUV-Server.
 
