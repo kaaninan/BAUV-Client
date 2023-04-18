@@ -1,9 +1,9 @@
 # BAUV Client
 
-![tests](https://github.com/kaaninan/bauv-client/actions/workflows/test.yml/badge.svg)
-![docker](https://github.com/kaaninan/bauv-client/actions/workflows/docker-image.yml/badge.svg)
-
-
+![test](https://github.com/kaaninan/bauv-client/actions/workflows/test.yml/badge.svg)
+![build](https://github.com/kaaninan/bauv-client/actions/workflows/build.yml/badge.svg)
+![docker](https://github.com/kaaninan/bauv-client/actions/workflows/docker.yml/badge.svg)
+![Docker Image Version (latest by date)](https://img.shields.io/docker/v/kaaninan/bauv-client?label=docker&sort=date)
 
 This is the client for the BAUV project. It is a web application that allows users to view and interact with the data collected by the BAUV-Server.
 
@@ -37,8 +37,24 @@ npm run serve
 To run the production application, run:
 
 ```bash
-npm run build
-npm run prod
+npm run build # Builds the production files
+npm run production # Starts the production server
+```
+
+#### Lint
+
+To run the linter, run:
+
+```bash
+npm run lint
+```
+
+#### Testing
+
+To run the tests, run:
+
+```bash
+npm run test
 ```
 
 ### Option 2: Run with Docker
@@ -65,6 +81,12 @@ This release includes prebuild docker image. It could be used without building t
 docker load < /path/to/exampleimage.tgz
 ```
 
+**OR**
+
+```bash
+docker pull kaaninan/bauv-client:latest
+```
+
 #### Running
 
 To run the docker image, run:
@@ -73,7 +95,7 @@ To run the docker image, run:
 docker run -d -p 5050:5050 bauv-client
 ```
 
-Open the application on `http://localhost:8080`
+Open the application on `http://localhost:5050`
 
 # Notes
 

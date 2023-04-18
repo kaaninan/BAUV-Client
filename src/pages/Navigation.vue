@@ -1,7 +1,7 @@
 <template>
 	<div class="_containerNavigation">
 		<div class="row">
-			<!-- <VueWinBox
+			<VueWinBox
 				ref="wbRef"
 				:options="{
 					title: 'SONAR FIELD',
@@ -9,7 +9,7 @@
 				}"
 			>
 				<SonarField />
-			</VueWinBox> -->
+			</VueWinBox>
 
 			<div class="col-xs-10" data-aos="fade" data-aos-delay="50">
 				<Map />
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-// import VueWinBox from 'vue-winbox'
+import VueWinBox from 'vue-winbox'
 import AOS from 'aos'
 import Map from '@/components/navigation/Map.vue'
 import Compass from '@/components/navigation/Compass.vue'
@@ -34,7 +34,7 @@ import Attitude from '@/components/navigation/Attitude.vue'
 import Connection from '@/components/common/Connection.vue'
 import Power from '@/components/navigation/Power.vue'
 import Chronometer from '@/components/navigation/Chronometer.vue'
-// import SonarField from '@/components/navigation/SonarField.vue'
+import SonarField from '@/components/navigation/SonarField.vue'
 
 export default {
 	name: 'Navigation',
@@ -43,10 +43,10 @@ export default {
 		Compass,
 		Attitude,
 		Connection,
-		// VueWinBox,
+		VueWinBox,
 		Power,
-		Chronometer
-		// SonarField
+		Chronometer,
+		SonarField
 	},
 	mounted() {
 		AOS.init({

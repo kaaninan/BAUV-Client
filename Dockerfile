@@ -16,4 +16,4 @@ COPY . .
 RUN npm run build
 
 EXPOSE 5050
-CMD [ "npm", "run", "prod" ]
+CMD [ "npm", "run", "production" ]

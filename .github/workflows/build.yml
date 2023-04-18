@@ -1,11 +1,11 @@
-name: Tests
+name: Build
 
 on:
     push:
         branches: [master]
 
 jobs:
-    test:
+    build:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
@@ -16,5 +16,5 @@ jobs:
                   node-version: 16
             - name: Install dependencies
               run: npm install
-            - name: Run tests
-              run: npm run test
+            - name: Build
+              run: npm run build
