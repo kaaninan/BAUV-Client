@@ -1,9 +1,5 @@
 <template>
 	<div class="_containerPower">
-		<div class="_block_title">
-			<span>CHRONOMETER</span>
-		</div>
-
 		<div class="_content">
 			<div class="_category">
 				<div class="title">Local Time:</div>
@@ -31,13 +27,14 @@ export default {
 @import url('@/assets/styles/variables.css');
 
 ._containerPower {
+	width: 250px;
 	background-color: var(--block-background-color);
 	border: 1px solid var(--border-color);
 	position: relative;
-	margin-bottom: var(--block-margin);
+	/* margin-bottom: var(--block-margin); */
 }
 ._containerPower ._content {
-	padding: 20px 20px;
+	padding: 5px 10px;
 	display: flex;
 	/* justify-content: center;
 	align-items: center; */
@@ -59,7 +56,7 @@ export default {
 	opacity: 0.7;
 	font-size: 15px;
 	white-space: nowrap;
-	margin: 10px 0;
+	margin: 5px 0;
 	margin-right: 10px;
 }
 ._containerPower ._content ._category .data {

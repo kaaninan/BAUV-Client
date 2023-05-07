@@ -1,7 +1,20 @@
-<template>Settings</template>
+<template>
+	<div class="_containerNavigation">Settings</div>
+</template>
 
 <script>
-export default {}
+import AOS from 'aos'
+
+export default {
+	mounted() {
+		AOS.init({ once: false })
+	}
+}
 </script>
 
-<style></style>
+<style scoped>
+@import '@/assets/styles/variables.css';
+._containerNavigation {
+	padding: calc(var(--screen-padding) / 2) var(--screen-padding);
+}
+</style>

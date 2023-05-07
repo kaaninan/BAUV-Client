@@ -1,10 +1,10 @@
 import { shallowMount } from '@vue/test-utils'
-import MissionControl from '@/pages/MissionControl.vue'
+import Comms from '@/pages/Comms.vue'
 
-describe('MissionControl.vue', () => {
+describe('Comms.vue', () => {
 	// Check Renders correctly
 	it('renders correctly', () => {
-		const wrapper = shallowMount(MissionControl)
+		const wrapper = shallowMount(Comms)
 		expect(wrapper.element).toMatchSnapshot()
 	})
 })

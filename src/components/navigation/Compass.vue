@@ -1,9 +1,5 @@
 <template>
 	<div class="_containerCompass">
-		<div class="_block_title">
-			<span>COMPASS</span>
-		</div>
-
 		<div class="_content">
 			<div class="triangle" />
 
@@ -11,12 +7,12 @@
 				<div class="angles">
 					<div v-for="(n, i) in 359" :key="i">
 						<div
-							v-if="i % 15 == 0"
+							v-if="i % 30 == 0"
 							class="angleItem"
 							:style="{
 								transform: 'rotate(' + i + 'deg)',
-								top: calcTop(i, 15),
-								left: calcLeft(i, 15)
+								top: calcTop(i, 10),
+								left: calcLeft(i, 10)
 							}"
 						>
 							{{ i }}
@@ -86,7 +82,7 @@
 
 			<div class="outline2">
 				<div class="headingContainer">
-					<div class="headingText">Heading<br />{{ heading }}</div>
+					<div class="headingText">{{ heading }}</div>
 				</div>
 			</div>
 		</div>
@@ -114,14 +110,16 @@ export default {
 		}
 	},
 	mounted() {
-		this.heading = 63
+		this.heading = 0
 		document.querySelector(
 			'._containerCompass ._content .outline'
 		).style.transform = 'rotate(' + -this.heading + 'deg)'
-		// this.interval = setInterval(() => {
-		// this.heading = parseInt(Math.random() * 360);
-		// 	document.querySelector('._containerCompass ._content .outline').style.transform = 'rotate(' + -this.heading + 'deg)';
-		// }, 2000);
+		this.interval = setInterval(() => {
+			this.heading = parseInt(Math.random() * 360)
+			document.querySelector(
+				'._containerCompass ._content .outline'
+			).style.transform = 'rotate(' + -this.heading + 'deg)'
+		}, 2000)
 	},
 	unmounted() {
 		clearInterval(this.interval)
@@ -174,13 +172,14 @@ export default {
 @import url('@/assets/styles/variables.css');
 
 ._containerCompass {
+	width: 250px;
 	background-color: var(--block-background-color);
 	border: 1px solid var(--border-color);
 	position: relative;
 	margin-bottom: var(--block-margin);
 }
 ._containerCompass ._content {
-	padding: 20px 20px;
+	padding: 10px 10px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -188,9 +187,9 @@ export default {
 }
 
 ._containerCompass .triangle {
-	border-left: 12px solid transparent;
-	border-right: 12px solid transparent;
-	border-top: 20px solid #31fd00;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	border-top: 15px solid #31fd00;
 }
 ._containerCompass .outline {
 	width: 100%;
@@ -217,40 +216,40 @@ export default {
 }
 ._containerCompass .angles {
 	position: absolute;
-	top: 15px;
-	left: 15px;
-	right: 15px;
-	bottom: 15px;
+	top: 10px;
+	left: 10px;
+	right: 10px;
+	bottom: 10px;
 	border-radius: 1000px;
 	background-color: transparent;
 	z-index: 2;
 }
 ._containerCompass .angleItem {
 	position: absolute;
-	width: 30px;
-	height: 30px;
+	width: 20px;
+	height: 20px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 0.8rem;
+	font-size: 0.9rem;
 }
 
 ._containerCompass .linesShort {
 	position: absolute;
-	top: 50px;
-	left: 50px;
-	right: 50px;
-	bottom: 50px;
+	top: 35px;
+	left: 35px;
+	right: 35px;
+	bottom: 35px;
 	border-radius: 1000px;
 	background-color: transparent;
 	z-index: 2;
 }
 ._containerCompass .linesLong {
 	position: absolute;
-	top: 45px;
-	left: 45px;
-	right: 45px;
-	bottom: 45px;
+	top: 30px;
+	left: 30px;
+	right: 30px;
+	bottom: 30px;
 	border-radius: 1000px;
 	background-color: transparent;
 	z-index: 2;
@@ -275,10 +274,10 @@ export default {
 
 ._containerCompass .directions {
 	position: absolute;
-	top: 75px;
-	left: 75px;
-	right: 75px;
-	bottom: 75px;
+	top: 60px;
+	left: 60px;
+	right: 60px;
+	bottom: 60px;
 	border-radius: 1000px;
 	background-color: transparent;
 }
@@ -300,7 +299,7 @@ export default {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 1rem;
+	font-size: 0.8rem;
 	border-radius: 5px;
 }
 
@@ -318,9 +317,9 @@ export default {
 
 ._containerCompass .headingContainer {
 	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%) rotate(-45deg);
+	top: calc(50% - 50px + 5px);
+	left: calc(50% - 50px + 5px);
+	transform: rotate(-45deg);
 	width: 100px;
 	height: 100px;
 	display: flex;
@@ -329,6 +328,6 @@ export default {
 	text-align: center;
 	font-weight: 600;
 	color: greenyellow;
-	font-size: 0.9rem;
+	font-size: 1.4rem;
 }
 </style>

@@ -1,18 +1,14 @@
 <template>
-	<div class="_containerConnection">
+	<div class="_containerConnection" :class="{ small: minimal }">
 		<div v-if="!minimal" class="_block_title">
 			<span>CONNECTION</span>
 		</div>
 
 		<div class="_content">
 			<div v-if="minimal">
-				<div class="_category" style="justify-content: flex-start">
+				<div class="_category" style="justify-content: space-between">
 					<div
-						style="
-							margin-right: 12px;
-							margin-top: 6px;
-							margin-bottom: 6px;
-						"
+						style="margin-top: 6px; margin-bottom: 6px"
 						class="data"
 						:class="{
 							_success: $store.getters.socketConnected,
@@ -22,11 +18,7 @@
 						Socket
 					</div>
 					<div
-						style="
-							margin-right: 12px;
-							margin-top: 6px;
-							margin-bottom: 6px;
-						"
+						style="margin-top: 6px; margin-bottom: 6px"
 						class="data"
 						:class="{
 							_success: $store.getters.mapServerConnected,
@@ -36,11 +28,7 @@
 						Map
 					</div>
 					<div
-						style="
-							margin-right: 12px;
-							margin-top: 6px;
-							margin-bottom: 6px;
-						"
+						style="margin-top: 6px; margin-bottom: 6px"
 						class="data"
 						:class="{
 							_disabled: !$store.getters.socketConnected,
@@ -164,9 +152,9 @@
 					>
 						Connect
 					</div>
-					<div class="link" @click="changeIP">
+					<!-- <div class="link" @click="changeIP">
 						{{ ipChangeEnable ? 'Done' : 'Change IP' }}
-					</div>
+					</div> -->
 					<div class="link" @click="subscribe">Sub</div>
 					<div class="link" @click="connectRosbridge">
 						Connect RosBridge
@@ -259,8 +247,11 @@ export default {
 	border: 1px solid var(--border-color);
 	margin-bottom: var(--block-margin);
 }
+.small {
+	width: 250px;
+}
 ._containerConnection ._content {
-	padding: 10px 20px;
+	padding: 5px 10px;
 }
 ._containerConnection ._content ._category {
 	display: flex;

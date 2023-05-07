@@ -1,5 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Comms.vue renders correctly 1`] = `
+<div
+  class="_containerNavigation"
+>
+  <div
+    class="row"
+  >
+    <div
+      class="col-xs-3"
+      data-aos="fade"
+    >
+      <connection-stub
+        minimal="false"
+      />
+    </div>
+    <div
+      class="col-xs-6"
+      data-aos="fade"
+      data-aos-delay="50"
+    >
+      <log-stub />
+    </div>
+    <div
+      class="col-xs-3"
+      data-aos="fade"
+      data-aos-delay="100"
+    />
+  </div>
+</div>
+`;
+
 exports[`MissionControl.vue renders correctly 1`] = `
 <div
   class="_containerNavigation"

@@ -1,10 +1,6 @@
 <template>
 	<div class="_containerMap">
-		<div class="_block_title">
-			<span>MAP</span>
-		</div>
-		<div id="map" style="height: 1170px" />
-
+		<div id="map" style="height: 833px" />
 		<div class="floatTopLeft">
 			<div class="floatItem">
 				<div class="floatItemText">HEADING 63°</div>
@@ -57,9 +53,12 @@ export default {
 				this.$store.state.mapServerPortSVG +
 				'/static/png/NChart-Symbol_INT_Lighted_BarrelBuoy_Green.png',
 			function (error, image) {
-				if (error) throw error
-				if (!map.hasImage('NChart-Symbol_INT_Light'))
-					map.addImage('NChart-Symbol_INT_Light', image)
+				if (error) {
+					console.log(error)
+				} else {
+					if (!map.hasImage('NChart-Symbol_INT_Light'))
+						map.addImage('NChart-Symbol_INT_Light', image)
+				}
 			}
 		)
 
@@ -811,19 +810,19 @@ export default {
 <style scoped>
 ._containerMap {
 	width: 100%;
+	height: min-content;
 	position: relative;
-	display: flex;
-	flex-direction: column;
 	border: 1px solid var(--border-color);
 	background-color: var(--block-background-color);
+	margin-right: var(--block-margin);
 }
 
 .floatTopLeft {
 	background-color: rgba(0, 0, 0, 0.6);
 	padding: 12px;
 	position: absolute;
-	top: 80px;
-	right: 80px;
+	top: 40px;
+	right: 40px;
 	z-index: 1000;
 	color: white;
 }
@@ -832,8 +831,8 @@ export default {
 	background-color: rgba(0, 0, 0, 0.6);
 	padding: 12px;
 	position: absolute;
-	bottom: 80px;
-	right: 80px;
+	bottom: 40px;
+	right: 40px;
 	z-index: 1000;
 	color: white;
 }
@@ -841,8 +840,8 @@ export default {
 	background-color: rgba(0, 0, 0, 0.6);
 	padding: 12px;
 	position: absolute;
-	bottom: 80px;
-	left: 80px;
+	bottom: 40px;
+	left: 40px;
 	z-index: 1000;
 	color: white;
 }

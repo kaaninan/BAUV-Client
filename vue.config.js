@@ -1,6 +1,6 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
-	transpileDependencies: true,
+	transpileDependencies: false,
 	chainWebpack: (config) => {
 		config.plugin('define').tap((args) => {
 			let v = JSON.stringify(require('./package.json').version)

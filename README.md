@@ -9,14 +9,21 @@ This is the client for the BAUV project. It is a web application that allows use
 
 ## Pre-requisites
 
--   [BAUV-Maps (Docker Image)](https://github.com/kaaninan/BAUV-Maps/blob/master/USAGE.md)
--   Node.js 16 or Docker
+-   [BAUV-Maps](https://github.com/kaaninan/BAUV-Maps/blob/master/USAGE.md)
+-   Node.js 16
+-   Docker (Optional)
 
 ## BAUV-Client Installation
 
 ### Option 1: Standalone
 
 #### Installation
+
+Clone the repository:
+
+```bash
+git clone git@github.com:kaaninan/BAUV-Client.git
+```
 
 To install the dependencies, run:
 
@@ -26,7 +33,7 @@ npm install
 
 #### Debugging
 
-To run the debug application, run:
+To run the application in debug mode, run:
 
 ```bash
 npm run serve
@@ -34,12 +41,14 @@ npm run serve
 
 #### Production
 
-To run the production application, run:
+To run the application in production mode, run:
 
 ```bash
 npm run build # Builds the production files
 npm run production # Starts the production server
 ```
+
+Open the application on `http://localhost:5050`
 
 #### Lint
 
@@ -59,30 +68,6 @@ npm run test
 
 ### Option 2: Run with Docker
 
-#### Option 2.1: Build Docker Image
-
-To build the docker image, run:
-
-```bash
-docker build -t bauv-client .
-```
-
-#### Option 2.2: Use Prebuilt Docker Image
-
-See: [Releases](https://github.com/kaaninan/BAUV-Client/releases)
-
-This release includes prebuild docker image. It could be used without building the docker image.
-
-**Step 1:** Download the release and extract it.
-
-**Step 2:** Import the docker image with the following command:
-
-```bash
-docker load < /path/to/exampleimage.tgz
-```
-
-**OR**
-
 ```bash
 docker pull kaaninan/bauv-client:latest
 ```
@@ -96,6 +81,27 @@ docker run -d -p 5050:5050 bauv-client
 ```
 
 Open the application on `http://localhost:5050`
+
+## BAUV-Client Development
+
+### Create new version
+
+To create a new version change the version in `package.json` and run:
+
+```bash
+git tag -a v1.0.0 -m "Version 1.0.0"
+git push origin v1.0.0
+```
+
+This triggers the build and publish workflow.
+
+### Build Docker Image
+
+To build the docker image, run:
+
+```bash
+docker build -t bauv-client .
+```
 
 # Notes
 
