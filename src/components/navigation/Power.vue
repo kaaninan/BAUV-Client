@@ -24,8 +24,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 ._containerPower {
 	width: 250px;
 	background-color: var(--block-background-color);

@@ -105,8 +105,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 ._containerSpeed {
 	background-color: var(--block-background-color);
 	border: 1px solid var(--border-color);
