@@ -1,50 +1,40 @@
 {
 	"name": "bauv-client",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"private": true,
 	"scripts": {
 		"serve": "vue-cli-service serve",
 		"build": "vue-cli-service build",
-		"test": "vue-cli-service test:unit",
 		"lint": "vue-cli-service lint",
-		"lint2": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
 		"format": "prettier .  --write",
 		"production": "node src/server.js"
 	},
 	"dependencies": {
-		"@fortawesome/fontawesome-free": "^6.1.2",
+		"@tabler/core": "^1.0.0-beta17",
 		"aos": "^2.3.4",
 		"body-parser": "^1.20.2",
 		"connect-history-api-fallback": "^2.0.0",
-		"core-js": "^3.8.3",
+		"core-js": "^3.30.2",
 		"express": "^4.18.2",
-		"jquery": "^3.6.4",
 		"maplibre-gl": "^2.4.0",
-		"mitt": "^3.0.0",
-		"mjpegcanvas": "^0.4.0",
-		"socket.io-client": "^4.5.1",
-		"vue": "^3.2.13",
-		"vue-maplibre-gl": "^2.0.0",
-		"vue-router": "^4.1.3",
+		"socket.io-client": "^4.6.1",
+		"vue": "^3.2.47",
+		"vue-router": "^4.1.6",
 		"vue-winbox": "^0.2.1",
-		"vuex": "^4.0.2"
+		"vuex": "^4.1.0"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.12.16",
-		"@babel/eslint-parser": "^7.12.16",
-		"@vue/cli-plugin-babel": "~5.0.0",
-		"@vue/cli-plugin-eslint": "~5.0.0",
-		"@vue/cli-plugin-unit-jest": "~5.0.0",
-		"@vue/cli-service": "~5.0.0",
-		"@vue/test-utils": "^2.0.0-0",
-		"@vue/vue3-jest": "^27.0.0-alpha.1",
-		"babel-jest": "^27.0.6",
-		"eslint": "^7.32.0",
-		"eslint-config-prettier": "^8.3.0",
-		"eslint-plugin-prettier": "^4.0.0",
-		"eslint-plugin-vue": "^8.0.3",
-		"jest": "^27.0.5",
-		"prettier": "^2.4.1"
+		"@babel/core": "^7.21.8",
+		"@babel/eslint-parser": "^7.21.8",
+		"@vue/cli-plugin-babel": "~5.0.8",
+		"@vue/cli-plugin-eslint": "~5.0.8",
+		"@vue/cli-service": "~5.0.8",
+		"@vue/test-utils": "^2.3.2",
+		"eslint": "^8.40.0",
+		"eslint-config-prettier": "^8.8.0",
+		"eslint-plugin-prettier": "^4.2.1",
+		"eslint-plugin-vue": "^9.11.1",
+		"prettier": "^2.8.8"
 	},
 	"eslintConfig": {
 		"root": true,
@@ -74,7 +64,7 @@
 					"**/tests/unit/**/*.spec.{j,t}s?(x)"
 				],
 				"env": {
-					"jest": true
+					"jest": false
 				}
 			}
 		]
@@ -84,8 +74,5 @@
 		"last 2 versions",
 		"not dead",
 		"not ie 11"
-	],
-	"jest": {
-		"preset": "@vue/cli-plugin-unit-jest"
-	}
+	]
 }

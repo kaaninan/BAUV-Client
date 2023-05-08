@@ -7,11 +7,15 @@ import Manipulation from '@/pages/Manipulation.vue'
 import Comms from '@/pages/Comms.vue'
 
 const routes = [
-	{ path: '/', component: Navigation },
-	{ path: '/mission-control', component: MissionControl },
-	{ path: '/settings', component: Settings },
-	{ path: '/manipulation', component: Manipulation },
-	{ path: '/comms', component: Comms }
+	{ name: 'Navigation', path: '/', component: Navigation },
+	{
+		name: 'MissionControl',
+		path: '/mission-control',
+		component: MissionControl
+	},
+	{ name: 'Settings', path: '/settings', component: Settings },
+	{ name: 'Manipulation', path: '/manipulation', component: Manipulation },
+	{ name: 'Comms', path: '/comms', component: Comms }
 ]
 
 const router = createRouter({

@@ -58,14 +58,6 @@ To run the linter, run:
 npm run lint
 ```
 
-#### Testing
-
-To run the tests, run:
-
-```bash
-npm run test
-```
-
 ### Option 2: Run with Docker
 
 ```bash

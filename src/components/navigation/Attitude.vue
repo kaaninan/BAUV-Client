@@ -1,179 +1,189 @@
 <template>
-	<div class="_containerAttitude">
-		<!-- <div class="_block_title">
-			<span>ATTITUDE</span>
-		</div> -->
-
-		<div class="_content">
-			<div class="outline">
-				<!-- Background Colors Outside -->
-				<div
-					class="backContainerOut anim"
-					:style="{ transform: 'rotate(' + -roll + 'deg)' }"
-				>
-					<div class="backTop" />
-					<div class="backBottom" />
-				</div>
-
-				<!-- Background Colors Inside -->
-				<div class="backContainerWindow">
-					<div
-						class="backContainer anim"
-						:style="{
-							transform: 'rotate(' + -roll + 'deg)',
-							top: calcPitchToPx(pitch) * 2 + 'px'
-						}"
-					>
-						<div class="backTop" />
-						<div class="backBottom" />
-					</div>
-				</div>
-
-				<!-- Bank Scales -->
-				<div
-					class="bankScale anim"
-					:style="{ transform: 'rotate(' + -roll + 'deg)' }"
-				>
-					<div class="bankScaleLong">
-						<div v-for="(n, i) in bankScalesLong" :key="i">
-							<div
-								class="line"
-								:style="{
-									transform: 'rotate(' + n + 'deg)',
-									top: calcTop(n, 10),
-									left: calcLeft(n, 2)
-								}"
-							/>
+	<div class="card bg-transparent" style="border: 0">
+		<div class="card-body p-3">
+			<div class="_containerAttitude" ref="content">
+				<div class="_content">
+					<div class="outline">
+						<!-- Background Colors Outside -->
+						<div
+							class="backContainerOut anim"
+							:style="{ transform: 'rotate(' + -roll + 'deg)' }"
+						>
+							<div class="backTop" />
+							<div class="backBottom" />
 						</div>
-					</div>
 
-					<div class="bankScaleShort">
-						<div v-for="(n, i) in bankScalesShort" :key="i">
+						<!-- Background Colors Inside -->
+						<div class="backContainerWindow">
 							<div
-								class="line"
+								class="backContainer anim"
 								:style="{
-									transform: 'rotate(' + n + 'deg)',
-									top: calcTop(n, 5),
-									left: calcLeft(n, 1.5)
+									transform: 'rotate(' + -roll + 'deg)',
+									top: 'calc(' + calcPitchTop(pitch * 2) + ')'
 								}"
-							/>
+							>
+								<div class="backTop" />
+								<div class="backBottom" />
+							</div>
 						</div>
-					</div>
 
-					<div class="bankScaleTriangle">
-						<div v-for="(n, i) in bankScalesTriangle" :key="i">
-							<div
-								class="line"
-								:style="{
-									transform: 'rotate(' + n + 'deg)',
-									top: calcTop(n, 5),
-									left: calcLeft(n, 5)
-								}"
-							/>
-						</div>
-					</div>
-
-					<div class="bankScaleBigTriangle">
-						<div v-for="(n, i) in bankScalesBigTriangle" :key="i">
-							<div
-								class="line"
-								:style="{
-									transform: 'rotate(' + n + 'deg)',
-									top: calcTop(n, 10),
-									left: calcLeft(n, 10)
-								}"
-							/>
-						</div>
-					</div>
-				</div>
-
-				<!-- Bank Scale Pointer - Sabit -->
-				<div class="bankScalePointer">
-					<img
-						class="pointer"
-						src="@/assets/images/pointer.png"
-						:style="{
-							top: 'calc(' + calcTop(0, 10) + ' + 10px)',
-							left: calcLeft(0, 10)
-						}"
-					/>
-				</div>
-
-				<!-- Pitch Degree Markings -->
-				<div class="pitchScaleWindow">
-					<div
-						class="pitchScale anim"
-						:style="{
-							transform: 'rotate(' + -roll + 'deg)',
-							top: calcPitchToPx(pitch) + 'px'
-						}"
-					>
-						<div class="pitchScaleLong">
-							<div v-for="(n, i) in pitchScalesLong" :key="i">
-								<div
-									class="leftText"
-									:style="{
-										top:
-											'calc(' +
-											calcPitchLine(n * -1) +
-											' - 10px)'
-									}"
-								>
-									{{ Math.abs(n) }}
+						<!-- Bank Scales -->
+						<div
+							class="bankScale anim"
+							:style="{ transform: 'rotate(' + -roll + 'deg)' }"
+						>
+							<div class="bankScaleLong">
+								<div v-for="(n, i) in bankScalesLong" :key="i">
+									<div
+										class="line"
+										:style="{
+											transform: 'rotate(' + n + 'deg)',
+											top: calcTop(n, 10),
+											left: calcLeft(n, 2)
+										}"
+									/>
 								</div>
+							</div>
+
+							<div class="bankScaleShort">
+								<div v-for="(n, i) in bankScalesShort" :key="i">
+									<div
+										class="line"
+										:style="{
+											transform: 'rotate(' + n + 'deg)',
+											top: calcTop(n, 5),
+											left: calcLeft(n, 1.5)
+										}"
+									/>
+								</div>
+							</div>
+
+							<div class="bankScaleTriangle">
 								<div
-									class="line"
-									:style="{
-										top:
-											'calc(' +
-											calcPitchLine(n) +
-											' - 1px)'
-									}"
-								/>
-								<div
-									class="rightText"
-									:style="{
-										top:
-											'calc(' +
-											calcPitchLine(n * -1) +
-											' - 10px)'
-									}"
+									v-for="(n, i) in bankScalesTriangle"
+									:key="i"
 								>
-									{{ Math.abs(n) }}
+									<div
+										class="line"
+										:style="{
+											transform: 'rotate(' + n + 'deg)',
+											top: calcTop(n, 5),
+											left: calcLeft(n, 5)
+										}"
+									/>
+								</div>
+							</div>
+
+							<div class="bankScaleBigTriangle">
+								<div
+									v-for="(n, i) in bankScalesBigTriangle"
+									:key="i"
+								>
+									<div
+										class="line"
+										:style="{
+											transform: 'rotate(' + n + 'deg)',
+											top: calcTop(n, 10),
+											left: calcLeft(n, 10)
+										}"
+									/>
 								</div>
 							</div>
 						</div>
-						<div class="pitchScaleShort">
-							<div v-for="(n, i) in pitchScalesShort" :key="i">
-								<div
-									class="line"
-									:style="{
-										top:
-											'calc(' +
-											calcPitchLine(n) +
-											' - 1px)'
-									}"
-								/>
-							</div>
-						</div>
-						<div class="pitchScaleSoLong">
-							<div
-								class="line"
+
+						<!-- Bank Scale Pointer - Sabit -->
+						<div class="bankScalePointer">
+							<img
+								class="pointer"
+								src="@/assets/images/pointer.png"
 								:style="{
-									top: 'calc(' + calcPitchLine(0) + ' - 1px)'
+									top: 'calc(' + calcTop(0, 10) + ' + 10px)',
+									left: calcLeft(0, 10)
 								}"
 							/>
 						</div>
-					</div>
-				</div>
 
-				<!-- Aircraft Symbol - Sabit -->
-				<div class="aircraftContainer">
-					<div class="leftLine" />
-					<div class="rightLine" />
-					<div class="rightBottom" />
-					<div class="leftBottom" />
-					<div class="pointCircle" />
+						<!-- Pitch Degree Markings -->
+						<div class="pitchScaleWindow">
+							<div
+								class="pitchScale anim"
+								:style="{
+									transform: 'rotate(' + -roll + 'deg)',
+									top: 'calc(' + calcPitchTop(pitch) + ')'
+								}"
+							>
+								<div class="pitchScaleLong">
+									<div
+										v-for="(n, i) in pitchScalesLong"
+										:key="i"
+									>
+										<div
+											class="leftText"
+											:style="{
+												top:
+													'calc(50% - ' +
+													calcPitchLine(n) +
+													'% - 10px)'
+											}"
+										>
+											{{ Math.abs(n) }}
+										</div>
+										<div
+											class="line"
+											:style="{
+												top:
+													'calc(50% - ' +
+													calcPitchLine(n) +
+													'% - 1px)'
+											}"
+										/>
+										<div
+											class="rightText"
+											:style="{
+												top:
+													'calc(50% - ' +
+													calcPitchLine(n) +
+													'% - 10px)'
+											}"
+										>
+											{{ Math.abs(n) }}
+										</div>
+									</div>
+								</div>
+								<div class="pitchScaleShort">
+									<div
+										v-for="(n, i) in pitchScalesShort"
+										:key="i"
+									>
+										<div
+											class="line"
+											:style="{
+												top:
+													'calc(50% - ' +
+													calcPitchLine(n) +
+													'% - 1px)'
+											}"
+										/>
+									</div>
+								</div>
+								<div class="pitchScaleSoLong">
+									<div
+										class="line"
+										:style="{ top: 'calc(50% - 1px)' }"
+									/>
+								</div>
+							</div>
+						</div>
+
+						<!-- Aircraft Symbol - Sabit -->
+						<div class="aircraftContainer">
+							<div class="leftLine" />
+							<div class="rightLine" />
+							<div class="rightBottom" />
+							<div class="leftBottom" />
+							<div class="pointCircle" />
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -193,7 +203,7 @@ export default {
 			bankScalesTriangle: [315, 45],
 			bankScalesBigTriangle: [0],
 
-			pitchScalesLong: [10, 20, -10, -20],
+			pitchScalesLong: [10, 20, -10, -20, -70],
 			pitchScalesShort: [5, 15, -5, -15]
 		}
 	},
@@ -202,11 +212,23 @@ export default {
 		// this.roll = Math.floor(Math.random() * 60) - 30
 		// this.pitch = Math.floor(Math.random() * 20) - 10
 		// }, 2000)
+		// add event listener resize
+		window.addEventListener('resize', this.handleResize)
+		let width = this.$refs.content.offsetWidth
+		// Set height
+		this.$refs.content.style.height = width + 'px'
 	},
 	unmounted() {
+		// remove event listener resize
+		window.removeEventListener('resize', this.handleResize)
 		// clearInterval(this.interval)
 	},
 	methods: {
+		handleResize() {
+			let width = this.$refs.content.offsetWidth
+			// Set height
+			this.$refs.content.style.height = width + 'px'
+		},
 		calcTop(i, diff) {
 			return (
 				'calc(' +
@@ -238,14 +260,10 @@ export default {
 			)
 		},
 		calcPitchLine(i) {
-			return this.map(i, -100, 100, -100, 200) + '%'
+			return i * 1.5
 		},
-		calcPitchToPx(i) {
-			// -20 degree = -50px
-			// 20 degree = 50px
-			let val = this.map(i, -20, 20, -50, 50)
-			if (val < 0) return val - 1
-			else return val + 1
+		calcPitchTop(i) {
+			return i * 1.5 + '% - ' + i / 3.4 + 'px'
 		},
 		map(x, in_min, in_max, out_min, out_max) {
 			return (
@@ -261,20 +279,13 @@ export default {
 </script>
 
 <style scoped>
-@import url('@/assets/styles/variables.css');
-
 ._containerAttitude {
-	width: 250px;
-	height: 250px;
-	background-color: var(--block-background-color);
-	border: 1px solid var(--border-color);
 	position: relative;
-	margin-bottom: var(--block-margin);
+	color: white;
 }
 ._containerAttitude ._content {
-	width: calc(100% - 20px);
-	height: calc(100% - 20px);
-	padding: 10px 10px;
+	width: 100%;
+	height: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -505,10 +516,10 @@ export default {
 /* ---------------- Aircraft Symbol ---------------- */
 ._containerAttitude .aircraftContainer {
 	position: absolute;
-	top: 15px;
-	left: 15px;
-	right: 15px;
-	bottom: 15px;
+	top: 20px;
+	left: 20px;
+	right: 20px;
+	bottom: 20px;
 	z-index: 10;
 }
 ._containerAttitude .aircraftContainer .leftLine {

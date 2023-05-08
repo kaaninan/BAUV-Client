@@ -105,7 +105,7 @@ export default {
 </script>
 
 <style scoped>
-@import url('@/assets/styles/variables.css');
+
 
 ._containerSpeed {
 	background-color: var(--block-background-color);

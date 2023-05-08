@@ -106,15 +106,6 @@ const store = createStore({
 					console.log('rosbridge_status', status)
 					state.rosbridgeStatus = status
 				})
-				.on('absolute_linear_velocity', (velocity) => {
-					state.absolute_linear_velocity = velocity
-				})
-				.on('relative_linear_velocity', (velocity) => {
-					state.relative_linear_velocity = velocity
-				})
-				.on('orientation_rate', (rate) => {
-					state.orientation_rate = rate
-				})
 				.on('/imu_data', (data) => {
 					// Send one commit per second from Date
 					if (Date.now() - lastsend > 1000) {
@@ -140,7 +131,7 @@ const store = createStore({
 
 		// disconnect from socket
 		disconnectSocket({ state }) {
-			console.log(state.socket)
+			// console.log(state.socket)
 			state.socket.disconnect()
 			state.socket = null
 		},
@@ -175,15 +166,6 @@ const store = createStore({
 					return new Date(a.date) - new Date(b.date)
 				})
 				.reverse()
-		},
-		absolute_linear_velocity: (state) => {
-			return state.absolute_linear_velocity
-		},
-		relative_linear_velocity: (state) => {
-			return state.relative_linear_velocity
-		},
-		orientation_rate: (state) => {
-			return state.orientation_rate
 		},
 		subscribedTopics: (state) => {
 			return state.subscribedTopics

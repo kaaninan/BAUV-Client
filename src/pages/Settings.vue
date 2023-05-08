@@ -13,7 +13,6 @@ export default {
 </script>
 
 <style scoped>
-@import '@/assets/styles/variables.css';
 ._containerNavigation {
 	padding: calc(var(--screen-padding) / 2) var(--screen-padding);
 }

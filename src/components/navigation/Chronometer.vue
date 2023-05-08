@@ -24,7 +24,7 @@ export default {
 </script>
 
 <style scoped>
-@import url('@/assets/styles/variables.css');
+
 
 ._containerPower {
 	width: 250px;

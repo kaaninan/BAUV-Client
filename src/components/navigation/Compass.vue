@@ -1,88 +1,94 @@
 <template>
-	<div class="_containerCompass">
-		<div class="_content">
-			<div class="triangle" />
+	<div class="card bg-transparent" style="border: 0">
+		<div class="card-body p-3">
+			<div class="_containerCompass">
+				<div class="_content">
+					<div class="triangle" />
 
-			<div class="outline">
-				<div class="angles">
-					<div v-for="(n, i) in 359" :key="i">
-						<div
-							v-if="i % 30 == 0"
-							class="angleItem"
-							:style="{
-								transform: 'rotate(' + i + 'deg)',
-								top: calcTop(i, 10),
-								left: calcLeft(i, 10)
-							}"
-						>
-							{{ i }}
+					<div class="outline">
+						<div class="angles">
+							<div v-for="(n, i) in 359" :key="i">
+								<div
+									v-if="i % 30 == 0"
+									class="angleItem"
+									:style="{
+										transform: 'rotate(' + i + 'deg)',
+										top: calcTop(i, 10),
+										left: calcLeft(i, 10)
+									}"
+								>
+									{{ i }}
+								</div>
+							</div>
+						</div>
+
+						<div class="linesShort">
+							<div v-for="(n, i) in 359" :key="i">
+								<div
+									v-if="i % 5 == 0 && i % 15 != 0"
+									class="lineItem short"
+									:style="{
+										transform: 'rotate(' + i + 'deg)',
+										top: calcTop(i, 5),
+										left: calcLeft(i, 0.5)
+									}"
+								/>
+							</div>
+						</div>
+
+						<div class="linesLong">
+							<div v-for="(n, i) in 359" :key="i">
+								<div
+									v-if="i % 15 == 0"
+									class="lineItem long"
+									:style="{
+										transform: 'rotate(' + i + 'deg)',
+										top: calcTop(i, 10),
+										left: calcLeft(i, 0.5)
+									}"
+								/>
+							</div>
+						</div>
+
+						<div class="directions">
+							<div v-for="(n, i) in directionsBig" :key="i">
+								<div
+									class="directionItem"
+									:style="{
+										transform:
+											'rotate(' + n.degree + 'deg)',
+										top: calcTop(n.degree, 10),
+										left: calcLeft(n.degree, 20)
+									}"
+								>
+									{{ n.name }}
+								</div>
+							</div>
+						</div>
+						<div class="directions">
+							<div v-for="(n, i) in directionsSmall" :key="i">
+								<div
+									class="directionItemSmall"
+									:style="{
+										transform:
+											'rotate(' + n.degree + 'deg)',
+										top: calcTop(n.degree, 10),
+										left: calcLeft(n.degree, 20)
+									}"
+								>
+									{{ n.name }}
+								</div>
+							</div>
+						</div>
+
+						<!-- <div class="borderBack"></div> -->
+					</div>
+
+					<div class="outline2">
+						<div class="headingContainer">
+							<div class="headingText">{{ heading }}</div>
 						</div>
 					</div>
-				</div>
-
-				<div class="linesShort">
-					<div v-for="(n, i) in 359" :key="i">
-						<div
-							v-if="i % 5 == 0 && i % 15 != 0"
-							class="lineItem short"
-							:style="{
-								transform: 'rotate(' + i + 'deg)',
-								top: calcTop(i, 5),
-								left: calcLeft(i, 0.5)
-							}"
-						/>
-					</div>
-				</div>
-
-				<div class="linesLong">
-					<div v-for="(n, i) in 359" :key="i">
-						<div
-							v-if="i % 15 == 0"
-							class="lineItem long"
-							:style="{
-								transform: 'rotate(' + i + 'deg)',
-								top: calcTop(i, 10),
-								left: calcLeft(i, 0.5)
-							}"
-						/>
-					</div>
-				</div>
-
-				<div class="directions">
-					<div v-for="(n, i) in directionsBig" :key="i">
-						<div
-							class="directionItem"
-							:style="{
-								transform: 'rotate(' + n.degree + 'deg)',
-								top: calcTop(n.degree, 10),
-								left: calcLeft(n.degree, 20)
-							}"
-						>
-							{{ n.name }}
-						</div>
-					</div>
-				</div>
-				<div class="directions">
-					<div v-for="(n, i) in directionsSmall" :key="i">
-						<div
-							class="directionItemSmall"
-							:style="{
-								transform: 'rotate(' + n.degree + 'deg)',
-								top: calcTop(n.degree, 10),
-								left: calcLeft(n.degree, 20)
-							}"
-						>
-							{{ n.name }}
-						</div>
-					</div>
-				</div>
-
-				<!-- <div class="borderBack"></div> -->
-			</div>
-
-			<div class="outline2">
-				<div class="headingContainer">
-					<div class="headingText">{{ heading }}</div>
 				</div>
 			</div>
 		</div>
@@ -111,15 +117,15 @@ export default {
 	},
 	mounted() {
 		this.heading = 0
-		document.querySelector(
-			'._containerCompass ._content .outline'
-		).style.transform = 'rotate(' + -this.heading + 'deg)'
-		this.interval = setInterval(() => {
-			this.heading = parseInt(Math.random() * 360)
-			document.querySelector(
-				'._containerCompass ._content .outline'
-			).style.transform = 'rotate(' + -this.heading + 'deg)'
-		}, 2000)
+		// document.querySelector(
+		// 	'._containerCompass ._content .outline'
+		// ).style.transform = 'rotate(' + -this.heading + 'deg)'
+		// this.interval = setInterval(() => {
+		// 	this.heading = parseInt(Math.random() * 360)
+		// 	document.querySelector(
+		// 		'._containerCompass ._content .outline'
+		// 	).style.transform = 'rotate(' + -this.heading + 'deg)'
+		// }, 2000)
 	},
 	unmounted() {
 		clearInterval(this.interval)
@@ -169,17 +175,13 @@ export default {
 </script>
 
 <style scoped>
-@import url('@/assets/styles/variables.css');
-
 ._containerCompass {
-	width: 250px;
-	background-color: var(--block-background-color);
-	border: 1px solid var(--border-color);
 	position: relative;
-	margin-bottom: var(--block-margin);
+	overflow: hidden;
 }
 ._containerCompass ._content {
-	padding: 10px 10px;
+	width: 100%;
+	height: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -257,7 +259,7 @@ export default {
 ._containerCompass .lineItem {
 	position: absolute;
 	width: 1px;
-	background-color: white;
+	background-color: black;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -327,7 +329,6 @@ export default {
 	align-items: center;
 	text-align: center;
 	font-weight: 600;
-	color: greenyellow;
 	font-size: 1.4rem;
 }
 </style>

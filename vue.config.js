@@ -7,5 +7,9 @@ module.exports = defineConfig({
 			args[0]['process.env']['VERSION'] = v
 			return args
 		})
+		config.plugin('html').tap((args) => {
+			args[0].title = 'BAUV Client'
+			return args
+		})
 	}
 })

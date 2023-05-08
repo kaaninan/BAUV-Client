@@ -14,8 +14,8 @@
 
 <script>
 import AOS from 'aos'
-import Connection from '@/components/common/Connection.vue'
-import Log from '@/components/common/Log.vue'
+import Connection from '@/components/comms/Connection.vue'
+import Log from '@/components/comms/Log.vue'
 
 export default {
 	components: { Connection, Log },
@@ -26,7 +26,6 @@ export default {
 </script>
 
 <style scoped>
-@import '@/assets/styles/variables.css';
 ._containerNavigation {
 	padding: calc(var(--screen-padding) / 2) var(--screen-padding);
 }
