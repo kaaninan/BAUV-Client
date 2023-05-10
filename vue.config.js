@@ -1,5 +1,6 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
+	lintOnSave: false,
 	transpileDependencies: false,
 	chainWebpack: (config) => {
 		config.plugin('define').tap((args) => {

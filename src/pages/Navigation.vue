@@ -1,56 +1,31 @@
 <template>
-	<div class="page-wrapper">
-		<div class="page-body" style="margin-top: 10px">
-			<div class="container-fluid">
-				<div style="display: flex; flex-direction: row">
-					<div
-						style="
-							width: calc(100% - 250px - 20px);
-							margin-right: 20px;
-						"
-					>
-						<Map />
-					</div>
-					<div style="width: 250px">
-						<Attitude />
-						<Compass />
-						<Power />
-						<Connection :minimal="true" />
-						<Chronometer />
-					</div>
-				</div>
+	<div class="_containerNavigation">
+		<!-- <VueWinBox>
+			<SonarField />
+		</VueWinBox> -->
+
+		<div style="display: flex; flex-direction: row">
+			<div style="display: flex; flex-grow: 1">
+				<Map />
+			</div>
+			<div
+				style="display: flex; flex-direction: column; width: 250px"
+				data-aos="fade"
+				data-aos-delay="100"
+			>
+				<Attitude />
+				<Compass />
+				<Power />
+				<Connection :minimal="true" />
+				<Chronometer />
 			</div>
 		</div>
 	</div>
 </template>
 
-<!-- <VueWinBox>
-			<SonarField />
-		</VueWinBox> -->
-<!-- <div style="display: flex; flex-direction: row">
-		<div
-			style="display: flex; flex-grow: 1"
-			data-aos="fade"
-			data-aos-delay="50"
-		>
-			<Map />
-		</div>
-		<div
-			style="display: flex; flex-direction: column"
-			data-aos="fade"
-			data-aos-delay="100"
-		>
-			<Attitude />
-			<Compass />
-			<Power />
-			<Connection :minimal="true" />
-			<Chronometer />
-		</div>
-	</div> -->
-
 <script>
 import AOS from 'aos'
-import Map from '@/components/navigation/Map.vue'
+import Map from '@/components/map/Map.vue'
 import Compass from '@/components/navigation/Compass.vue'
 import Attitude from '@/components/navigation/Attitude.vue'
 import Connection from '@/components/comms/Connection.vue'
@@ -62,21 +37,13 @@ import SonarField from '@/components/navigation/SonarField.vue'
 export default {
 	name: 'Navigation',
 	components: {
-		// eslint-disable-next-line vue/no-unused-components
 		Map,
-		// eslint-disable-next-line vue/no-unused-components
 		Compass,
-		// eslint-disable-next-line vue/no-unused-components
 		Attitude,
-		// eslint-disable-next-line vue/no-unused-components
 		Connection,
-		// eslint-disable-next-line vue/no-unused-components
 		Power,
-		// eslint-disable-next-line vue/no-unused-components
 		Chronometer,
-		// eslint-disable-next-line vue/no-unused-components
 		VueWinBox,
-		// eslint-disable-next-line vue/no-unused-components
 		SonarField
 	},
 	data() {
@@ -103,3 +70,11 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+@import '@/assets/styles/variables.css';
+
+._containerNavigation {
+	padding: calc(var(--screen-padding) / 2) var(--screen-padding);
+}
+</style>

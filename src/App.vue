@@ -64,11 +64,21 @@ export default {
 </script>
 
 <style>
-@import 'aos/dist/aos.css';
-
-#app {
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	min-width: 1024px;
+html,
+body {
+	background: rgb(19, 53, 79);
+	background: radial-gradient(
+		circle,
+		rgba(19, 53, 79, 1) 0%,
+		rgba(5, 20, 34, 1) 100%
+	);
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	min-height: 100vh;
+	padding: 0;
+	margin: 0;
+	font-family: var(--font-family);
+	min-width: var(--min-width);
+	color: white;
 }
 </style>

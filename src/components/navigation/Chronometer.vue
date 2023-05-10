@@ -29,7 +29,6 @@ export default {
 	background-color: var(--block-background-color);
 	border: 1px solid var(--border-color);
 	position: relative;
-	/* margin-bottom: var(--block-margin); */
 }
 ._containerPower ._content {
 	padding: 5px 10px;

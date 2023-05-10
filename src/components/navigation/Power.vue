@@ -25,7 +25,6 @@ export default {
 
 <style scoped>
 ._containerPower {
-	width: 250px;
 	background-color: var(--block-background-color);
 	border: 1px solid var(--border-color);
 	position: relative;

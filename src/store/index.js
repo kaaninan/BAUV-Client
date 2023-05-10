@@ -1,32 +1,37 @@
 import io from 'socket.io-client'
 import { createStore } from 'vuex'
+import VuexPersistence from 'vuex-persist'
+
+const vuexLocal = new VuexPersistence({
+	storage: window.localStorage
+})
 
 const store = createStore({
-	state() {
-		return {
-			// App Version
-			packageVersion: process.env.VERSION || '0',
+	state: {
+		// App Version
+		packageVersion: process.env.VERSION || '0',
 
-			// Local States
-			socketIP: null,
-			socket: null,
-			connected: false,
-			logs: [],
+		// Local States
+		socketIP: null,
+		socket: null,
+		connected: false,
+		logs: [],
 
-			// Map Server
-			mapServerIP: 'localhost',
-			mapServerPort: '8000',
-			mapServerPortSVG: '8001',
-			mapServerConnected: false,
+		// Map Server
+		mapServerIP: 'localhost',
+		mapServerPort: '8000',
+		mapServerPortSVG: '8001',
+		mapServerConnected: false,
 
-			// ROS
-			rosbridgeStatus: 'unknown',
-			absolute_linear_velocity: { vx: 0, vy: 0, vz: 0 },
-			relative_linear_velocity: { vx: 0, vy: 0, vz: 0 },
-			orientation_rate: { roll: 0, pitch: 0, yaw: 0 },
+		selectedMaps: [],
 
-			subscribedTopics: []
-		}
+		// ROS
+		rosbridgeStatus: 'unknown',
+		absolute_linear_velocity: { vx: 0, vy: 0, vz: 0 },
+		relative_linear_velocity: { vx: 0, vy: 0, vz: 0 },
+		orientation_rate: { roll: 0, pitch: 0, yaw: 0 },
+
+		subscribedTopics: []
 	},
 	mutations: {
 		setConnected(state, connected) {
@@ -43,6 +48,16 @@ const store = createStore({
 		},
 		socketIP(state, ip) {
 			state.socketIP = ip
+		},
+		toggleMap(state, payload) {
+			// If payload.id is already in selectedMaps, remove it
+			if (state.selectedMaps.find((e) => e.id === payload.id)) {
+				state.selectedMaps = state.selectedMaps.filter(
+					(e) => e.id !== payload.id
+				)
+			} else {
+				state.selectedMaps.push(payload)
+			}
 		}
 	},
 	actions: {
@@ -169,8 +184,12 @@ const store = createStore({
 		},
 		subscribedTopics: (state) => {
 			return state.subscribedTopics
+		},
+		getSelectedMaps: (state) => {
+			return state.selectedMaps
 		}
-	}
+	},
+	plugins: [vuexLocal.plugin]
 })
 
 export default store

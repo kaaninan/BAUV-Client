@@ -1,9 +1,10 @@
 {
-	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": true
-	},
+	// "editor.codeActionsOnSave": {
+	// 	"source.fixAll.eslint": true
+	// },
 	"editor.formatOnSave": true,
-	"editor.defaultFormatter": "esbenp.prettier-vscode"
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"vue.inlayHints.optionsWrapper": false
 	// "eslint.validate": ["javascript", "javascriptreact", "vue"],
 	// "[vue]": {
 	// 	"editor.defaultFormatter": "esbenp.prettier-vscode"
