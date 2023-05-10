@@ -11,8 +11,8 @@
 						style="margin-top: 6px; margin-bottom: 6px"
 						class="data"
 						:class="{
-							_success: $store.getters.socketConnected,
-							_error: !$store.getters.socketConnected
+							_success: $store.state.status.socket,
+							_error: !$store.state.status.socket
 						}"
 					>
 						Socket
@@ -21,8 +21,8 @@
 						style="margin-top: 6px; margin-bottom: 6px"
 						class="data"
 						:class="{
-							_success: $store.getters.mapServerConnected,
-							_error: !$store.getters.mapServerConnected
+							_success: $store.state.status.map,
+							_error: !$store.state.status.map
 						}"
 					>
 						Map
@@ -31,14 +31,12 @@
 						style="margin-top: 6px; margin-bottom: 6px"
 						class="data"
 						:class="{
-							_disabled: !$store.getters.socketConnected,
+							_disabled: !$store.state.status.socket,
 							_success:
-								$store.getters.rosbridgeStatus == 'connected',
+								$store.state.status.rosbridge == 'connected',
 							_error:
-								$store.getters.rosbridgeStatus ==
-								'disconnected',
-							_unknown:
-								$store.getters.rosbridgeStatus == 'unknown'
+								$store.state.status.rosbridge == 'disconnected',
+							_unknown: $store.state.status.rosbridge == 'unknown'
 						}"
 					>
 						ROS Bridge
@@ -52,12 +50,12 @@
 					<div
 						class="data"
 						:class="{
-							_success: $store.getters.socketConnected,
-							_error: !$store.getters.socketConnected
+							_success: $store.state.status.socket,
+							_error: !$store.state.status.socket
 						}"
 					>
 						{{
-							$store.getters.socketConnected
+							$store.state.status.socket
 								? 'Connected'
 								: 'Disconnected'
 						}}
@@ -69,12 +67,12 @@
 					<div
 						class="data"
 						:class="{
-							_success: $store.getters.mapServerConnected,
-							_error: !$store.getters.mapServerConnected
+							_success: $store.state.status.map,
+							_error: !$store.state.status.map
 						}"
 					>
 						{{
-							$store.getters.mapServerConnected
+							$store.state.status.map
 								? 'Connected'
 								: 'Disconnected'
 						}}
@@ -86,28 +84,26 @@
 					<div
 						class="data"
 						:class="{
-							_disabled: !$store.getters.socketConnected,
+							_disabled: !$store.state.status.socket,
 							_success:
-								$store.getters.rosbridgeStatus == 'connected',
+								$store.state.status.rosbridge == 'connected',
 							_error:
-								$store.getters.rosbridgeStatus ==
-								'disconnected',
-							_unknown:
-								$store.getters.rosbridgeStatus == 'unknown'
+								$store.state.status.rosbridge == 'disconnected',
+							_unknown: $store.state.status.rosbridge == 'unknown'
 						}"
 					>
 						{{
-							$store.getters.rosbridgeStatus == 'disconnected'
+							$store.state.status.rosbridge == 'disconnected'
 								? 'Disconnected'
 								: null
 						}}
 						{{
-							$store.getters.rosbridgeStatus == 'connected'
+							$store.state.status.rosbridge == 'connected'
 								? 'Connected'
 								: null
 						}}
 						{{
-							$store.getters.rosbridgeStatus == 'unknown'
+							$store.state.status.rosbridge == 'unknown'
 								? 'Unknown'
 								: null
 						}}
@@ -119,7 +115,7 @@
 					<div
 						v-if="!ipChangeEnable"
 						class="data clickable"
-						:class="{ _disabled: !$store.getters.socketConnected }"
+						:class="{ _disabled: !$store.state.status.socket }"
 						@click="changeIP"
 					>
 						{{ socketIP }}
@@ -139,14 +135,14 @@
 
 				<div class="_category _float _buttons">
 					<div
-						v-if="$store.getters.socketConnected"
+						v-if="$store.state.status.socket"
 						class="link error"
 						@click="disconnect"
 					>
 						Disconnect
 					</div>
 					<div
-						v-if="!$store.getters.socketConnected"
+						v-if="!$store.state.status.socket"
 						class="link success"
 						@click="connect"
 					>
@@ -156,10 +152,21 @@
 						{{ ipChangeEnable ? 'Done' : 'Change IP' }}
 					</div> -->
 					<!-- <div class="link" @click="subscribe">Sub</div> -->
-					<div class="link" @click="connectRosbridge">
+					<div
+						class="link"
+						@click="connectRosbridge"
+						v-if="
+							$store.state.status.rosbridge == 'disconnected' ||
+							$store.state.status.rosbridge == 'unknown'
+						"
+					>
 						Connect RosBridge
 					</div>
-					<div class="link" @click="disconnectRosbridge">
+					<div
+						class="link"
+						@click="disconnectRosbridge"
+						v-if="$store.state.status.rosbridge == 'connected'"
+					>
 						Disconnect Rosbridge
 					</div>
 				</div>
@@ -168,7 +175,7 @@
 				SUBSCRIBED TOPICS:
 				<div class="_category">
 					<div class="title">Topics:</div>
-					<div v-if="$store.getters.socketConnected" class="data">
+					<div v-if="$store.state.status.socket" class="data">
 						{{ $store.getters.subscribedTopics }}
 					</div>
 				</div>
@@ -210,7 +217,6 @@ export default {
 				if (this.localSocketIP != this.$store.state.socketIP) {
 					this.$store.dispatch('disconnectSocket')
 					this.$store.commit('socketIP', this.localSocketIP)
-					this.$store.dispatch('initSocket')
 					this.$store.dispatch('connectSocket')
 					console.log(this.localSocketIP, this.$store.state.socketIP)
 				}
@@ -221,7 +227,6 @@ export default {
 			this.$store.dispatch('disconnectSocket')
 		},
 		connect() {
-			this.$store.dispatch('initSocket')
 			this.$store.dispatch('connectSocket')
 		},
 		subscribe() {

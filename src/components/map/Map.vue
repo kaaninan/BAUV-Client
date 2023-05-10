@@ -7,7 +7,7 @@
 		/>
 	</Modal>
 
-	<div class="_containerMap">
+	<div class="_containerMap" data-aos="fade">
 		<div class="_block_title">
 			<span>MAP</span>
 			<div class="_block_title_right" @click="openSettings">

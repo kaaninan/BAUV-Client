@@ -5,6 +5,7 @@ import VuexPersistence from 'vuex-persist'
 const vuexLocal = new VuexPersistence({
 	storage: window.localStorage,
 	reducer: (state) => ({
+		socketIP: state.socketIP,
 		selectedMaps: state.selectedMaps
 	})
 })
@@ -14,26 +15,26 @@ const store = createStore({
 		// App Version
 		packageVersion: process.env.VERSION || '0',
 
-		// Local States
-		socketIP: null,
+		// Status
+		status: {
+			socket: false,
+			map: false,
+			rosbridge: 'unknown' // move to data
+		},
+
+		// Socket IP
+		socketIP: 'http://localhost:1992',
 		socket: null,
-		connected: false,
-		logs: [],
 
 		// Map Server
 		mapServerIP: 'localhost',
 		mapServerPort: '8000',
 		mapServerPortSVG: '8001',
-		mapServerConnected: false,
 
+		logs: [],
 		selectedMaps: [],
 
 		// ROS
-		rosbridgeStatus: 'unknown',
-		absolute_linear_velocity: { vx: 0, vy: 0, vz: 0 },
-		relative_linear_velocity: { vx: 0, vy: 0, vz: 0 },
-		orientation_rate: { roll: 0, pitch: 0, yaw: 0 },
-
 		subscribedTopics: [],
 		dataInterval: null,
 
@@ -62,10 +63,10 @@ const store = createStore({
 	},
 	mutations: {
 		setConnected(state, connected) {
-			state.connected = connected
+			state.status.socket = connected
 		},
 		setMapServerConnected(state, status) {
-			state.mapServerConnected = status
+			state.status.map = status
 		},
 		createLog(state, log) {
 			state.logs.push(log)
@@ -89,7 +90,7 @@ const store = createStore({
 	},
 	actions: {
 		// initialize socket
-		initSocket({ commit, state }) {
+		connectSocket({ commit, state }) {
 			if (state.socket != null) {
 				return
 			}
@@ -106,6 +107,7 @@ const store = createStore({
 
 					// Get ROSbridge status
 					state.socket.emit('ROSBRIDGE_STATUS')
+					state.socket.emit('GET_SUBSCRIBED_TOPICS')
 
 					commit('createLog', {
 						type: 'success',
@@ -122,7 +124,7 @@ const store = createStore({
 				.on('disconnect', () => {
 					clearInterval(state.dataInterval)
 					commit('setConnected', false)
-					state.rosbridgeStatus = 'unknown'
+					state.status.rosbridge = 'unknown'
 					commit('createLog', {
 						type: 'error',
 						message: 'Disconnected from ' + state.socketIP,
@@ -132,7 +134,7 @@ const store = createStore({
 				// error
 				.on('error', (error) => {
 					clearInterval(state.dataInterval)
-					state.rosbridgeStatus = 'unknown'
+					state.status.rosbridge = 'unknown'
 					commit('createLog', {
 						type: 'error',
 						message: error,
@@ -140,7 +142,7 @@ const store = createStore({
 					})
 				})
 				.on('connect_error', (error) => {
-					state.rosbridgeStatus = 'unknown'
+					state.status.rosbridge = 'unknown'
 					commit('createLog', {
 						type: 'error',
 						message: error,
@@ -151,7 +153,7 @@ const store = createStore({
 				// Rosbridge events
 				.on('rosbridge_status', (status) => {
 					console.log('rosbridge_status', status)
-					state.rosbridgeStatus = status
+					state.status.rosbridge = status
 				})
 				.on('/subscribed_topics', (data) => {
 					console.log(data)
@@ -163,10 +165,7 @@ const store = createStore({
 					console.log(data)
 					state.data = data
 				})
-		},
 
-		// connect to socket
-		connectSocket({ state }) {
 			state.socket.connect()
 		},
 
@@ -179,7 +178,7 @@ const store = createStore({
 
 		// send message to socket
 		sendMessage({ state }, payload) {
-			if (state.connected) {
+			if (state.status.socket) {
 				console.log('sendMessage', payload)
 				state.socket.emit(payload.event, payload.data)
 			} else {
@@ -192,13 +191,13 @@ const store = createStore({
 			return state.packageVersion
 		},
 		socketConnected: (state) => {
-			return state.connected
+			return state.status.socket
 		},
 		mapServerConnected: (state) => {
-			return state.mapServerConnected
+			return state.status.map
 		},
 		rosbridgeStatus: (state) => {
-			return state.rosbridgeStatus
+			return state.status.rosbridge
 		},
 		logs: (state) => {
 			// order logs by date
