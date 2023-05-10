@@ -1,6 +1,5 @@
 # BAUV Client
 
-![test](https://github.com/kaaninan/bauv-client/actions/workflows/test.yml/badge.svg)
 ![build](https://github.com/kaaninan/bauv-client/actions/workflows/build.yml/badge.svg)
 ![docker](https://github.com/kaaninan/bauv-client/actions/workflows/docker.yml/badge.svg)
 ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/kaaninan/bauv-client?label=docker&sort=date)
