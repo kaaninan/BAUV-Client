@@ -44,7 +44,10 @@ export default {
 					this.$store.state.mapServerPortSVG +
 					'/list'
 			)
-			const data = await response.json()
+			let data = await response.json()
+			data = data.filter((item) => {
+				return item !== 'turkey-osm.mbtiles'
+			})
 			this.list = data
 		},
 		async getMapDetail(name) {

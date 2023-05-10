@@ -23,4 +23,4 @@ jobs:
               with:
                   context: .
                   push: true
-                  tags: kaaninan/bauv-client:${{ github.ref_name }}
+                  tags: kaaninan/bauv-client

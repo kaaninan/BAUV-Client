@@ -92,6 +92,7 @@
 </template>
 
 <script>
+import { toRaw } from 'vue'
 import maplibregl from 'maplibre-gl'
 import Modal from '@/components/common/Modal.vue'
 import MapSettings from '@/components/map/MapSettings.vue'
@@ -127,7 +128,6 @@ export default {
 		// check getMaps changes
 		getMaps: {
 			handler: function () {
-				console.log('changes')
 				this.loadMaps()
 			},
 			deep: true
@@ -173,21 +173,17 @@ export default {
 		}, 1000)
 
 		// Load Map Icons
-		// this.map.loadImage(
-		// 	'http://' +
-		// 		this.$store.state.mapServerIP +
-		// 		':' +
-		// 		this.$store.state.mapServerPortSVG +
-		// 		'/static/png/NChart-Symbol_INT_Lighted_BarrelBuoy_Green.png',
-		// 	function (error, image) {
-		// 		if (error) {
-		// 			console.log(error)
-		// 		} else {
-		// 			if (!this.map.hasImage('NChart-Symbol_INT_Light'))
-		// 				this.map.addImage('NChart-Symbol_INT_Light', image)
-		// 		}
-		// 	}
-		// )
+		let icons = [
+			'NChart-Symbol_INT_Rock_Awash',
+			'NChart-Symbol_INT_Rock_CoverUncover',
+			'NChart-Symbol_INT_Rock_Underwater',
+			'NChart-Symbol_INT_Lighted_BarrelBuoy_Green',
+			'NChart-Symbol_INT_Lighted_Beacon',
+			'NChart-Symbol_INT_Wreck',
+			'NChart-Symbol_INT_Beacon_Cardinal_East',
+			'NChart-Symbol_INT_Beacon_Cardinal_West'
+		]
+		this.loadIcons(icons)
 
 		// Load Maps
 		this.map.on('load', () => {
@@ -206,23 +202,17 @@ export default {
 		loadMaps() {
 			// remove this.mapLayers layers from map
 			this.mapLayers.forEach((item) => {
-				console.log('removing layer', item)
-				console.log(this.map.getStyle().layers)
 				this.map.removeLayer(item)
 				this.mapLayers = this.mapLayers.filter((map) => map !== item)
-				console.log('removing', item, this.mapLayers)
 			})
 
 			// remove this.mapSources sources from map
 			this.mapSources.forEach((item) => {
-				console.log('removing source', item)
 				this.map.removeSource(item)
 				this.mapSources = this.mapSources.filter((map) => map !== item)
-				console.log('removing', item, this.mapSources)
 			})
 
-			this.getMaps.forEach((item) => {
-				console.log('adding', item.id)
+			this.getMaps.forEach(async (item) => {
 				if (item.id.startsWith('G')) {
 					// Raster Tile
 					this.map.addSource(item.id, {
@@ -251,7 +241,6 @@ export default {
 					this.mapLayers.push(item.id)
 				} else {
 					// Vector Tile
-					console.log(item)
 					this.map.addSource(item.id, {
 						type: 'vector',
 						url:
@@ -265,215 +254,301 @@ export default {
 					})
 					this.mapSources.push(item.id)
 
-					this.map.addLayer({
-						id: 'ROADWY-' + item.id,
-						type: 'line',
-						source: item.id,
-						'source-layer': 'ROADWY',
-						layout: {},
-						paint: { 'line-color': '#bb9a45' }
+					// Fetch Layers
+					let layers = []
+					const layersResponse = await fetch(
+						'http://' +
+							this.$store.state.mapServerIP +
+							':' +
+							this.$store.state.mapServerPort +
+							'/data/' +
+							item.id +
+							'.json'
+					)
+					const layersJson = await layersResponse.json()
+					layersJson.vector_layers.forEach((a) => {
+						layers.push(a.id)
 					})
-					this.mapLayers.push('ROADWY-' + item.id)
-					this.map.addLayer({
-						id: 'LNDARE-' + item.id,
-						type: 'fill',
-						source: item.id,
-						'source-layer': 'LNDARE',
-						paint: {
-							'fill-color': 'hsl(35, 100%, 66%)',
-							'fill-opacity': 0.3
-						}
-					})
-					this.mapLayers.push('LNDARE-' + item.id)
 
-					this.map.addLayer({
-						id: 'DEPARE-' + item.id,
-						type: 'fill',
-						source: item.id,
-						'source-layer': 'DEPARE',
-						layout: {},
-						paint: {
-							'fill-color': [
-								'interpolate',
-								['linear'],
-								['get', 'DRVAL1'],
-								0,
-								'#d3beb3',
-								3,
-								'#dbe9f6',
-								5,
-								'#bed7ec',
-								10,
-								'#8ec1dd',
-								20,
-								'#5aa2cf',
-								30,
-								'#3181bd',
-								50,
-								'#105ca4',
-								100,
-								'#08306b'
-							]
-						}
-					})
-					this.mapLayers.push('DEPARE-' + item.id)
+					if (layers.find((a) => a === 'ROADWY') !== undefined) {
+						this.map.addLayer({
+							id: 'ROADWY-' + item.id,
+							'source-layer': 'ROADWY',
+							type: 'line',
+							source: item.id,
+							layout: {},
+							paint: { 'line-color': '#bb9a45' }
+						})
+						this.mapLayers.push('ROADWY-' + item.id)
+					}
 
-					this.map.addLayer({
-						id: 'LIGHTS-' + item.id,
-						type: 'symbol',
-						source: item.id,
-						'source-layer': 'LIGHTS',
-						layout: {
-							'icon-image': 'NChart-Symbol_INT_Light',
-							'icon-size': 0.12,
-							'icon-allow-overlap': true
-						}
-					})
-					this.mapLayers.push('LIGHTS-' + item.id)
+					if (layers.find((a) => a === 'LNDARE') !== undefined) {
+						this.map.addLayer({
+							id: 'LNDARE-' + item.id,
+							'source-layer': 'LNDARE',
+							type: 'fill',
+							source: item.id,
+							paint: {
+								'fill-color': 'hsl(35, 100%, 66%)',
+								'fill-opacity': 0.3
+							}
+						})
+						this.mapLayers.push('LNDARE-' + item.id)
+					}
 
-					this.map.addLayer({
-						id: 'SOUNDG-' + item.id,
-						type: 'symbol',
-						source: item.id,
-						'source-layer': 'SOUNDG',
-						layout: {
-							'text-field': ['to-string', ['get', 'DEPTH']],
-							'text-size': 11
-						},
-						paint: {}
-					})
-					this.mapLayers.push('SOUNDG-' + item.id)
+					if (layers.find((a) => a === 'DEPARE') !== undefined) {
+						this.map.addLayer({
+							id: 'DEPARE-' + item.id,
+							'source-layer': 'DEPARE',
+							type: 'fill',
+							source: item.id,
+							layout: {},
+							paint: {
+								'fill-color': [
+									'interpolate',
+									['linear'],
+									['get', 'DRVAL1'],
+									0,
+									'#d3beb3',
+									3,
+									'#dbe9f6',
+									5,
+									'#bed7ec',
+									10,
+									'#8ec1dd',
+									20,
+									'#5aa2cf',
+									30,
+									'#3181bd',
+									50,
+									'#105ca4',
+									100,
+									'#08306b'
+								]
+							}
+						})
+						this.mapLayers.push('DEPARE-' + item.id)
+					}
 
-					this.map.addLayer({
-						id: 'BRIDGE-' + item.id,
-						type: 'line',
-						source: item.id,
-						'source-layer': 'BRIDGE',
-						layout: {},
-						paint: { 'line-color': '#677679', 'line-width': 2 }
-					})
-					this.mapLayers.push('BRIDGE-' + item.id)
+					if (layers.find((a) => a === 'LIGHTS') !== undefined) {
+						this.map.addLayer({
+							id: 'LIGHTS-' + item.id,
+							'source-layer': 'LIGHTS',
+							type: 'symbol',
+							source: item.id,
+							layout: {
+								'icon-image':
+									'NChart-Symbol_INT_Lighted_Beacon',
+								'icon-size': 0.12,
+								'icon-allow-overlap': true
+							}
+						})
+						this.mapLayers.push('LIGHTS-' + item.id)
+					}
 
-					this.map.addLayer({
-						id: 'BUARE-' + item.id,
-						type: 'fill',
-						source: item.id,
-						'source-layer': 'BUAARE',
-						layout: {},
-						paint: { 'fill-color': '#B19139', 'fill-opacity': 0.2 }
-					})
-					this.mapLayers.push('BUARE-' + item.id)
+					if (layers.find((a) => a === 'SOUNDG') !== undefined) {
+						this.map.addLayer({
+							id: 'SOUNDG-' + item.id,
+							'source-layer': 'SOUNDG',
+							type: 'symbol',
+							source: item.id,
+							layout: {
+								'text-field': ['to-string', ['get', 'DEPTH']],
+								'text-size': 11
+							},
+							paint: {}
+						})
+						this.mapLayers.push('SOUNDG-' + item.id)
+					}
 
-					// {
-					// 	"id": "coalne-9kmgqb",
-					// 	"type": "line",
-					// 	"source": "composite",
-					// 	"source-layer": "COALNE-9kmgqb",
-					// 	"layout": {"line-join": "round"},
-					// 	"paint": {}
-					// },
-					// {
-					// 	"id": "depcnt-ahk90t",
-					// 	"type": "line",
-					// 	"source": "composite",
-					// 	"source-layer": "DEPCNT-ahk90t",
-					// 	"layout": {},
-					// 	"paint": {"line-color": "#0000FF", "line-dasharray": [1, 2]}
-					// },
-					// {
-					// 	"id": "wrecks-5pswhz",
-					// 	"type": "symbol",
-					// 	"source": "composite",
-					// 	"source-layer": "WRECKS-5pswhz",
-					// 	"layout": {
-					// 		"icon-image": "NChart-Symbol_INT_Wreck",
-					// 		"icon-size": 0.18,
-					// 		"icon-allow-overlap": true
-					// 	},
-					// 	"paint": {}
-					// },
-					// {
-					// 	"id": "uwtroc-371hqk",
-					// 	"type": "symbol",
-					// 	"source": "composite",
-					// 	"source-layer": "UWTROC-371hqk",
-					// 	"layout": {
-					// 		"icon-image": [
-					// 			"match",
-					// 			["get", "WATLEV"],
-					// 			[2, 5],
-					// 			"NChart-Symbol_INT_Rock_Awash",
-					// 			[1, 4, 6],
-					// 			"NChart-Symbol_INT_Rock_CoverUncover",
-					// 			[3],
-					// 			"NChart-Symbol_INT_Rock_Underwater",
-					// 			""
-					// 		],
-					// 		"icon-size": 0.5
-					// 	},
-					// 	"paint": {}
-					// },
-					// {
-					// 	"id": "siltnk-0xv0ll",
-					// 	"type": "circle",
-					// 	"source": "composite",
-					// 	"source-layer": "SILTNK-0xv0ll",
-					// 	"minzoom": 12,
-					// 	"layout": {},
-					// 	"paint": {
-					// 		"circle-color": "hsla(0, 0%, 0%, 0)",
-					// 		"circle-stroke-color": "#906b26",
-					// 		"circle-stroke-width": 2,
-					// 		"circle-radius": [
-					// 			"interpolate",
-					// 			["linear"],
-					// 			["zoom"],
-					// 			12,
-					// 			0.1,
-					// 			22,
-					// 			18
-					// 		]
-					// 	}
-					// },
-					// {
-					// 	"id": "pipsol-davvbn",
-					// 	"type": "line",
-					// 	"source": "composite",
-					// 	"source-layer": "PIPSOL-davvbn",
-					// 	"layout": {"line-miter-limit": 1},
-					// 	"paint": {
-					// 		"line-width": 2,
-					// 		"line-offset": 10,
-					// 		"line-color": "hsl(115, 69%, 52%)",
-					// 		"line-dasharray": [2, 3]
-					// 	}
-					// },
-					// {
-					// 	"id": "boycar-3iwq2s",
-					// 	"type": "symbol",
-					// 	"source": "composite",
-					// 	"source-layer": "BOYCAR-3iwq2s",
-					// 	"layout": {
-					// 		"icon-image": [
-					// 			"match",
-					// 			["get", "CATCAM"],
-					// 			[1],
-					// 			"NChart-Symbol_INT_Beacon_Cardinal_North2",
-					// 			[2],
-					// 			"NChart-Symbol_INT_Beacon_Cardinal_East",
-					// 			[3],
-					// 			"NChart-Symbol_INT_Beacon_Cardinal_South2",
-					// 			[4],
-					// 			"NChart-Symbol_INT_Beacon_Cardinal_West",
-					// 			""
-					// 		],
-					// 		"icon-size": 0.2
-					// 	},
-					// 	"paint": {}
-					// },
+					if (layers.find((a) => a === 'BRIDGE') !== undefined) {
+						this.map.addLayer({
+							id: 'BRIDGE-' + item.id,
+							'source-layer': 'BRIDGE',
+							type: 'line',
+							source: item.id,
+							layout: {},
+							paint: { 'line-color': '#677679', 'line-width': 2 }
+						})
+						this.mapLayers.push('BRIDGE-' + item.id)
+					}
+
+					if (layers.find((a) => a === 'BUARE') !== undefined) {
+						this.map.addLayer({
+							id: 'BUARE-' + item.id,
+							'source-layer': 'BUAARE',
+							type: 'fill',
+							source: item.id,
+							layout: {},
+							paint: {
+								'fill-color': '#B19139',
+								'fill-opacity': 0.2
+							}
+						})
+						this.mapLayers.push('BUARE-' + item.id)
+					}
+
+					if (layers.find((a) => a === 'COALNE') !== undefined) {
+						this.map.addLayer({
+							id: 'COALNE-' + item.id,
+							'source-layer': 'COALNE',
+							type: 'line',
+							source: item.id,
+							layout: { 'line-join': 'round' },
+							paint: {}
+						})
+						this.mapLayers.push('COALNE-' + item.id)
+					}
+
+					if (layers.find((a) => a === 'DEPCNT') !== undefined) {
+						this.map.addLayer({
+							id: 'DEPCNT-' + item.id,
+							'source-layer': 'DEPCNT',
+							type: 'line',
+							source: item.id,
+							layout: {},
+							paint: {
+								'line-color': '#0000FF',
+								'line-dasharray': [1, 2]
+							}
+						})
+						this.mapLayers.push('DEPCNT-' + item.id)
+					}
+
+					if (layers.find((a) => a === 'WRECKS') !== undefined) {
+						this.map.addLayer({
+							id: 'WRECKS-' + item.id,
+							'source-layer': 'WRECKS',
+							type: 'symbol',
+							source: item.id,
+							layout: {
+								'icon-image': 'NChart-Symbol_INT_Wreck',
+								'icon-size': 0.18,
+								'icon-allow-overlap': true
+							},
+							paint: {}
+						})
+						this.mapLayers.push('WRECKS-' + item.id)
+					}
+
+					if (layers.find((a) => a === 'UWTROC') !== undefined) {
+						this.map.addLayer({
+							id: 'UWTROC-' + item.id,
+							'source-layer': 'UWTROC',
+							type: 'symbol',
+							source: item.id,
+							layout: {
+								'icon-image': [
+									'match',
+									['get', 'WATLEV'],
+									[2, 5],
+									'NChart-Symbol_INT_Rock_Awash',
+									[1, 4, 6],
+									'NChart-Symbol_INT_Rock_CoverUncover',
+									[3],
+									'NChart-Symbol_INT_Rock_Underwater',
+									''
+								],
+								'icon-size': 0.3
+							},
+							paint: {}
+						})
+						this.mapLayers.push('UWTROC-' + item.id)
+					}
+
+					if (layers.find((a) => a === 'SILTNK') !== undefined) {
+						this.map.addLayer({
+							id: 'SILTNK-' + item.id,
+							'source-layer': 'SILTNK',
+							source: item.id,
+							type: 'circle',
+							minzoom: 12,
+							layout: {},
+							paint: {
+								'circle-color': 'hsla(0, 0%, 0%, 0)',
+								'circle-stroke-color': '#906b26',
+								'circle-stroke-width': 2,
+								'circle-radius': [
+									'interpolate',
+									['linear'],
+									['zoom'],
+									12,
+									0.1,
+									22,
+									18
+								]
+							}
+						})
+						this.mapLayers.push('SILTNK-' + item.id)
+					}
+
+					if (layers.find((a) => a === 'PIPSOL') !== undefined) {
+						this.map.addLayer({
+							id: 'PIPSOL-' + item.id,
+							'source-layer': 'PIPSOL',
+							source: item.id,
+							type: 'line',
+							layout: { 'line-miter-limit': 1 },
+							paint: {
+								'line-width': 2,
+								'line-offset': 10,
+								'line-color': 'hsl(115, 69%, 52%)',
+								'line-dasharray': [2, 3]
+							}
+						})
+						this.mapLayers.push('PIPSOL-' + item.id)
+					}
+
+					if (layers.find((a) => a === 'BOYCAR') !== undefined) {
+						this.map.addLayer({
+							id: 'BOYCAR-' + item.id,
+							'source-layer': 'BOYCAR',
+							source: item.id,
+							type: 'symbol',
+							layout: {
+								'icon-image': [
+									'match',
+									['get', 'CATCAM'],
+									[1],
+									'NChart-Symbol_INT_Beacon_Cardinal_North2',
+									[2],
+									'NChart-Symbol_INT_Beacon_Cardinal_East',
+									[3],
+									'NChart-Symbol_INT_Beacon_Cardinal_South2',
+									[4],
+									'NChart-Symbol_INT_Beacon_Cardinal_West',
+									''
+								],
+								'icon-size': 0.2
+							},
+							paint: {}
+						})
+						this.mapLayers.push('BOYCAR-' + item.id)
+					}
 				}
 			})
-			console.log('showing maps', this.mapLayers)
+		},
+		loadIcons(items) {
+			items.forEach((item) => {
+				this.map.loadImage(
+					'http://' +
+						this.$store.state.mapServerIP +
+						':' +
+						this.$store.state.mapServerPortSVG +
+						'/static/png/' +
+						item +
+						'.png',
+					(error, image) => {
+						if (error) {
+							console.log('Error', error)
+						} else {
+							if (!this.map.hasImage(item)) {
+								this.map.addImage(item, image)
+							}
+						}
+					}
+				)
+			})
 		},
 		goCoords(lat, long, zoom) {
 			console.log('go coords', lat, long, zoom)

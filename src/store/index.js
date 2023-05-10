@@ -117,7 +117,6 @@ const store = createStore({
 
 					// Set Interval for Data
 					state.dataInterval = setInterval(() => {
-						console.log('Requesting data...')
 						state.socket.emit('GET_DATA')
 					}, 1000)
 				})
@@ -152,17 +151,14 @@ const store = createStore({
 
 				// Rosbridge events
 				.on('rosbridge_status', (status) => {
-					console.log('rosbridge_status', status)
 					state.status.rosbridge = status
 				})
 				.on('/subscribed_topics', (data) => {
-					console.log(data)
 					state.subscribedTopics = data
 				})
 
 				// Data
 				.on('/data', (data) => {
-					console.log(data)
 					state.data = data
 				})
 
