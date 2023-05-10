@@ -20,7 +20,7 @@
 <script>
 export default {
 	name: 'MapSettings',
-	emits: ['go-coords', 'go-bounds'],
+	emits: ['go-coords', 'go-bounds', 'close-window'],
 	data() {
 		return {
 			list: []
@@ -74,6 +74,7 @@ export default {
 			// 	data.minzoom + 10
 			// )
 			this.$emit('go-bounds', data.bounds)
+			this.$emit('close-window')
 		}
 	}
 }

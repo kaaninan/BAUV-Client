@@ -1,6 +1,10 @@
 <template>
 	<Modal :show="showModal" @close-window="showModal = false">
-		<MapSettings @go-coords="goCoords" @go-bounds="goBounds" />
+		<MapSettings
+			@go-coords="goCoords"
+			@go-bounds="goBounds"
+			@close-window="showModal = false"
+		/>
 	</Modal>
 
 	<div class="_containerMap">
@@ -20,28 +24,67 @@
 
 		<div class="floatTopLeft">
 			<div class="floatItem">
-				<div class="floatItemText">HEADING 63°</div>
-				<div class="floatItemText">DEPTH 10 m</div>
-				<div class="floatItemText">ALTITUDE 10 m</div>
-				<div class="floatItemText">ROLL 14° - PITCH -2°</div>
-				<div class="floatItemText">SEAFLOOR VEL. 5 m/s</div>
-				<div class="floatItemText">BODY VEL. 8 m/s</div>
+				<div class="floatItemText">
+					HEADING
+					{{ parseFloat($store.state.data.heading).toFixed(2) }}°
+				</div>
+				<div class="floatItemText">
+					DEPTH {{ parseFloat($store.state.data.depth).toFixed(2) }}°
+					m
+				</div>
+				<div class="floatItemText">
+					ALTITUDE
+					{{ parseFloat($store.state.data.altitude).toFixed(2) }}° m
+				</div>
+				<div class="floatItemText">
+					ROLL {{ parseFloat($store.state.data.roll).toFixed(2) }}° -
+					PITCH {{ parseFloat($store.state.data.pitch).toFixed(2) }}°°
+				</div>
+				<div class="floatItemText">
+					SEAFLOOR VEL.
+					{{
+						parseFloat(
+							$store.state.data.sea_floor_velocity
+						).toFixed(2)
+					}}° m/s
+				</div>
+				<div class="floatItemText">
+					BODY VEL.
+					{{
+						parseFloat($store.state.data.body_velocity).toFixed(2)
+					}}° m/s
+				</div>
 			</div>
 		</div>
 
 		<div class="floatBottomLeft">
 			<div class="floatItem">
-				<div class="floatItemText">LAT 41° - LON 28°</div>
-				<div class="floatItemText">NORTH 10 m - EAST 20 m</div>
-				<div class="floatItemText">ROLL RATE 1.2 °/s</div>
-				<div class="floatItemText">PITCH RATE 0.5 °/s</div>
+				<div class="floatItemText">
+					LAT
+					{{ parseFloat($store.state.data.latitude).toFixed(0) }}° -
+					LON
+					{{ parseFloat($store.state.data.longitude).toFixed(0) }}°
+				</div>
+				<div class="floatItemText">
+					NORTH {{ parseFloat($store.state.data.north).toFixed(0) }} m
+					- EAST {{ parseFloat($store.state.data.east).toFixed(0) }} m
+				</div>
+				<div class="floatItemText">
+					ROLL RATE
+					{{ parseFloat($store.state.data.roll_rate).toFixed(1) }} °/s
+				</div>
+				<div class="floatItemText">
+					PITCH RATE
+					{{ parseFloat($store.state.data.pitch_rate).toFixed(1) }}
+					°/s
+				</div>
 			</div>
 		</div>
 
 		<div class="floatBottomRight">
 			<div class="floatItem">
-				<div class="floatItemText">DATE 15-04-23</div>
-				<div class="floatItemText">LOCAL TIME 12:00:00</div>
+				<div class="floatItemText">DATE {{ localDate }}</div>
+				<div class="floatItemText">LOCAL TIME {{ localTime }}</div>
 				<div class="floatItemText">MISSION TIME 00:10:12</div>
 			</div>
 		</div>
@@ -62,7 +105,10 @@ export default {
 			map: null,
 			mapLayers: [],
 			mapSources: [],
-			showModal: false
+			showModal: false,
+
+			localDate: '-',
+			localTime: '-'
 		}
 	},
 
@@ -80,7 +126,7 @@ export default {
 	watch: {
 		// check getMaps changes
 		getMaps: {
-			handler: function (val) {
+			handler: function () {
 				console.log('changes')
 				this.loadMaps()
 			},
@@ -122,6 +168,10 @@ export default {
 			zoom: 12
 		})
 
+		this.timeInterval = setInterval(() => {
+			this.setDate()
+		}, 1000)
+
 		// Load Map Icons
 		// this.map.loadImage(
 		// 	'http://' +
@@ -143,6 +193,10 @@ export default {
 		this.map.on('load', () => {
 			this.loadMaps()
 		})
+	},
+
+	unmounted() {
+		clearInterval(this.timeInterval)
 	},
 
 	methods: {
@@ -438,6 +492,19 @@ export default {
 					right: 10
 				}
 			})
+		},
+		setDate() {
+			// Format 15-04-23
+			let date = new Date()
+			let year = date.getFullYear().toString().substr(-2)
+			let month = ('0' + (date.getMonth() + 1)).slice(-2)
+			let day = ('0' + date.getDate()).slice(-2)
+			this.localDate = day + '-' + month + '-' + year
+			// Format 12:00:00
+			let hours = ('0' + date.getHours()).slice(-2)
+			let minutes = ('0' + date.getMinutes()).slice(-2)
+			let seconds = ('0' + date.getSeconds()).slice(-2)
+			this.localTime = hours + ':' + minutes + ':' + seconds
 		}
 	}
 }

@@ -3,15 +3,15 @@
 		<div class="_content">
 			<div class="_category">
 				<div class="title">Current Power:</div>
-				<div class="data">2.1 W</div>
+				<div class="data">{{ parseFloat(power).toFixed(2) }} W</div>
 			</div>
 			<div class="_category">
 				<div class="title">Voltage:</div>
-				<div class="data">24.35 V</div>
+				<div class="data">{{ parseFloat(voltage).toFixed(2) }} V</div>
 			</div>
 			<div class="_category">
 				<div class="title">Endurance:</div>
-				<div class="data">-</div>
+				<div class="data">{{ endurance }}</div>
 			</div>
 		</div>
 	</div>
@@ -19,7 +19,18 @@
 
 <script>
 export default {
-	name: 'Power'
+	name: 'Power',
+	computed: {
+		power() {
+			return this.$store.state.data.current_power
+		},
+		voltage() {
+			return this.$store.state.data.voltage
+		},
+		endurance() {
+			return this.$store.state.data.endurance
+		}
+	}
 }
 </script>
 

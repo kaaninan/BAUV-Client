@@ -29,7 +29,8 @@ export default {
 	name: 'Log',
 	computed: {
 		logs() {
-			return this.$store.state.logs
+			// eslint-disable-next-line vue/no-side-effects-in-computed-properties
+			return this.$store.state.logs.reverse()
 		}
 	},
 	methods: {

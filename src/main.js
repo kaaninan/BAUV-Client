@@ -7,6 +7,7 @@ import '@/assets/styles/variables.css'
 import 'aos/dist/aos.css'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import '@fortawesome/fontawesome-free/css/all.min.css'
+import 'flexboxgrid/dist/flexboxgrid.min.css'
 
 const app = createApp(App)
 app.use(store)

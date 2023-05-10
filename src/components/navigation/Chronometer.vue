@@ -3,15 +3,17 @@
 		<div class="_content">
 			<div class="_category">
 				<div class="title">Local Time:</div>
-				<div class="data">15-04-23 12:00:00</div>
+				<div class="data">{{ localTime }}</div>
 			</div>
 			<div class="_category">
 				<div class="title">System Time:</div>
-				<div class="data">15-04-23 9:00:00</div>
+				<div class="data">{{ systemTime }}</div>
 			</div>
 			<div class="_category">
 				<div class="title">Mission Duration:</div>
-				<div class="data">2h 36m</div>
+				<div class="data">
+					{{ parseFloat(missionDuration).toFixed(2) }}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -19,7 +21,72 @@
 
 <script>
 export default {
-	name: 'Chronometer'
+	name: 'Chronometer',
+	data() {
+		return {
+			localTime: ''
+		}
+	},
+	computed: {
+		systemTime() {
+			// parse getTime to format 15-04-23 15:00:00
+			let date = new Date(this.$store.state.data.system_time)
+			let year = date.getFullYear().toString().substr(-2)
+			let month = ('0' + (date.getMonth() + 1)).slice(-2)
+			let day = ('0' + date.getDate()).slice(-2)
+			let hours = ('0' + date.getHours()).slice(-2)
+			let minutes = ('0' + date.getMinutes()).slice(-2)
+			let seconds = ('0' + date.getSeconds()).slice(-2)
+			return (
+				day +
+				'-' +
+				month +
+				'-' +
+				year +
+				' ' +
+				hours +
+				':' +
+				minutes +
+				':' +
+				seconds
+			)
+		},
+		missionDuration() {
+			return this.$store.state.data.mission_duration
+		}
+	},
+	mounted() {
+		this.timeInterval = setInterval(() => {
+			this.setDate()
+		}, 1000)
+	},
+	unmounted() {
+		clearInterval(this.timeInterval)
+	},
+	methods: {
+		setDate() {
+			// Format 15-04-23
+			let date = new Date()
+			let year = date.getFullYear().toString().substr(-2)
+			let month = ('0' + (date.getMonth() + 1)).slice(-2)
+			let day = ('0' + date.getDate()).slice(-2)
+			let hours = ('0' + date.getHours()).slice(-2)
+			let minutes = ('0' + date.getMinutes()).slice(-2)
+			let seconds = ('0' + date.getSeconds()).slice(-2)
+			this.localTime =
+				day +
+				'-' +
+				month +
+				'-' +
+				year +
+				' ' +
+				hours +
+				':' +
+				minutes +
+				':' +
+				seconds
+		}
+	}
 }
 </script>
 

@@ -43,7 +43,9 @@ export default {
 		Connection,
 		Power,
 		Chronometer,
+		// eslint-disable-next-line vue/no-unused-components
 		VueWinBox,
+		// eslint-disable-next-line vue/no-unused-components
 		SonarField
 	},
 	data() {

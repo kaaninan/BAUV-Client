@@ -3,7 +3,10 @@ import { createStore } from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
 const vuexLocal = new VuexPersistence({
-	storage: window.localStorage
+	storage: window.localStorage,
+	reducer: (state) => ({
+		selectedMaps: state.selectedMaps
+	})
 })
 
 const store = createStore({
@@ -31,7 +34,31 @@ const store = createStore({
 		relative_linear_velocity: { vx: 0, vy: 0, vz: 0 },
 		orientation_rate: { roll: 0, pitch: 0, yaw: 0 },
 
-		subscribedTopics: []
+		subscribedTopics: [],
+		dataInterval: null,
+
+		// DATA
+		data: {
+			roll: 0,
+			pitch: 0,
+			heading: 0,
+			depth: 0,
+			altitude: 0,
+			latitude: 0,
+			longitude: 0,
+			north: 0,
+			east: 0,
+			roll_rate: 0,
+			pitch_rate: 0,
+			mission_time: new Date().getTime(),
+			system_time: new Date().getTime(),
+			mission_duration: 0,
+			sea_floor_velocity: 0,
+			body_velocity: 0,
+			current_power: 0,
+			voltage: 0,
+			endurance: 0
+		}
 	},
 	mutations: {
 		setConnected(state, connected) {
@@ -63,9 +90,6 @@ const store = createStore({
 	actions: {
 		// initialize socket
 		initSocket({ commit, state }) {
-			// temp
-			let lastsend = 0
-
 			if (state.socket != null) {
 				return
 			}
@@ -88,8 +112,15 @@ const store = createStore({
 						message: 'Connected to ' + state.socketIP,
 						date: new Date()
 					})
+
+					// Set Interval for Data
+					state.dataInterval = setInterval(() => {
+						console.log('Requesting data...')
+						state.socket.emit('GET_DATA')
+					}, 1000)
 				})
 				.on('disconnect', () => {
+					clearInterval(state.dataInterval)
 					commit('setConnected', false)
 					state.rosbridgeStatus = 'unknown'
 					commit('createLog', {
@@ -100,6 +131,7 @@ const store = createStore({
 				})
 				// error
 				.on('error', (error) => {
+					clearInterval(state.dataInterval)
 					state.rosbridgeStatus = 'unknown'
 					commit('createLog', {
 						type: 'error',
@@ -121,21 +153,15 @@ const store = createStore({
 					console.log('rosbridge_status', status)
 					state.rosbridgeStatus = status
 				})
-				.on('/imu_data', (data) => {
-					// Send one commit per second from Date
-					if (Date.now() - lastsend > 1000) {
-						commit('createLog', {
-							type: 'info',
-							message: data,
-							date: new Date()
-						})
-						lastsend = Date.now()
-					}
-					// console.log(data)
-				})
 				.on('/subscribed_topics', (data) => {
 					console.log(data)
 					state.subscribedTopics = data
+				})
+
+				// Data
+				.on('/data', (data) => {
+					console.log(data)
+					state.data = data
 				})
 		},
 

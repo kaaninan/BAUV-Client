@@ -179,9 +179,6 @@ export default {
 	name: 'Compass',
 	data() {
 		return {
-			roll: 0, // degree
-			pitch: 0, // degree
-
 			bankScalesLong: [270, 300, 330, 30, 60, 90],
 			bankScalesShort: [340, 350, 10, 20],
 			bankScalesTriangle: [315, 45],
@@ -189,6 +186,14 @@ export default {
 
 			pitchScalesLong: [10, 20, -10, -20, -70],
 			pitchScalesShort: [5, 15, -5, -15]
+		}
+	},
+	computed: {
+		roll() {
+			return this.$store.state.data.roll
+		},
+		pitch() {
+			return this.$store.state.data.pitch
 		}
 	},
 	mounted() {

@@ -82,7 +82,7 @@
 
 			<div class="outline2">
 				<div class="headingContainer">
-					<div class="headingText">{{ heading }}</div>
+					<div class="headingText">{{ parseInt(heading) }}</div>
 				</div>
 			</div>
 		</div>
@@ -105,21 +105,20 @@ export default {
 				{ degree: 135, name: 'SE' },
 				{ degree: 225, name: 'SW' },
 				{ degree: 315, name: 'NW' }
-			],
-			heading: 0
+			]
 		}
 	},
-	mounted() {
-		this.heading = 0
-		// document.querySelector(
-		// 	'._containerCompass ._content .outline'
-		// ).style.transform = 'rotate(' + -this.heading + 'deg)'
-		// this.interval = setInterval(() => {
-		// 	this.heading = parseInt(Math.random() * 360)
-		// 	document.querySelector(
-		// 		'._containerCompass ._content .outline'
-		// 	).style.transform = 'rotate(' + -this.heading + 'deg)'
-		// }, 2000)
+	computed: {
+		heading() {
+			return this.$store.state.data.heading
+		}
+	},
+	watch: {
+		heading: function (val) {
+			document.querySelector(
+				'._containerCompass ._content .outline'
+			).style.transform = 'rotate(' + -val + 'deg)'
+		}
 	},
 	unmounted() {
 		clearInterval(this.interval)

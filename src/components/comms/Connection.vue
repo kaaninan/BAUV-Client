@@ -155,7 +155,7 @@
 					<!-- <div class="link" @click="changeIP">
 						{{ ipChangeEnable ? 'Done' : 'Change IP' }}
 					</div> -->
-					<div class="link" @click="subscribe">Sub</div>
+					<!-- <div class="link" @click="subscribe">Sub</div> -->
 					<div class="link" @click="connectRosbridge">
 						Connect RosBridge
 					</div>
