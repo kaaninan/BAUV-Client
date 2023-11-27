@@ -25,34 +25,34 @@
 		<div class="floatTopLeft">
 			<div class="floatItem">
 				<div class="floatItemText">
-					HEADING
-					{{ parseFloat($store.state.data.heading).toFixed(2) }}°
+					HEADING:
+					{{ parseFloat($store.state.data.heading).toFixed(1) }}°
 				</div>
 				<div class="floatItemText">
-					DEPTH {{ parseFloat($store.state.data.depth).toFixed(2) }}°
-					m
+					DEPTH:
+					{{ parseFloat($store.state.data.depth).toFixed(2) }}m
 				</div>
 				<div class="floatItemText">
-					ALTITUDE
-					{{ parseFloat($store.state.data.altitude).toFixed(2) }}° m
+					ALTITUDE:
+					{{ parseFloat($store.state.data.altitude).toFixed(2) }}m
 				</div>
 				<div class="floatItemText">
-					ROLL {{ parseFloat($store.state.data.roll).toFixed(2) }}° -
-					PITCH {{ parseFloat($store.state.data.pitch).toFixed(2) }}°°
+					ROLL: {{ parseFloat($store.state.data.roll).toFixed(1) }}° --
+					PITCH: {{ parseFloat($store.state.data.pitch).toFixed(1) }}°
 				</div>
 				<div class="floatItemText">
-					SEAFLOOR VEL.
+					SEAFLOOR VEL:
 					{{
 						parseFloat(
 							$store.state.data.sea_floor_velocity
-						).toFixed(2)
-					}}° m/s
+						).toFixed(1)
+					}}m/s
 				</div>
 				<div class="floatItemText">
-					BODY VEL.
+					BODY VEL:
 					{{
-						parseFloat($store.state.data.body_velocity).toFixed(2)
-					}}° m/s
+						parseFloat($store.state.data.body_velocity).toFixed(1)
+					}}m/s
 				</div>
 			</div>
 		</div>
@@ -60,32 +60,32 @@
 		<div class="floatBottomLeft">
 			<div class="floatItem">
 				<div class="floatItemText">
-					LAT
-					{{ parseFloat($store.state.data.latitude).toFixed(0) }}° -
-					LON
-					{{ parseFloat($store.state.data.longitude).toFixed(0) }}°
+					LAT:
+					{{ parseFloat($store.state.data.latitude).toFixed(4) }}° -- 
+					LON:
+					{{ parseFloat($store.state.data.longitude).toFixed(4) }}°
 				</div>
 				<div class="floatItemText">
-					NORTH {{ parseFloat($store.state.data.north).toFixed(0) }} m
-					- EAST {{ parseFloat($store.state.data.east).toFixed(0) }} m
+					NORTH: {{ parseFloat($store.state.data.north).toFixed(1) }}m
+					-- EAST: {{ parseFloat($store.state.data.east).toFixed(1) }}m
 				</div>
 				<div class="floatItemText">
-					ROLL RATE
-					{{ parseFloat($store.state.data.roll_rate).toFixed(1) }} °/s
+					ROLL RATE:
+					{{ parseFloat($store.state.data.roll_rate).toFixed(1) }}°/s
 				</div>
 				<div class="floatItemText">
-					PITCH RATE
-					{{ parseFloat($store.state.data.pitch_rate).toFixed(1) }}
-					°/s
+					PITCH RATE:
+					{{ parseFloat($store.state.data.pitch_rate).toFixed(1) }}°/s
 				</div>
 			</div>
 		</div>
 
 		<div class="floatBottomRight">
 			<div class="floatItem">
-				<div class="floatItemText">DATE {{ localDate }}</div>
-				<div class="floatItemText">LOCAL TIME {{ localTime }}</div>
-				<div class="floatItemText">MISSION TIME 00:10:12</div>
+				<div class="floatItemText">DATE: {{ localDate }}</div>
+				<div class="floatItemText">LOCAL TIME: {{ localTime }}</div>
+				<div class="floatItemText">MISSION DURATION: {{ missionDurationFormatted }}</div>
+				<div class="floatItemText">DIVE DURATION: {{ diveDurationFormatted }}</div>
 			</div>
 		</div>
 	</div>
@@ -97,6 +97,7 @@ import maplibregl from 'maplibre-gl'
 import Modal from '@/components/common/Modal.vue'
 import MapSettings from '@/components/map/MapSettings.vue'
 import layers from './layers'
+//import triangleIcon from '@/assets/images/triangle_icon.png';
 
 export default {
 	name: 'App',
@@ -104,12 +105,16 @@ export default {
 	data() {
 		return {
 			map: null,
+			marker: null,
 			mapLayers: [],
 			mapSources: [],
 			showModal: false,
 
 			localDate: '-',
-			localTime: '-'
+			localTime: '-',
+			missionDuration: '00:00:00',
+			diveDuration: '00:00:00',
+			historicalCoordinates: [] // Array to store historical coordinates
 		}
 	},
 
@@ -119,9 +124,44 @@ export default {
 	},
 
 	computed: {
+
 		getMaps() {
 			return this.$store.state.selectedMaps
-		}
+		},
+		
+		missionDurationFormatted() {
+			
+			const durationInSeconds = this.$store.state.data.mission_duration
+    			const hours = ('0' + ((Math.floor(durationInSeconds / 3600)).toString())).slice(-2)
+    			const minutes =  ('0' + ((Math.floor((durationInSeconds % 3600) / 60)).toString())).slice(-2)
+    			const seconds = ('0' + (durationInSeconds % 60).toString()).slice(-2)
+    			
+    			return hours + ':' + minutes + ':' + seconds
+		},
+		
+		diveDurationFormatted() {
+			
+			const durationInSeconds = this.$store.state.data.dive_duration
+    			const hours = ('0' + ((Math.floor(durationInSeconds / 3600)).toString())).slice(-2)
+    			const minutes =  ('0' + ((Math.floor((durationInSeconds % 3600) / 60)).toString())).slice(-2)
+    			const seconds = ('0' + (durationInSeconds % 60).toString()).slice(-2)
+    			
+    			return hours + ':' + minutes + ':' + seconds
+		},
+		
+		markerLngLat() {
+      		const latitude = parseFloat(this.$store.state.data.latitude).toFixed(8);
+      		const longitude = parseFloat(this.$store.state.data.longitude).toFixed(8);
+
+      		return [longitude, latitude];
+    	},
+
+    	markerHeading() {
+      		const heading = parseFloat(this.$store.state.data.heading);
+      		
+      		return heading;
+      	}
+
 	},
 
 	watch: {
@@ -131,10 +171,62 @@ export default {
 				this.loadMaps()
 			},
 			deep: true
+		},
+		
+		markerLngLat: {
+      			handler() {
+      			
+      				// Add current coordinates to historicalCoordinates array
+      				this.historicalCoordinates.push(this.markerLngLat);
+
+      				// Limit the number of historical coordinates (adjust as needed)
+      				const maxHistoricalCoordinates = 100; // no of previous coordintes to store in trajectory
+      				if (this.historicalCoordinates.length > maxHistoricalCoordinates) {
+        				this.historicalCoordinates.shift(); // Remove the oldest coordinate
+      				}
+
+      				// Update the map to display historical points and lines
+      				this.updateHistoricalPointsAndLines();
+
+       				// Update the marker position when the computed property changes
+        			if (this.map) {
+          						
+          				if (this.marker) {
+          					
+          					this.marker.setLngLat(this.markerLngLat);
+							this.updateMarkerPopup();
+							console.log('Updating marker coordinates: ', this.marker.getLngLat());
+          					}
+
+          				/*
+          				// Use the following code to constantly center the map on the marker
+        				this.map.flyTo({
+          					center: this.markerLngLat,
+         	 				essential: true, // This ensures the animation is not interrupted by user interaction
+        				});*/
+           			}
+           		},
+      		
+      			immediate: false, // Do not trigger the handler immediately on mount, wait for all map objects to be defined
+    	},
+		
+		markerHeading: {
+			handler() {
+					
+				// Update the marker heading when the computed property changes
+        		if (this.map) {
+
+					if (this.marker) {
+						this.marker.setRotation(this.markerHeading);
+						this.updateMarkerPopup();
+					}
+				}
+			}
 		}
 	},
 
 	mounted() {
+		
 		// Setup Base Map
 		this.map = new maplibregl.Map({
 			container: 'map',
@@ -164,13 +256,14 @@ export default {
 				layers: layers,
 				id: 'basic'
 			},
+			//center: this.markerLngLat,
 			center: [29.00875, 41.04182],
-			zoom: 12
+			zoom: 14
 		})
 
 		this.timeInterval = setInterval(() => {
-			this.setDate()
-		}, 1000)
+			this.setDate();
+			}, 1000)
 
 		// Load Map Icons
 		let icons = [
@@ -183,23 +276,184 @@ export default {
 			'NChart-Symbol_INT_Beacon_Cardinal_East',
 			'NChart-Symbol_INT_Beacon_Cardinal_West'
 		]
+
 		this.loadIcons(icons)
 
 		// Load Maps
 		this.map.on('load', () => {
 			this.loadMaps()
-		})
-	},
 
+		});		
+
+        // Preload the image
+		const imagePath = require('@/assets/images/Ursula-Map-Icon.svg');
+
+		
+		// Create a popup HTML content
+
+		const latitude = Number(this.markerLngLat[1]).toFixed(4);
+        const longitude = Number(this.markerLngLat[0]).toFixed(4);
+        const heading = this.markerHeading.toFixed(1);
+
+        const popupContent = `
+        <div style = "color: black;">
+			<div style="display: flex; margin-bottom: 10px">
+				<div style="margin-right: 10px">
+                	<p>Lat: ${latitude}°</p>
+        		</div>
+        		<div>
+            		<p>Lon: ${longitude}°</p>
+        		</div>
+			</div>
+    		<p>Heading: ${heading}°</p>
+	    </div>
+        `; 
+
+		this.marker = new maplibregl.Marker({ element: this.createMarkerElement(imagePath) }) 
+        	.setLngLat(this.markerLngLat)
+        	.setRotationAlignment('map')
+			.setPopup(new maplibregl.Popup().setHTML(popupContent)) // add popup
+			.addTo(this.map);
+        	console.log('Marker initialized with the coordinates: ', this.marker.getLngLat());
+
+        // Set the initial rotation
+		this.marker.setRotation(this.markerHeading);
+
+    },
+  	
 	unmounted() {
 		clearInterval(this.timeInterval)
 	},
 
 	methods: {
+	
+		updateMarkerPopup() {
+            // Assuming you have latitude, longitude, and heading in your component state or props
+            const latitude = Number(this.markerLngLat[1]).toFixed(4);
+        	const longitude = Number(this.markerLngLat[0]).toFixed(4);
+            const heading = this.markerHeading.toFixed(1);
+
+            // Create a popup HTML content
+
+			const popupContent = `
+        	<div style = "color: black;">
+				<div style = "display: flex; margin-bottom: 10px">
+					<div style="margin-right: 10px">
+                		<p>Lat: ${latitude}°</p>
+        			</div>
+        			<div>
+            			<p>Lon: ${longitude}°</p>
+        			</div>
+				</div>
+    			<p>Heading: ${heading}°</p>
+	    	</div>
+        	`;
+            
+			// Update the marker popup content
+            if (this.marker && this.marker.getPopup()) {
+                this.marker.getPopup().setHTML(popupContent);
+            }
+        },
+    
+		createMarkerElement(imageUrl) {
+      		const element = document.createElement('div');
+      		element.style.backgroundImage = `url(${imageUrl})`;
+      		element.style.width = '15px'; // Set the width of your image
+      		element.style.height = '15px'; // Set the height of your image
+      		element.style.backgroundSize = 'cover';
+      		return element;
+    	},
+
+  		updateHistoricalPointsAndLines() {
+    		// Check if this.map is not null
+    		if (!this.map) {
+      			console.error('Map is not initialized yet.');
+      			return;
+    		}
+
+    		// Clear existing historical layers
+    		this.clearHistoricalLayers();
+
+    		// Add historical points as small circles
+    		this.historicalCoordinates.forEach((coord, index) => {
+    			const layerId = `historical-point-${index}`;
+
+      			// Check if the layer already exists
+      			if (!this.map.getLayer(layerId)) {
+      				this.map.addLayer({
+        				id: `historical-point-${index}`,
+        				type: 'circle',
+        				source: {
+          					type: 'geojson',
+          					data: {
+            					type: 'Feature',
+            					geometry: {
+              						type: 'Point',
+              						coordinates: coord,
+            					},
+          					},
+        				},
+        		
+        				paint: {
+          					'circle-color': '#000000', // You can customize the color
+          					'circle-radius': 4, // Adjust the radius as needed
+        				},
+      				});
+      			}
+    		});
+
+    		// Add lines between historical points
+    		this.map.addSource('historical-line', {
+      			type: 'geojson',
+      			data: {
+        			type: 'Feature',
+        			geometry: {
+          				type: 'LineString',
+          				coordinates: this.historicalCoordinates,
+        			},
+      			},
+    		});
+
+    		this.map.addLayer({
+      			id: 'historical-line',
+      			type: 'line',
+      			source: 'historical-line',
+      			paint: {
+        			'line-color': '#0000FF',
+        			'line-width': 2,
+      			},
+    		});
+  		},
+
+  		clearHistoricalLayers() {
+  			// Check if this.map is not null
+  			if (!this.map) {
+    			console.error('Map is not initialized yet.');
+    			return;
+  			}
+
+  			// Remove existing historical line
+  			if (this.map.getSource('historical-line')) {
+    			this.map.removeLayer('historical-line');
+    			this.map.removeSource('historical-line');
+  			}
+
+  			// Remove existing historical markers
+  			const markerLayerIds = this.map.getStyle().layers
+    			.filter(layer => layer.type === 'symbol' && layer.id !== 'historical-line')
+    			.map(layer => layer.id);
+
+  			markerLayerIds.forEach(layerId => {
+    			this.map.removeLayer(layerId);
+  			});
+		},
+
 		openSettings() {
 			this.showModal = true
 		},
+
 		loadMaps() {
+
 			// remove this.mapLayers layers from map
 			this.mapLayers.forEach((item) => {
 				this.map.removeLayer(item)
@@ -528,6 +782,7 @@ export default {
 				}
 			})
 		},
+
 		loadIcons(items) {
 			items.forEach((item) => {
 				this.map.loadImage(
@@ -575,16 +830,18 @@ export default {
 			let month = ('0' + (date.getMonth() + 1)).slice(-2)
 			let day = ('0' + date.getDate()).slice(-2)
 			this.localDate = day + '-' + month + '-' + year
+			
 			// Format 12:00:00
 			let hours = ('0' + date.getHours()).slice(-2)
 			let minutes = ('0' + date.getMinutes()).slice(-2)
 			let seconds = ('0' + date.getSeconds()).slice(-2)
 			this.localTime = hours + ':' + minutes + ':' + seconds
-		}
-	}
-}
-</script>
+		},
+	},
+};
 
+</script>
+    
 <style scoped>
 ._containerMap {
 	width: 100%;

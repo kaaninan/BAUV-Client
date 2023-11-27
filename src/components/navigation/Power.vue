@@ -2,16 +2,16 @@
 	<div class="_containerPower">
 		<div class="_content">
 			<div class="_category">
-				<div class="title">Current Power:</div>
-				<div class="data">{{ parseFloat(power).toFixed(2) }} W</div>
+				<div class="title">Power:</div>
+				<div class="data">{{ parseFloat(power).toFixed(2) }}W</div>
 			</div>
 			<div class="_category">
 				<div class="title">Voltage:</div>
-				<div class="data">{{ parseFloat(voltage).toFixed(2) }} V</div>
+				<div class="data">{{ parseFloat(voltage).toFixed(2) }}V</div>
 			</div>
 			<div class="_category">
 				<div class="title">Endurance:</div>
-				<div class="data">{{ endurance }}</div>
+				<div class="data">{{ parseFloat(endurance).toFixed(0) }}"</div>
 			</div>
 		</div>
 	</div>
@@ -22,7 +22,7 @@ export default {
 	name: 'Power',
 	computed: {
 		power() {
-			return this.$store.state.data.current_power
+			return this.$store.state.data.power
 		},
 		voltage() {
 			return this.$store.state.data.voltage

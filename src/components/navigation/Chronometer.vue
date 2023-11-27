@@ -12,7 +12,14 @@
 			<div class="_category">
 				<div class="title">Mission Duration:</div>
 				<div class="data">
-					{{ parseFloat(missionDuration).toFixed(2) }}
+					{{ missionDurationFormatted }}
+				</div>
+			</div>
+			
+			<div class="_category">
+				<div class="title">Dive Duration:</div>
+				<div class="data">
+					{{ diveDurationFormatted }}
 				</div>
 			</div>
 		</div>
@@ -51,8 +58,24 @@ export default {
 				seconds
 			)
 		},
-		missionDuration() {
-			return this.$store.state.data.mission_duration
+		missionDurationFormatted() {
+			
+			const durationInSeconds = this.$store.state.data.mission_duration
+    			const hours = ('0' + ((Math.floor(durationInSeconds / 3600)).toString())).slice(-2)
+    			const minutes =  ('0' + ((Math.floor((durationInSeconds % 3600) / 60)).toString())).slice(-2)
+    			const seconds = ('0' + (durationInSeconds % 60).toString()).slice(-2)
+    			
+    			return hours + ':' + minutes + ':' + seconds
+		},
+		
+		diveDurationFormatted() {
+			
+			const durationInSeconds = this.$store.state.data.dive_duration
+    			const hours = ('0' + ((Math.floor(durationInSeconds / 3600)).toString())).slice(-2)
+    			const minutes =  ('0' + ((Math.floor((durationInSeconds % 3600) / 60)).toString())).slice(-2)
+    			const seconds = ('0' + (durationInSeconds % 60).toString()).slice(-2)
+    			
+    			return hours + ':' + minutes + ':' + seconds
 		}
 	},
 	mounted() {
